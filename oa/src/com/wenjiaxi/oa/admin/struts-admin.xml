@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+	<constant name="struts.devMode" value="true" />
+	<constant name="struts.action.extension" value="jspx,action,do," />
+
+	<package name="admin" namespace="/admin" extends="default">
+		<!-- 声明登录拦截器 -->
+		<interceptors>
+			<interceptor name="loginInterceptor" class="com.wenjiaxi.oa.admin.interceptor.LoginInterceptor"></interceptor>
+			<interceptor-stack name="loginStack">
+				<interceptor-ref name="defaultStack"/>
+				<interceptor-ref name="loginInterceptor"/>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 配置全局拦截器 -->
+		<default-interceptor-ref name="loginStack"/>
+		
+		<!-- 全局result -->
+		<global-results>
+			<result name="login">/WEB-INF/jsp/admin/login.jsp</result>
+			<result name="error">/error404.jsp</result>
+			<result name="main" type="redirectAction">main</result>
+		</global-results>
+		
+		<!-- 登录action -->
+		<action name="loginAjax" class="com.wenjiaxi.oa.admin.LoginAjax">
+			<!-- 排除登录拦截器的拦截 -->
+			<interceptor-ref name="defaultStack"/>
+			<result type="json">
+				<!-- 指定返回的数据 -->
+				<param name="root">responseData</param>
+			</result>
+		</action>
+		<!-- 登出action -->
+		<action name="logout" class="com.wenjiaxi.oa.admin.LogoutAction"/>
+
+		<!-- 访问WEB-INF下的jsp页面 -->
+		<action name="*">
+			<result>/WEB-INF/jsp/admin/{1}.jsp</result>
+		</action>
+	</package>
+
+	<include file="com/wenjiaxi/oa/admin/addressbook/struts-admin-addressbook.xml" />
+	<include file="com/wenjiaxi/oa/admin/identity/struts-admin-identity.xml" />
+	<include file="com/wenjiaxi/oa/admin/leave/struts-admin-leave.xml" />
+</struts>
+    

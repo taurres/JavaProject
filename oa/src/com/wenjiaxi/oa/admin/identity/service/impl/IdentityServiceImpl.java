@@ -1,0 +1,246 @@
+package com.wenjiaxi.oa.admin.identity.service.impl;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import com.opensymphony.xwork2.ActionContext;
+import com.wenjiaxi.oa.admin.AdminConstant;
+import com.wenjiaxi.oa.admin.identity.dao.DeptDao;
+import com.wenjiaxi.oa.admin.identity.dao.JobDao;
+import com.wenjiaxi.oa.admin.identity.dao.ModuleDao;
+import com.wenjiaxi.oa.admin.identity.dao.PopedomDao;
+import com.wenjiaxi.oa.admin.identity.dao.RoleDao;
+import com.wenjiaxi.oa.admin.identity.dao.UserDao;
+import com.wenjiaxi.oa.admin.identity.entity.User;
+import com.wenjiaxi.oa.admin.identity.service.IdentityService;
+import com.wenjiaxi.oa.core.action.VerifyAction;
+import com.wenjiaxi.oa.core.common.security.MD5;
+import com.wenjiaxi.oa.core.common.web.CookieUtil;
+import com.wenjiaxi.oa.core.common.web.PageModel;
+import com.wenjiaxi.oa.core.exception.OAException;
+
+
+/**
+ * 
+ * @author WEN JIAXI
+ * @date 2016年7月16日 上午12:14:24
+ * @version 1.0
+ */
+@Service("identityService")
+public class IdentityServiceImpl implements IdentityService {
+	@Resource
+	private DeptDao deptDao;
+	@Resource
+	private JobDao jobDao;
+	@Resource
+	private ModuleDao moduleDao;
+	@Resource
+	private PopedomDao popedomDao;
+	@Resource
+	private RoleDao roldDao;
+	@Resource
+	private UserDao userDao;
+
+
+	/**
+	 * 登录方法
+	 * @param userId
+	 * @param password
+	 * @param vcode
+	 * @param key
+	 * @return 登录数据 status:0登陆成功 1验证码错误 2用户名或密码不正确
+	 */
+	@Override
+	public Map<String, Object> login(String userId, String password,
+			String vcode, Integer key) {
+		try {
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("msg", "验证码错误");
+			data.put("status", 1);
+			//获取存放在session中的验证码
+			String code = (String) ServletActionContext.getRequest().getSession().getAttribute(VerifyAction.VERIFY_CODE);
+			//判断验证码是否正确
+			if (!StringUtils.isEmpty(code) && code.equalsIgnoreCase(vcode)) {
+				//验证码正确则查找用户
+				User user = userDao.get(User.class, userId);
+				if (user != null && user.getPassWord().equals(MD5.getMD5(password))) {
+					//如果查找到用户且密码正确,将user放入session，登录状态为0
+					ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER, user);
+					data.put("msg", "登录成功");
+					data.put("status", 0);
+					//如果用户选择记录用户，则将userId放入cookie
+					if (key != null && key.equals(1)) {
+						CookieUtil.addCookie(AdminConstant.COOKIE_LOGIN, MD5.getMD5(user.getUserId()), AdminConstant.COOKIE_LOGIN_AGE);
+					}
+				}else {
+					//登录失败
+					data.put("msg", "用户名或密码不正确");
+					data.put("status", 2);
+				}
+			}
+			return data;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("登录方法异常",e);
+		}
+	}
+	
+	/**
+	 * 根据id查询User，根据是否进行MD5加密调用不同dao方法
+	 * @param userId
+	 * @param isMD5
+	 * @return
+	 */
+	public User getUser(String userId, boolean isMD5){
+		try{
+			if (isMD5) {
+				return userDao.getUser(userId);
+			}
+			return userDao.get(User.class, userId);
+		}catch(Exception e){
+			e.printStackTrace();
+			throw new OAException("查询User出现异常",e);
+		}
+	}
+
+	/**
+	 * 分页查询user
+	 * @param user
+	 * @param pageModel
+	 * @return List<User> user集合
+	 */
+	public List<User> getUserByPage(User user, PageModel pageModel){
+		try {
+			List<User> users = userDao.getUserByPage(user, pageModel);
+			//加载延迟加载的属性
+			for (User u : users){
+				if (u.getDept() != null) u.getDept().getId();
+				if (u.getJob() != null) u.getJob().getName(); 
+				if (u.getCreater() != null) u.getCreater().getName();
+				if (u.getChecker() != null) u.getChecker().getName();
+			}
+
+			return users;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("分页查询出现异常,e");
+		}
+	}
+	
+	/**
+	 * 查询所有部门的id name
+	 * @return
+	 */
+	public List<Map<String, Object>> loadDepts(){
+		try {
+			return deptDao.getDeptsByIdAndName();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("异步请求部门菜单时出错",e);
+		}
+	}
+	
+	/**
+	 * 查询所有职业的code name
+	 * @return
+	 */
+	public List<Map<String, Object>> loadJobs(){
+		try {
+			return jobDao.getJobsByCodeAndName();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("异步请求部门菜单时出错",e);
+		}
+	}
+	
+	/**
+	 * 异步请求部门和职位菜单
+	 * @return
+	 */
+	public Map<String, List<Map<String, Object>>> loadDeptsJobs(){
+		try {
+			List<Map<String, Object>> depts = loadDepts();
+			List<Map<String, Object>> jobs = loadJobs();
+			Map<String, List<Map<String, Object>>> deptsJobs = new HashMap<>();
+			deptsJobs.put("depts", depts);
+			deptsJobs.put("jobs", jobs);
+			return deptsJobs;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("异步请求部门和职位菜单时出错",e);
+		}
+	}
+	
+	/**
+	 * 登出
+	 */
+	public void logout(){
+		try {
+			HttpSession session = ServletActionContext.getRequest().getSession();
+			//session不为空，则从session中除去user
+			if (session != null) {
+				session.invalidate();
+			}
+			//删除登录cookie
+			CookieUtil.removeCookie(AdminConstant.COOKIE_LOGIN);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("登出时出错",e);
+		}
+	}
+	
+	/**
+	 * 用关键词搜索user的名字
+	 * @param 名字查询关键词
+	 * @return 符合条件的user的名字
+	 */
+	public List<Map<String, String>> loadUserName(String username){
+		try {
+			return userDao.getUserName(username);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("搜索user名字时出错",e);
+		}
+	}
+	
+	/**
+	 * 添加user
+	 * @param user
+	 */
+	public void addUser(User user){
+		try {
+			user.setPassWord(MD5.getMD5(user.getPassWord()));
+			user.setCreateDate(new Date());
+			user.setCreater(AdminConstant.getSessionUser());
+			userDao.save(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("添加用户时出错",e);
+		}
+		
+	}
+	/**
+	 * 确认用户名是否重复
+	 * @param userId
+	 * @return
+	 */
+	public boolean confirmUserId(String userId){
+		try {
+			return getUser(userId, false) != null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("确认用户名是否重复时出错",e);
+		}
+	}
+	
+	
+}

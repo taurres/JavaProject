@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.action.extension" value="jspx,action,do,"/>
+    
+    <package name="admin_identity" namespace="/admin/identity" extends="admin">
+    
+    	<!-- 异步请求部门菜单 -->
+		<action name="loadDepts" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadDepts">
+			<result type="json">
+				<param name="root">responseMap</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+    	<!-- 异步请求部门和职业 -->
+		<action name="loadDeptsJobs" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadDeptsJobs">
+			<result type="json">
+				<param name="root">responseMaps</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 异步请求符合条件的user名字 -->
+		<action name="loadUserName" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadUserName">
+			<result type="json">
+				<param name="root">usernameList</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 异步请求确认用户名是否重复 -->
+		<action name="confirmUserId" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="confirmUserId">
+			<result type="json">
+				<param name="root">isExisted</param>
+			</result>
+		</action>
+		<!-- 分页查询user -->
+		<action name="selectUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="selectUser">
+			<result>/WEB-INF/jsp/admin/identity/user.jsp</result>
+		</action>   
+		<!-- 添加user -->
+		<action name="addUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="addUser">
+			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+		</action>
+		<!-- 返回addUser.jsp -->
+		<action name="showAddUser">
+			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+		</action>
+
+    </package>
+</struts>
+    
