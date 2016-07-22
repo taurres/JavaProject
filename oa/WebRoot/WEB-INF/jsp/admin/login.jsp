@@ -10,8 +10,10 @@
   <link rel="stylesheet" type="text/css" href="${path}/css/common/login1.css"/>
   <link rel="stylesheet" type="text/css" href="${path}/css/common/login2.css"/>
   <link rel="stylesheet" type="text/css" href="${path}/css/common/login3.css"/>
+  <link rel="stylesheet" type="text/css" href="${path}/css/common/bootstrap.min.css"/>
   <script type="text/javascript" src="${path}/js/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="${path}/js/jquery-migrate-1.2.1.min.js"></script>
+  <script type="text/javascript" src="${path}/js/bootstrap.min.js"></script>
   <script type="text/javascript">
     $(function(){
       //看不清楚按钮绑定点击事件
@@ -154,6 +156,7 @@
           });
         }
       });
+      
     });
   </script>
 </head>
@@ -194,27 +197,46 @@
               </div>
           </div>
 
+
           <!-- 登录表单输入框 -->
-          <div class="auth-form-body mt-4">
-            <!-- 用户名 -->
-            <label for="userId">请输入用户名</label>
-            <input class="form-control input-block" id="userId" name="userId" tabindex="1" type="text" value="" />
-            <!-- 密码 -->
-            <label for="password">
-              	 请输入密码 <a href="javascript:void(0)" class="label-link">忘记密码？</a>
-            </label>
-            <input class="form-control form-control input-block" id="password" name="password" tabindex="2" type="password" />
-          <!-- 验证码 -->
-            <label for="vcode">
-              	请输入验证码
-              <a href="javascript:void(0)" class="label-link" id="unclear">看不清楚</a>
-            </label>
-            <input class="form-control form-control input-block" id="vcode" name="vcode" tabindex="2" type="text" />
-            <input type="checkbox" name="key" value="1" id="key"/>&nbsp;记住我&nbsp;&nbsp;&nbsp;
-            <!-- 验证码生成 -->
-            <img src="${path}/verifyCode" width="60" height="22" title="验证码" id="img"/>
-            <!-- 登录按钮 -->
-            <input class="btn btn-primary btn-block" id="login_btn" name="commit" tabindex="3" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
+          <div class="auth-form-body mt-4 tab-content" id="login_tab">
+           <ul class="nav nav-tabs">
+   			<li class="active"><a href="#home" data-toggle="tab">账号登录</a></li>
+		    <li><a href="#sms" data-toggle="tab">手机验证</a></li>
+		    <li><a href="#qrCode" data-toggle="tab">扫二维码</a></li>
+		   </ul>
+		   <!-- 第一个标签页 -->
+		   <div class="tab-pane fade in active" id="home">
+	            <!-- 用户名 -->
+	            <label for="userId">请输入用户名</label>
+	            <input class="form-control input-block" id="userId" name="userId" tabindex="1" type="text" />
+	            <!-- 密码 -->
+	            <label for="password">
+	              	 请输入密码 <a href="javascript:void(0)" class="label-link">忘记密码？</a>
+	            </label>
+	            <input class="form-control form-control input-block" id="password" name="password" tabindex="2" type="password" />
+	          <!-- 验证码 -->
+	            <label for="vcode">
+	              	请输入验证码
+	              <a href="javascript:void(0)" class="label-link" id="unclear">看不清楚</a>
+	            </label>
+	            <input class="form-control form-control input-block" id="vcode" name="vcode" tabindex="2" type="text" />
+	            <input type="checkbox" name="key" value="1" id="key"/>&nbsp;记住我&nbsp;&nbsp;&nbsp;
+	            <!-- 验证码生成 -->
+	            <img src="${path}/verifyCode" width="60" height="22" title="验证码" id="img"/>
+	            <!-- 登录按钮 -->
+	            <input class="btn btn-primary btn-block" id="login_btn" name="commit" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
+			</div>
+			<!-- 第二个标签页 -->
+			<div class="tab-pane fade" id="sms">
+	            <label for="phone">请输入您的手机号码</label>
+	            <input class="form-control input-block" id="phone" name="phone" type="text" />
+	            <label for="smsCode">请输入您的手机号码</label>
+	            <input class="form-control input-block" id="smsCode" name="smsCode" type="text" />
+	            <input class="btn btn-primary btn-block" id="login_btn2" name="commit" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
+			</div>
+			<!-- 第三个标签页 -->
+			<div class="tab-pane fade" id="qrCode"></div>
           </div>
         </form>
 

@@ -39,7 +39,7 @@
 			$("#tab").tabs("add", {
 				 title : "用户信息",  // 标题
 				 content : "用户信息",  // 内容
-				 closable : false, // 是否可以关闭
+				 closable : false // 是否可以关闭
 			});
 			
 

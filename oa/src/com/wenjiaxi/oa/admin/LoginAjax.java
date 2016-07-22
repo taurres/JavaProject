@@ -25,6 +25,8 @@ public class LoginAjax extends ActionSupport {
 	private String password;
 	private String vcode;
 	private Integer key;
+	private String phone;
+	private String smsCode;
 	//以Map数据形式返回登录信息msg和登录状态status给页面
 	private Map<String, Object> responseData = new HashMap<String, Object>();
 	@Override
@@ -54,6 +56,14 @@ public class LoginAjax extends ActionSupport {
 	}
 	public void setVcode(String vcode) {
 		this.vcode = vcode;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public void setSmsCode(String smsCode) {
+		this.smsCode = smsCode;
 	}
 	
 	
