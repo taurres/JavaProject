@@ -21,68 +21,33 @@
 					// 添加部门到菜单
 					$.each(data.depts, function(){
 						// {id : '', name : ''}
-						$("<option/>").val(this.id).text(this.name).appendTo("#deptSelect");
+						$("<option/>").val(this.id).text(this.name)
+						.attr("selected",this.id == ${user.dept.id})
+						.appendTo("#deptSelect");
 					});
 					// 添加职位到菜单
 					$.each(data.jobs, function(){
 						// {code : '', name : ''}
-						$("<option/>").val(this.code).text(this.name).appendTo("#jobSelect");
+						$("<option/>").val(this.code).text(this.name)
+						.attr("selected",this.code == ${user.job.code})
+						.appendTo("#jobSelect");
 					}); 
 				});
 				
-				//异步请求查询用户名是否重复
-				var isExisted = true;
-				$("#userId").blur(function(){
-					var userId = $(this).val();
-					//用户名符合要求，则发送异步请求
-					if($.trim(userId) != "" && /^\w{5,20}$/.test($.trim(userId))){
-						$.post("${path}/admin/identity/confirmUserId","userId="+userId,function(data,status){
-							if(status == "success"){
-								//返回字符串，转换为boolean值
-								isExisted = $.parseJSON(data);
-								if(isExisted){
-									alert("用户名重复，请选择其他用户名。");
-								}
-							}else{
-								alert("数据加载失败");
-							}
-						},"text");
-					}
-				});
-				
+								
 				//  提交表单
 				$("#btn_submit").click(function(){
 					// 校验表单数据
-					var userId = $("#userId");
 					var name = $("#name");
-					var passWord = $("#passWord");
-					var repwd = $("#repwd");
 					var email = $("#email");
 					var tel = $("#tel");
 					var phone = $("#phone");
 					var qqNum = $("#qqNum");
 					var answer = $("#answer");
 					var msg = "";
-					if ($.trim(userId.val()) == ""){
-						msg = "用户登录名不能为空!";
-						userId.focus();
-					}else if (!/^\w{5,20}$/.test(userId.val())){
-						msg = "用户登录名长度必须在5-20之间!";
-						userId.focus();
-					}else if (isExist){
-						msg = "用户登录名重复!";
-					}else if ($.trim(name.val()) == ""){
+					if ($.trim(name.val()) == ""){
 						msg = "姓名不能为空!";
 						name.focus();
-					}else if ($.trim(passWord.val()) == ""){
-						msg = "密码不能为空!";
-						passWord.focus();
-					}else if (!/^\w{6,20}$/.test(passWord.val())){
-						msg = "密码长度必须为6-20之间!";
-						passWord.focus();
-					}else if (repwd.val() != passWord.val()){
-						msg = "两次输入的密码不一致!";
-						repwd.focus();
 					}else if ($.trim(email.val()) == ""){
 						msg = "邮箱不能为空!";
 						email.focus();
@@ -117,7 +82,8 @@
 						alert(msg);
 					}else{
 						/** 提交表单 */
-						$("#addUserForm").submit();
+						$("#updateUserForm").submit();
+						//parent.$("#divDialog").window("close");
 					}
 				});
 				
@@ -127,28 +93,18 @@
 <body>
 	<table align="center">
 		<!-- 输入表单 -->
+		<s:actionerror cssStyle="font-size:12px;color:red;"/>
 		<s:form id="updateUserForm" action="/admin/identity/updateUser" method="post" theme="simple">
-			<input type="hidden" name="struts.token.name" value="token" />
-			<input type="hidden" name="token" value="1965QBZIEQ62EQBX3Z281P4W94TB17TF" />
+			<s:hidden name="user.userId"></s:hidden>
 			<tr><td colspan="4"></td></tr>
 			<tr>
 				<td>登&nbsp;录&nbsp;名：</td>
 				<td>
-					<s:textfield name="user.userId" size="18" value="" id="userId"/>
+					<s:textfield value="%{user.userId}" size="18" disabled="true" id="userId"/>
 				</td>
 				<td>用户姓名：</td>
 				<td>
-					<s:textfield name="user.name" size="18" maxlength="20" value="" id="name"/>
-				</td>
-			</tr>
-			<tr>
-				<td>用户密码：</td>
-				<td>
-					<s:password name="user.passWord" size="18" id="passWord"/>
-				</td>
-				<td>重输密码：</td>
-				<td>
-					<s:password name="repwd" size="18" id="repwd"/>
+					<s:textfield name="user.name" size="18" maxlength="20" id="name"/>
 				</td>
 			</tr>
 			<tr>
@@ -158,7 +114,7 @@
 				</td>
 				<td>部&nbsp;&nbsp;门：</td>
 				<td>
-					<select id="deptSelect" name="user.dept.id"></select>
+					<select id="deptSelect" name="user.dept.id" ></select>
 				</td>
 			</tr>
 
@@ -169,23 +125,23 @@
 				</td>
 				<td>邮&nbsp;&nbsp;箱：</td>
 				<td>
-					<s:textfield name="user.email" size="18" maxlength="50" value="" id="email"/>
+					<s:textfield name="user.email" size="18" maxlength="50" id="email"/>
 				</td>
 			</tr>
 			<tr>
 				<td>电&nbsp;&nbsp;话：</td>
 				<td>
-					<s:textfield name="user.tel" size="18" value="" id="tel"/>
+					<s:textfield name="user.tel" size="18" id="tel"/>
 				</td>
 				<td>手&nbsp;&nbsp;机：</td>
 				<td>
-					<s:textfield name="user.phone" size="18" maxlength="11" value="" id="phone"/>
+					<s:textfield name="user.phone" size="18" maxlength="11" id="phone"/>
 				</td>
 			</tr>
 			<tr>
 				<td>QQ号码：&nbsp;</td>
 				<td>
-					<s:textfield name="user.qqNum" size="18" maxlength="20" value="" id="qqNum"/>
+					<s:textfield name="user.qqNum" size="18" maxlength="20" id="qqNum"/>
 				</td>
 				<td>问&nbsp;&nbsp;题：</td>
 				<td>
@@ -195,7 +151,7 @@
 			<tr>
 				<td>结&nbsp;&nbsp;果：</td>
 				<td colspan="3">
-					<s:textfield name="user.answer" size="48" maxlength="50" value="" id="answer"/>
+					<s:textfield name="user.answer" size="48" maxlength="50" id="answer"/>
 				</td>
 			</tr>
 			<tr>

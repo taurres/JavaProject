@@ -12,7 +12,7 @@
 	<link href="${path}/logo.ico" rel="shortcut icon" type="image/x-icon" />
 	<link href="${path}/css/common/admin.css" type="text/css" rel="stylesheet"/>
 	<link href="${path}/css/common/pager.css" type="text/css" rel="stylesheet"/>
-	<link href="${path}/js/jqeasyui/themes/default/easyui.css" type="text/css" rel="stylesheet"/>
+	<link href="${path}/js/jqeasyui/themes/bootstrap/easyui.css" type="text/css" rel="stylesheet"/>
 	<script type="text/javascript" src="${path}/js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="${path}/js/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="${path}/js/jqeasyui/jquery.easyui.min.js"></script>
@@ -69,10 +69,68 @@
 					maximizable : true,
 					modal: true,
 					onClose : function(){
-						window.location.reload();
+						window.location.href = "${path}/admin/identity/selectUser.jspx?pageModel.pageIndex=${pageModel.pageIndex}&user.name=${user.name}&user.phone=${user.phone}&user.dept.id=${user.dept.id}";
 					}
 				});
 				$("#iframe").attr("src", "${path}/admin/identity/showAddUser").fadeIn(200);
+			});
+			
+			// 点击按钮修改用户
+			$("#updateUser").click(function(){
+				// 获取选中的checkbox 
+				var boxes = $("input[id^='box_']:checked");
+				if (boxes.length == 0){
+					alert("请选择要修改的用户！");
+				}else if (boxes.length == 1){
+					$("#divDialog").dialog({    
+						title: "修改用户",   // 标题  
+						width: 480,   // 宽度
+						height: 255,   // 高度
+						modal: true, // 模态窗口.
+						collapsible : true, // 可伸缩
+						minimizable : false, // 最小化
+						maximizable : true, // 最大化
+						onClose : function(){
+							window.location.href = "${path}/admin/identity/selectUser.jspx?pageModel.pageIndex=${pageModel.pageIndex}&user.name=${user.name}&user.phone=${user.phone}&user.dept.id=${user.dept.id}";
+						}
+					});
+					$("#iframe").attr("src", "${path}/admin/identity/showUpdateUser?user.userId=" + boxes.val()).fadeIn(200);
+				}else{
+					alert("修改用户时，只能选择一个！");
+				}
+			});
+			
+			//点击按钮删除用户
+			$("#deleteUser").click(function(){
+				var boxes = $("input[id^='box_']:checked");
+				if(boxes.length == 0){
+					alert("请选择要删除的用户");
+				}else{
+					if (confirm("确定要删除该用户吗?")){
+						var userIds = boxes.map(function(){
+							return this.value;
+						});
+						window.location.href = "${path}/admin/identity/deleteUser?pageModel.pageIndex=${pageModel.pageIndex}&userIds="+userIds.get();
+						alert("删除成功！");
+					};
+				}
+			});
+			
+			//点击按钮批量审批用户
+			$("#checkUser").click(function(){
+				var boxes = $("input[id^='box_']:checked");
+				if(boxes.length == 0){
+					alert("请选择要审批的用户");
+				}else{
+					if(confirm("确定审批用户吗?")){
+						var userIds = boxes.map(function(){
+							return this.value;
+						});
+						var status = $("#status").val();
+						window.location.href = "${path}/admin/identity/checkUser?pageModel.pageIndex=${pageModel.pageIndex}&user.status="+status+"&userIds="+userIds.get();
+						alert("审核成功！");
+					}
+				};
 			});
 			
 			//联想输入框  返回所有user的用户，数据格式 [{"name":"名字"},{}]
@@ -85,14 +143,20 @@
 				valueField: "name",// 对应的后台值
 				panelHeight: "auto", //自动高度
 				onBeforeLoad: function(param){
+
 					//如果没有输入或只输入空格，则不加载数据，返回false
 					if(param == null || param.q == null || $.trim(param.q) == ""){
 						//当没有输入操作但输入框里有内容时(查询后数据回写时)，返回true不阻止载入，保证数据能够回写
-						if($(this).combobox("getValue")){
+						if($(this).combobox("getValue") != "" ){
 							return true;
 						}
 						return false;
 					}
+					//如果输入内容之后再输入空格，不发送新的请求
+					if(param.q != null && $.trim(param.q) != param.q){
+						return false;
+					}
+					param.q = param.q.replace(" ","");
 				}
 			});   
 			
@@ -109,7 +173,7 @@
 				<td><input type="button" value="删除" id="deleteUser"/></td>
 				<td id="td_checkUser">状态：
 				<!-- "1"审核 "2"不通过 "3" 冻结-->
-					<s:select name="" id="status" list="#{1:'审核',2:'不通过',3:'冻结'}"/>
+					<s:select id="status" list="#{1:'审核通过',2:'不通过',3:'冻结'}"/>
 				</td>
 				<td><input type="button" value="审核" id="checkUser"/></td>
 				<td>姓名：<s:textfield name="user.name" size="12" id="user_name" /></td>
@@ -143,7 +207,7 @@
 		<tbody style="background-color: #FFFFFF;">
 			<s:iterator value="users" status="stat" >
 				<tr id="tr_${stat.index}" class="listTr">
-					<td><input type="checkbox" id="box_${stat.index}" value="${stat.index}"/>${stat.count}</td>
+					<td><input type="checkbox" id="box_${stat.index}" value="${userId}"/>${stat.count}</td>
 					<td><s:property value="userId"/></td>
 					<td><s:property value="name"/></td>
 					<td>${sex==1?'男':'女'}</td>
@@ -162,15 +226,15 @@
 							<font color="red">不通过</font>
 						</s:elseif>
 						<s:elseif test="status==3">
-							<font color="green">冻结</font>
+							<font color="blue">冻结</font>
 						</s:elseif>
 						<s:else>
 							<font>无</font>
 						</s:else>		
 					</td>
-					<td><s:date name="createDate" format="yyyy-MM-dd HH-mm-ss"/></td>
+					<td><s:date name="createDate" format="yyyy-MM-dd HH:mm:ss"/></td>
 					<td><s:property value="creater.name"/></td>
-					<td><s:date name="checkDate" format="yyyy-MM-dd HH-mm-ss"/></td>
+					<td><s:date name="checkDate" format="yyyy-MM-dd HH:mm:ss"/></td>
 					<td><s:property value="checker.name"/></td>
 				</tr>
 			</s:iterator>

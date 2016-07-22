@@ -50,7 +50,8 @@ public class IdentityServiceImpl implements IdentityService {
 	@Resource
 	private UserDao userDao;
 
-
+	
+	/** TODO################### 用户业务 ##################### */
 	/**
 	 * 登录方法
 	 * @param userId
@@ -102,10 +103,18 @@ public class IdentityServiceImpl implements IdentityService {
 	 */
 	public User getUser(String userId, boolean isMD5){
 		try{
+			User user = null;
 			if (isMD5) {
-				return userDao.getUser(userId);
+				user =  userDao.getUser(userId);
+			}else{
+				user =  userDao.get(User.class, userId);
 			}
-			return userDao.get(User.class, userId);
+			//获取延迟加载数据
+			if (user != null) {
+				if (user.getDept() != null) user.getDept().getId();
+				if (user.getJob() != null) user.getJob().getCode();
+			}
+			return user;
 		}catch(Exception e){
 			e.printStackTrace();
 			throw new OAException("查询User出现异常",e);
@@ -242,5 +251,33 @@ public class IdentityServiceImpl implements IdentityService {
 		}
 	}
 	
+	/**
+	 * 批量删除user
+	 * @param userIds
+	 */
+	public void deleteUser(String[] userIds){
+		try {
+			userDao.deleteUser(userIds);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("删除用户时出错",e);
+		}
+	}
 	
+	/**
+	 * 批量审批user
+	 * @param userIds
+	 * @param status
+	 */
+	public void checkUser(String[] userIds, Short status){
+		try {
+			userDao.checkUser(userIds, status);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("审批用户时出错",e);
+		}
+	}
+	
+	/** TODO################### 角色业务 ##################### */
+
 }

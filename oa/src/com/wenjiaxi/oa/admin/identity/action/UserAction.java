@@ -19,6 +19,8 @@ public class UserAction extends IdentityAction {
 	private User user;
 	private PageModel pageModel;
 	private List<User> users;
+	private String userId;
+	private String userIds;
 	/**
 	 * 分页查询user
 	 * @return 
@@ -42,10 +44,49 @@ public class UserAction extends IdentityAction {
 	 * @return
 	 */
 	public String addUser(){
-		identityService.addUser(user);
+		try {
+			identityService.addUser(user);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return SUCCESS;
 	}
 	
+	/**
+	 * 显示更新user页面
+	 * @return
+	 */
+	public String showUpdateUser(){
+		try {
+			user = identityService.getUser(user.getUserId(), false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 批量删除用户
+	 * @return
+	 */
+	public String deleteUser(){
+		try {
+			identityService.deleteUser(userIds.split(","));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	public String checkUser(){
+		try {
+			System.out.println(userIds.split(","));
+			identityService.checkUser(userIds.split(","),user.getStatus());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
 	
 	public User getUser() {
 		return user;
@@ -65,5 +106,27 @@ public class UserAction extends IdentityAction {
 	public List<User> getUsers() {
 		return users;
 	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public String getUserIds() {
+		return userIds;
+	}
+
+	public void setUserIds(String userIds) {
+		this.userIds = userIds;
+	}
+
+
+
+	
+	
+	
 		
 }

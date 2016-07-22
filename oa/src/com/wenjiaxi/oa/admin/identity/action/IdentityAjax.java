@@ -3,7 +3,6 @@ package com.wenjiaxi.oa.admin.identity.action;
 import java.util.List;
 import java.util.Map;
 
-import com.wenjiaxi.oa.admin.identity.entity.Dept;
 
 /**
  * 
@@ -19,8 +18,8 @@ public class IdentityAjax extends IdentityAction {
 	private List<Map<String, String>> usernameList;
 	//easyui combobox传入的文本框输入内容
 	private String q;
-	//传入的userId
 	private String userId;
+
 	//检查用户名是否重复的结果
 	private boolean isExisted;
 

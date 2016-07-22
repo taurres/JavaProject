@@ -18,4 +18,5 @@ public class IdentityAction extends ActionSupport {
 	
 	@Resource
 	protected IdentityService identityService;
+	
 }

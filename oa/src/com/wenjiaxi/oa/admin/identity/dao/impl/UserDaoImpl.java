@@ -4,13 +4,16 @@ package com.wenjiaxi.oa.admin.identity.dao.impl;
 
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import com.sun.org.apache.bcel.internal.generic.Select;
+import com.wenjiaxi.oa.admin.AdminConstant;
 import com.wenjiaxi.oa.admin.identity.dao.UserDao;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.core.common.security.MD5;
@@ -63,6 +66,7 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 				params.add(user.getDept().getId());
 			}
 		}
+		hql.append("order by createDate");
 		return this.findByPage(hql.toString(), pageModel, params);
 	}
 	
@@ -81,5 +85,38 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 		}	
 	}
 	
+	/**
+	 * 批量删除user
+	 * @param userIds
+	 */
+	public void deleteUser(String[] userIds){
+		StringBuilder hql = new StringBuilder();
+		hql.append("delete from User where userId in (");
+		for (int i = 0; i < userIds.length; i++) {
+			hql.append(i == 0? "?" : ",?");
+		}
+		hql.append(")");
+		this.bulkUpdate(hql.toString(), userIds);
+	}
 	
+	/**
+	 * 批量审批用户
+	 * @param userIds
+	 * @param status
+	 */
+	public void checkUser(String[] userIds, Short status){
+		StringBuilder hql = new StringBuilder();
+		List<Object> params = new ArrayList<Object>();
+		hql.append("update User set checkDate = ?, checker = ?, status = ? where userId in (");
+		params.add(new Date());
+		params.add(AdminConstant.getSessionUser());
+		params.add(status);
+		for (int i = 0; i < userIds.length; i++) {
+			hql.append(i == 0 ? "?" : ",?");
+			params.add(userIds[i]);
+		}
+		hql.append(")");
+		this.bulkUpdate(hql.toString(), params.toArray());
+		
+	}
 }

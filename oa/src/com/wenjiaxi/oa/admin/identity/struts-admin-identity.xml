@@ -10,6 +10,7 @@
     
     <package name="admin_identity" namespace="/admin/identity" extends="admin">
     
+    	<!--  TODO################### 用户action #####################  -->
     	<!-- 异步请求部门菜单 -->
 		<action name="loadDepts" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadDepts">
 			<result type="json">
@@ -43,13 +44,33 @@
 		</action>   
 		<!-- 添加user -->
 		<action name="addUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="addUser">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
 			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
+			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 		</action>
 		<!-- 返回addUser.jsp -->
 		<action name="showAddUser">
 			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 		</action>
-
+		<!-- 更新user -->
+		<action name="showUpdateUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="showUpdateUser">
+			<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+		</action>
+		<!-- 批量删除user -->
+		<action name="deleteUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="deleteUser">
+			<result type="chain">selectUser</result>
+		</action>
+		<!-- 批量审核user -->
+		<action name="checkUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="checkUser">
+			<result type="chain">selectUser</result>
+		</action>
+		
+		<!--  TODO################### 角色action #####################   -->	
+		
+		
+		
+		
     </package>
 </struts>
     

@@ -38,6 +38,19 @@ public interface UserDao extends BaseDao{
 	 */
 	public List<Map<String, String>> getUserName(String username);
 
+	/**
+	 * 批量删除user
+	 * @param userIds
+	 */
+	public void deleteUser(String[] userIds);
+
+	/**
+	 * 批量审批用户
+	 * @param userIds
+	 * @param status
+	 */
+	public void checkUser(String[] userIds, Short status);
+
 
 
 }

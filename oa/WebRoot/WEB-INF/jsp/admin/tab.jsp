@@ -11,7 +11,7 @@
 	<meta name="Author" content="gdcct.gov.cn" />
 	<meta name="Copyright" content="All Rights Reserved." />
 	<link href="${path}/logo.ico" rel="shortcut icon" type="image/x-icon" />
-	<link rel="stylesheet" type="text/css" href="${path}/js/jqeasyui/themes/default/easyui.css"/>
+	<link rel="stylesheet" type="text/css" href="${path}/js/jqeasyui/themes/bootstrap/easyui.css"/>
 	<script type="text/javascript" src="${path}/js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="${path}/js/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="${path}/js/jqeasyui/jquery.easyui.min.js"></script>
@@ -28,14 +28,18 @@
 		
 			//设置tab大小为适应frame
 			$("#tab").tabs({
-				fit: true
+				fit: true,
+				onSelect: function(title,index){
+				 	var tab = $("#tab").tabs("getSelected");
+				 	tab.panel("refresh");
+				 }	
 			});
 			
 			//创建用户信息tab，该tab不可关闭
 			$("#tab").tabs("add", {
 				 title : "用户信息",  // 标题
 				 content : "用户信息",  // 内容
-				 closable : false // 是否可以关闭
+				 closable : false, // 是否可以关闭
 			});
 			
 

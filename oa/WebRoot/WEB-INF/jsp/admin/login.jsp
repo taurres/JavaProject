@@ -34,9 +34,15 @@
         }
       });
       
+      //错误信息的关闭按钮事件
+      $("#js-flash-container button").click(function(){
+      	$("#js-flash-container").css("display","none");
+      });
+      
       //验证userId
-      var usermsg = "";
+      
       $("#userId").on("blur",function(){
+      	window.usermsg = "";
         if($(this).val()=="") {
           //判断用户名是否为空
           usermsg = "用户名不能为空";
@@ -57,15 +63,15 @@
       });
       
       //验证password
-      var pwmsg = "";
       $("#password").on("blur",function(){
+    	  window.pwmsg = "";
         if($(this).val()=="") {
           //判断密码是否为空
           pwmsg = "密码不能为空";
           $(this).attr("type","text");
           $(this).attr("value",pwmsg);
           $(this).css({"background-color":"#FFDEDE"});
-        }else if(!/^[A-Za-z0-9]{6,20}$/.test($(this).val())){
+        }else if(!/^[A-Za-z0-9._!*@]{6,20}$/.test($(this).val())){
           //判断密码格式
           pwmsg = "请输入6-20个字符";
           $(this).attr("type","text");
@@ -82,8 +88,8 @@
       });
       
       //检验验证码
-      var vcmsg = "";
       $("#vcode").on("blur",function(){
+      	window.vcmsg = "";
         if($(this).val()=="") {
           //判断是否为空
           vcmsg = "验证码不能为空";
@@ -122,7 +128,7 @@
                 window.location.href = "${path}/admin/main";
               }else if(data.status == 1){
                 //提示验证码错误
-                $("#vcode").attr("value","请重新输入");
+                $("#vcode").attr("value","验证码错误");
                 $("#vcode").css({"background-color":"#FFDEDE"});
                 //1.5秒后聚焦到验证码输入框
                 window.setTimeout(function() {
@@ -131,11 +137,13 @@
                 
               }else if(data.status == 2){
                 //提示用户名或密码错误
-                $("#userId").attr("value","请重新输入");
+                /* $("#userId").attr("value","请重新输入");
                 $("#userId").css({"background-color":"#FFDEDE"});
                 $("#password").attr("type","text");
                 $("#password").attr("value","请重新输入");
-                $("#password").css({"background-color":"#FFDEDE"});
+                $("#password").css({"background-color":"#FFDEDE"}); */
+                $("#js-flash-container").css({"display":"inherit"});
+                $("#js-flash-container font").text("用户名或密码错误");
                 //清空验证码输入框
                 $("#vcode").attr("value","");
               } 
@@ -181,7 +189,7 @@
                       <path d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path>
                     </svg>
                   </button>
-                 	 用户名或密码错误
+                 	 <font></font>
                 </div>
               </div>
           </div>

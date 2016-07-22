@@ -11,6 +11,7 @@
 		<meta name="Author" content="fkjava.org" />
 		<meta name="Copyright" content="All Rights Reserved." />
 		<link href="${path}/css/common/admin.css" type="text/css" rel="stylesheet"/>
+		<link href="${path}/js/jqeasyui/themes/bootstrap/easyui.css" type="text/css" rel="stylesheet"/>
 		<script type="text/javascript" src="${path}/js/jquery-1.11.3.min.js"></script>
 		<script type="text/javascript" src="${path}/js/jquery-migrate-1.2.1.min.js"></script>
 		<script type="text/javascript" src="${path}/js/jqeasyui/jquery.easyui.min.js"></script>
@@ -149,8 +150,7 @@
 	<table align="center">
 		<!-- 输入表单 -->
 		<s:form id="addUserForm" action="/admin/identity/addUser" method="post" theme="simple">
-			<input type="hidden" name="struts.token.name" value="token" />
-			<input type="hidden" name="token" value="1965QBZIEQ62EQBX3Z281P4W94TB17TF" />
+			<s:token></s:token>
 			<tr><td colspan="4"></td></tr>
 			<tr>
 				<td>登&nbsp;录&nbsp;名：</td>

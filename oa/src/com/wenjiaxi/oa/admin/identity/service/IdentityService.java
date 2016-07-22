@@ -85,4 +85,18 @@ public interface IdentityService {
 	 * @return
 	 */
 	public boolean confirmUserId(String userId);
+
+	/**
+	 * 删除user
+	 * @param userIds
+	 */
+	public void deleteUser(String[] userIds);
+
+	/**
+	 * 批量审批user
+	 * @param userIds
+	 * @param status
+	 */
+	public void checkUser(String[] userIds, Short status);
+
 }
