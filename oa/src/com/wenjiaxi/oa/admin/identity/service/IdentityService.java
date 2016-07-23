@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.wenjiaxi.oa.admin.identity.entity.Dept;
+import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.core.common.web.PageModel;
 
@@ -16,6 +17,7 @@ import com.wenjiaxi.oa.core.common.web.PageModel;
 
 public interface IdentityService {
 
+	/** TODO ########################### user ########################## */
 	/**
 	 * 登录方法
 	 * @param userId
@@ -87,6 +89,12 @@ public interface IdentityService {
 	public boolean confirmUserId(String userId);
 
 	/**
+	 * 更新user
+	 * @param user
+	 */
+	public void updateUser(User user);
+
+	/**
 	 * 删除user
 	 * @param userIds
 	 */
@@ -98,5 +106,41 @@ public interface IdentityService {
 	 * @param status
 	 */
 	public void checkUser(String[] userIds, Short status);
+
+	/** TODO ########################### role ########################## */
+
+	/**
+	 * 分页查询Role
+	 * @param role
+	 * @param pageModel
+	 * @return
+	 */
+	public List<Role> getRoleByPage(Role role, PageModel pageModel);
+	
+	/**
+	 * 添加role
+	 */
+	public void addRole(Role role);
+
+	/**
+	 * 根据id查询role
+	 * @param id
+	 * @return
+	 */
+	public Role getRole(Long id);
+
+	/**
+	 * 更新role
+	 * @param role
+	 */
+	public void updateRole(Role role);
+
+	/**
+	 * 删除role
+	 * @param split
+	 */
+	public void deleteRole(String[] split);
+
+
 
 }

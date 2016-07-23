@@ -111,7 +111,7 @@
         }
       });
       
-      //表单提交验证
+      //账号登陆表单提交验证
       $("#login_btn").click(function(){
         $("#unclear").trigger("click");
         //验证没有发生错误时发送异步请求
@@ -231,8 +231,9 @@
 			<div class="tab-pane fade" id="sms">
 	            <label for="phone">请输入您的手机号码</label>
 	            <input class="form-control input-block" id="phone" name="phone" type="text" />
-	            <label for="smsCode">请输入您的手机号码</label>
+	            <label for="smsCode">请输入短信验证码</label>
 	            <input class="form-control input-block" id="smsCode" name="smsCode" type="text" />
+	            <input class="btn btn-outline btn-block" id="sms_btn" type="button" value="获取验证码" />
 	            <input class="btn btn-primary btn-block" id="login_btn2" name="commit" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
 			</div>
 			<!-- 第三个标签页 -->

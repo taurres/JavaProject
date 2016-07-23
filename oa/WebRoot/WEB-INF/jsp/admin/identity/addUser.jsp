@@ -142,6 +142,9 @@
 						parent.$("#divDialog").window("close");
 					}
 				});
+				if("${msg}" == "success"){
+					parent.$("#divDialog").window("close");
+				}
 				
 			});
 		</script>

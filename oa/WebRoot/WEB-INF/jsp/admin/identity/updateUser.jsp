@@ -83,9 +83,12 @@
 					}else{
 						/** 提交表单 */
 						$("#updateUserForm").submit();
-						//parent.$("#divDialog").window("close");
 					}
 				});
+				if("${msg}" == "success"){
+					parent.$("#divDialog").window("close");
+					alert("修改成功")
+				}
 				
 			});
 		</script>

@@ -20,6 +20,7 @@ import com.wenjiaxi.oa.admin.identity.dao.ModuleDao;
 import com.wenjiaxi.oa.admin.identity.dao.PopedomDao;
 import com.wenjiaxi.oa.admin.identity.dao.RoleDao;
 import com.wenjiaxi.oa.admin.identity.dao.UserDao;
+import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.admin.identity.service.IdentityService;
 import com.wenjiaxi.oa.core.action.VerifyAction;
@@ -46,7 +47,7 @@ public class IdentityServiceImpl implements IdentityService {
 	@Resource
 	private PopedomDao popedomDao;
 	@Resource
-	private RoleDao roldDao;
+	private RoleDao roleDao;
 	@Resource
 	private UserDao userDao;
 
@@ -141,7 +142,7 @@ public class IdentityServiceImpl implements IdentityService {
 			return users;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new OAException("分页查询出现异常,e");
+			throw new OAException("分页查询出现异常",e);
 		}
 	}
 	
@@ -252,6 +253,31 @@ public class IdentityServiceImpl implements IdentityService {
 	}
 	
 	/**
+	 * 更新user
+	 * @param user
+	 */
+	public void updateUser(User user){
+		try {
+			User u = getUser(user.getUserId(), false);
+			u.setAnswer(user.getAnswer());
+			u.setDept(user.getDept());
+			u.setEmail(user.getEmail());
+			u.setJob(user.getJob());
+			u.setModifier(AdminConstant.getSessionUser());
+			u.setModifyDate(new Date());
+			u.setName(user.getName());
+			u.setPhone(user.getPhone());
+			u.setQqNum(user.getQqNum());
+			u.setQuestion(user.getQuestion());
+			u.setSex(user.getSex());
+			u.setTel(user.getTel());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("更新用户时出错",e);
+		}
+	}
+
+	/**
 	 * 批量删除user
 	 * @param userIds
 	 */
@@ -280,4 +306,77 @@ public class IdentityServiceImpl implements IdentityService {
 	
 	/** TODO################### 角色业务 ##################### */
 
+	/**
+	 * 分页查询Role
+	 * @param role
+	 * @param pageModel
+	 * @return
+	 */
+	public List<Role> getRoleByPage(Role role, PageModel pageModel){
+		try {
+			List<Role> roles = roleDao.getRoleByPage(role, pageModel);
+			for (Role r : roles) {
+				if(r.getModifier() != null) r.getModifier().getName();
+				if(r.getCreater() != null) r.getCreater().getName();
+			}
+			return roles;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("分页查询角色时出错",e);
+		}
+	}
+	
+	/**
+	 * 添加role
+	 */
+	public void addRole(Role role){
+		try {
+			role.setCreateDate(new Date());
+			role.setCreater(AdminConstant.getSessionUser());
+			roleDao.save(role);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("添加角色时出错",e);
+		}		
+	}
+	
+	/**
+	 * 根据id查询role
+	 * @param id
+	 * @return
+	 */
+	public Role getRole(Long id){
+		return roleDao.get(Role.class, id);
+	}
+	
+	/**
+	 * 更新role
+	 * @param role
+	 */
+	public void updateRole(Role role){
+		try {
+			Role r = new Role();
+			r = getRole(role.getId());
+			r.setName(role.getName());
+			r.setRemark(role.getRemark());
+			r.setModifyDate(new Date());
+			r.setModifier(AdminConstant.getSessionUser());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("更新角色时出错",e);
+		}
+	}
+	
+	/**
+	 * 删除role
+	 * @param split
+	 */
+	public void deleteRole(String[] ids){
+		try {
+			roleDao.deleteRole(ids);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("删除角色时出错",e);
+		}
+	}
 }

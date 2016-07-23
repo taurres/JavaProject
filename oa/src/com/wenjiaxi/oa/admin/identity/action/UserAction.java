@@ -16,11 +16,14 @@ import com.wenjiaxi.oa.core.common.web.PageModel;
 
 public class UserAction extends IdentityAction {
 
+	private static final long serialVersionUID = 2909904499857787452L;
+	
 	private User user;
-	private PageModel pageModel;
 	private List<User> users;
 	private String userId;
 	private String userIds;
+	
+
 	/**
 	 * 分页查询user
 	 * @return 
@@ -66,6 +69,20 @@ public class UserAction extends IdentityAction {
 	}
 	
 	/**
+	 * 更新user
+	 * @return
+	 */
+	public String updateUser(){
+		try {
+			identityService.updateUser(user);
+			setMsg("success");
+		} catch (Exception e) {
+			setMsg("failed");
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	/**
 	 * 批量删除用户
 	 * @return
 	 */
@@ -78,9 +95,12 @@ public class UserAction extends IdentityAction {
 		return SUCCESS;
 	}
 	
+	/**
+	 * 批量审批用户
+	 * @return
+	 */
 	public String checkUser(){
 		try {
-			System.out.println(userIds.split(","));
 			identityService.checkUser(userIds.split(","),user.getStatus());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -88,6 +108,12 @@ public class UserAction extends IdentityAction {
 		return SUCCESS;
 	}
 	
+	
+
+	
+	
+	
+	// getter setter
 	public User getUser() {
 		return user;
 	}

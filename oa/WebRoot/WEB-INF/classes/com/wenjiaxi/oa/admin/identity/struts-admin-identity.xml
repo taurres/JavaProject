@@ -49,12 +49,16 @@
 			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 		</action>
-		<!-- 返回addUser.jsp -->
+		<!-- 返回添加user页面addUser.jsp -->
 		<action name="showAddUser">
 			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 		</action>
-		<!-- 更新user -->
+		<!-- 返回更新user页面 -->
 		<action name="showUpdateUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="showUpdateUser">
+			<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
+		</action>
+		<!-- 更新user -->
+		<action name="updateUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="updateUser">
 			<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
 		</action>
 		<!-- 批量删除user -->
@@ -67,10 +71,36 @@
 		</action>
 		
 		<!--  TODO################### 角色action #####################   -->	
-		
-		
-		
-		
+		<!-- 分页查询role -->
+		<action name="selectRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="selectRole">
+			<result>/WEB-INF/jsp/admin/identity/role.jsp</result>
+		</action>   
+		<!-- 添加role -->
+		<action name="addRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="addRole">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+			<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+		</action>
+		<!-- 返回添加role页面addRole.jsp -->
+		<action name="showAddRole">
+			<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
+		</action>
+		<!-- 返回更新role页面 -->
+		<action name="showUpdateRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="showUpdateRole">
+			<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+		</action>
+		<!-- 更新role -->
+		<action name="updateRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="updateRole">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+			<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
+		</action>
+		<!-- 批量删除role -->
+		<action name="deleteRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="deleteRole">
+			<result type="chain">selectRole</result>
+		</action>
     </package>
 </struts>
     

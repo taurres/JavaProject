@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import com.opensymphony.xwork2.ActionSupport;
 import com.wenjiaxi.oa.admin.identity.service.IdentityService;
+import com.wenjiaxi.oa.core.common.web.PageModel;
 
 /**
  * 
@@ -18,5 +19,29 @@ public class IdentityAction extends ActionSupport {
 	
 	@Resource
 	protected IdentityService identityService;
+	
+	protected PageModel pageModel;
+	
+	//操作结果信息
+	protected String msg;
+
+	public PageModel getPageModel() {
+		return pageModel;
+	}
+
+	public void setPageModel(PageModel pageModel) {
+		this.pageModel = pageModel;
+	}
+
+	public String getMsg() {
+		return msg;
+	}
+
+	public void setMsg(String msg) {
+		this.msg = msg;
+	}
+
+
+	
 	
 }

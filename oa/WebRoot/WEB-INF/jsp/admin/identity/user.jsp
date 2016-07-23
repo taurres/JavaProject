@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>OA办公管理系统-用户管理</title>
+	<title>OA办公管理系统-角色管理</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="cache-control" content="no-cache" />
@@ -32,7 +32,7 @@
 					});
 				}else{
 					alert("加载部门失败");
-				}		
+				}
 			},"json");
 			
 			//鼠标经过变色
@@ -62,14 +62,14 @@
 			//点击添加按钮弹出添加用户窗口
 			$("#addUser").click(function(){
 				$("#divDialog").dialog({
-					title: "addUser",
+					title: "添加用户",
 					width: 500,
 					height: 270,
 					collapsible : true,
 					maximizable : true,
 					modal: true,
 					onClose : function(){
-						window.location.href = "${path}/admin/identity/selectUser.jspx?pageModel.pageIndex=${pageModel.pageIndex}&user.name=${user.name}&user.phone=${user.phone}&user.dept.id=${user.dept.id}";
+						window.location.href = "${path}/admin/identity/selectUser?pageModel.pageIndex=${pageModel.pageIndex}&user.name=${user.name}&user.phone=${user.phone}&user.dept.id=${user.dept.id}";
 					}
 				});
 				$("#iframe").attr("src", "${path}/admin/identity/showAddUser").fadeIn(200);
@@ -91,7 +91,7 @@
 						minimizable : false, // 最小化
 						maximizable : true, // 最大化
 						onClose : function(){
-							window.location.href = "${path}/admin/identity/selectUser.jspx?pageModel.pageIndex=${pageModel.pageIndex}&user.name=${user.name}&user.phone=${user.phone}&user.dept.id=${user.dept.id}";
+							window.location.href = "${path}/admin/identity/selectUser?pageModel.pageIndex=${pageModel.pageIndex}&user.name=${user.name}&user.phone=${user.phone}&user.dept.id=${user.dept.id}";
 						}
 					});
 					$("#iframe").attr("src", "${path}/admin/identity/showUpdateUser?user.userId=" + boxes.val()).fadeIn(200);
