@@ -7,6 +7,9 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * 用户实体
  * @author WEN JIAXI
@@ -16,6 +19,7 @@ import javax.persistence.*;
 
 @Entity @Table(name="OA_ID_USER", 
 indexes={@Index(columnList="NAME", name="IDX_USER_NAME")})
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 3176662908480511830L;

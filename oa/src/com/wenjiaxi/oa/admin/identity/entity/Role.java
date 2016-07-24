@@ -7,6 +7,9 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * 
  * @author WEN JIAXI
@@ -14,6 +17,7 @@ import javax.persistence.*;
  * @version 1.0
  */
 @Entity @Table(name="OA_ID_ROLE")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Role implements Serializable{
 
 	private static final long serialVersionUID = 5293026989527761155L;

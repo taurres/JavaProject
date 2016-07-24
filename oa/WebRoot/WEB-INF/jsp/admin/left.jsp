@@ -55,7 +55,7 @@
 				    d.add(2, 1, "系统管理");
 				    d.add(21, 2, "用户管理", "javascript:parent.mainframe.addTab('用户管理','/admin/identity/selectUser')", "用户管理");
 				    d.add(22, 2, "角色管理", "javascript:parent.mainframe.addTab('角色管理','/admin/identity/selectRole')", "角色管理");
-				    d.add(23, 2, "操作管理", "javascript:parent.mainframe.addTab('操作管理','/admin/login')", "操作管理");
+				    d.add(23, 2, "操作管理", "javascript:parent.mainframe.addTab('操作管理','/admin/identyty/moduleMain')", "操作管理");
 				    d.add(24, 2, "部门管理");
 				    d.add(25, 2, "职位管理");
 				     

@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 
 /**
  * Job实体
@@ -12,6 +15,7 @@ import javax.persistence.*;
  * @version 1.0
  */
 @Entity @Table(name="OA_ID_JOB")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class Job implements Serializable{
 
 	private static final long serialVersionUID = 6854317110325424272L;

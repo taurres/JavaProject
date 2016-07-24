@@ -107,7 +107,6 @@
 </head>
 <body>
 	<!-- 工具按钮区 -->
-	<s:form id="selectRole" action="/admin/identity/selectRole" method="post" theme="simple">
 		<table>
 			<tr>
 				<td><input type="button" value="添加" id="addRole"/></td>
@@ -115,7 +114,6 @@
 				<td><input type="button" value="删除" id="deleteRole"/></td>
 			</tr>
 		</table>
-	</s:form>
 	
 	<!-- 数据展示区 -->
 	<table width="100%" class="listTable" cellpadding="8" cellspacing="1">

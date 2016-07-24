@@ -21,7 +21,7 @@ public interface RoleDao extends BaseDao{
 	 * @param pageModel
 	 * @return
 	 */
-	List<Role> getRoleByPage(Role role, PageModel pageModel);
+	List<Role> getRoleByPage(PageModel pageModel);
 
 	/**
 	 * 删除role

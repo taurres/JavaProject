@@ -115,7 +115,7 @@ public interface IdentityService {
 	 * @param pageModel
 	 * @return
 	 */
-	public List<Role> getRoleByPage(Role role, PageModel pageModel);
+	public List<Role> getRoleByPage(PageModel pageModel);
 	
 	/**
 	 * 添加role

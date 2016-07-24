@@ -5,6 +5,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 /**
  * Popedom实体
  * @author WEN JIAXI
@@ -12,6 +15,7 @@ import javax.persistence.*;
  * @version 1.0
  */
 @Entity @Table(name="OA_ID_POPEDOM")
+@Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Popedom implements Serializable {
 
 	private static final long serialVersionUID = -4501791417797962793L;

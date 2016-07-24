@@ -27,7 +27,7 @@ public class RoleDaoImpl extends BaseDaoImpl implements RoleDao {
 	 * @param pageModel
 	 * @return
 	 */
-	public List<Role> getRoleByPage(Role role, PageModel pageModel){
+	public List<Role> getRoleByPage(PageModel pageModel){
 		return findByPage("from Role order by createDate", pageModel, null);		
 	}
 	

@@ -30,7 +30,7 @@ public class RoleAction extends IdentityAction {
 				pageModel = new PageModel();
 			}
 			
-			roles = identityService.getRoleByPage(role, pageModel);	
+			roles = identityService.getRoleByPage(pageModel);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -84,6 +84,5 @@
 			</tr>
 		</s:form>
 	</table>
-	<s:debug/>
 </body>
 </html>	

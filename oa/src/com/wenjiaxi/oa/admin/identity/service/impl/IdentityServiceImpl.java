@@ -312,9 +312,9 @@ public class IdentityServiceImpl implements IdentityService {
 	 * @param pageModel
 	 * @return
 	 */
-	public List<Role> getRoleByPage(Role role, PageModel pageModel){
+	public List<Role> getRoleByPage(PageModel pageModel){
 		try {
-			List<Role> roles = roleDao.getRoleByPage(role, pageModel);
+			List<Role> roles = roleDao.getRoleByPage(pageModel);
 			for (Role r : roles) {
 				if(r.getModifier() != null) r.getModifier().getName();
 				if(r.getCreater() != null) r.getCreater().getName();

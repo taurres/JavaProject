@@ -5,6 +5,9 @@ import java.util.Date;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 
 /**
  * Dept实体
@@ -15,6 +18,7 @@ import javax.persistence.*;
 
 
 @Entity @Table(name="OA_ID_DEPT")
+@Cache(usage=CacheConcurrencyStrategy.READ_ONLY)
 public class Dept implements Serializable{
 
 	private static final long serialVersionUID = -463083217445101408L;
