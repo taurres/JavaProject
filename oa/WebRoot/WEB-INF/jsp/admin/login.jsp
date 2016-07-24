@@ -220,10 +220,12 @@
 	              	请输入验证码
 	              <a href="javascript:void(0)" class="label-link" id="unclear">看不清楚</a>
 	            </label>
-	            <input class="form-control form-control input-block" id="vcode" name="vcode" tabindex="2" type="text" />
-	            <input type="checkbox" name="key" value="1" id="key"/>&nbsp;记住我&nbsp;&nbsp;&nbsp;
+	            <input class="form-control form-control input-block" id="vcode" name="vcode" tabindex="2" type="text" style="float:left;width:70%" />
 	            <!-- 验证码生成 -->
-	            <img src="${path}/verifyCode" width="60" height="22" title="验证码" id="img"/>
+	            <img src="${path}/verifyCode" width="60" height="22" title="验证码" id="img"  
+	            style=" float:right;margin-left:10px;margin-top:12px"/>
+	            <p style="clear:left"></p>
+	            <input type="checkbox" name="key" value="1" id="key"/>&nbsp;记住我&nbsp;&nbsp;&nbsp;
 	            <!-- 登录按钮 -->
 	            <input class="btn btn-primary btn-block" id="login_btn" name="commit" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
 			</div>
@@ -232,8 +234,8 @@
 	            <label for="phone">请输入您的手机号码</label>
 	            <input class="form-control input-block" id="phone" name="phone" type="text" />
 	            <label for="smsCode">请输入短信验证码</label>
-	            <input class="form-control input-block" id="smsCode" name="smsCode" type="text" />
-	            <input class="btn btn-outline btn-block" id="sms_btn" type="button" value="获取验证码" />
+	            <input class="form-control input-block" id="smsCode" name="smsCode" type="text" style="width:40%;float:left" />
+	            <input class="btn btn-outline btn-block" id="sms_btn" type="button" value="获取验证码" style="width:50%;float:right;margin-top:5px"/>
 	            <input class="btn btn-primary btn-block" id="login_btn2" name="commit" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
 			</div>
 			<!-- 第三个标签页 -->
