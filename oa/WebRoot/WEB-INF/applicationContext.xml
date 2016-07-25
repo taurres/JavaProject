@@ -40,6 +40,7 @@
      	   p:configLocation="classpath:hibernate.cfg.xml">
      	   <property name="packagesToScan">
 	     	   	<array>
+	     	   		<value>com.wenjiaxi.oa.core.dao</value>
 	     	   		<value>com.wenjiaxi.oa.admin.identity</value>
 	     	   		<value>com.wenjiaxi.oa.admin.leave</value>
 	     	   		<value>com.wenjiaxi.oa.admin.addressbook</value>
@@ -53,7 +54,7 @@
      <tx:advice id="txAdvice" transaction-manager="transactionManager">
      	 <tx:attributes>
      	 	<tx:method name="set*" read-only="true"/>
-     	 	<tx:method name="get*" read-only="false"/>
+     	 	<tx:method name="get*" read-only="true"/>
      	 	<tx:method name="*" read-only="false"/>
      	 </tx:attributes>
      </tx:advice>
@@ -73,5 +74,6 @@
      	</aop:aspect>
      </aop:config>
           
+     <bean id="hierarchyIdGenerator" class="com.wenjiaxi.oa.core.dao.impl.HierarchyIdGeneratorImpl"></bean>
     
 </beans>

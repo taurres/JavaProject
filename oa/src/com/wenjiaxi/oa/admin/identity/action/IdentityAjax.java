@@ -15,6 +15,7 @@ public class IdentityAjax extends IdentityAction {
 
 	private List<Map<String, Object>> responseMap;
 	private Map<String, List<Map<String, Object>>> responseMaps;
+	private List<List<Object>> responseList;
 	private List<Map<String, String>> usernameList;
 	//easyui combobox传入的文本框输入内容
 	private String q;
@@ -68,10 +69,26 @@ public class IdentityAjax extends IdentityAction {
 	 * @return
 	 */
 	public String confirmUserId(){
-		isExisted = identityService.confirmUserId(userId);
+		try {
+			isExisted = identityService.confirmUserId(userId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return SUCCESS;
 	}
 	
+	/**
+	 * 异步加载模块dtree
+	 * @return 数据格式: [{id: ,pid: ,name: },{},{}]
+	 */
+	public String loadModuleTree(){
+		try {
+			responseMap = identityService.loadModuleTree();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
 	
 	//getter setter
 	public List<Map<String, Object>> getResponseMap() {
@@ -128,6 +145,16 @@ public class IdentityAjax extends IdentityAction {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+
+	public List<List<Object>> getResponseList() {
+		return responseList;
+	}
+
+
+	public void setResponseList(List<List<Object>> responseList) {
+		this.responseList = responseList;
 	}
 	
 	

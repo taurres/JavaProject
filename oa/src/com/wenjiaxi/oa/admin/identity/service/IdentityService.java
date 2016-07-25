@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.wenjiaxi.oa.admin.identity.entity.Dept;
+import com.wenjiaxi.oa.admin.identity.entity.Module;
 import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.core.common.web.PageModel;
@@ -140,6 +141,26 @@ public interface IdentityService {
 	 * @param split
 	 */
 	public void deleteRole(String[] split);
+
+	/**
+	 * 异步加载模块dtree
+	 * @return
+	 */
+	public List<Map<String,Object>> loadModuleTree();
+
+	/**
+	 * 分页查询module
+	 * @param module
+	 * @param pageModel
+	 * @return
+	 */
+	public List<Module> getModuleByPage(String code, PageModel pageModel);
+
+	/**
+	 * 添加module
+	 * @param module
+	 */
+	public void addModule(Module module);
 
 
 

@@ -115,6 +115,8 @@ public class RoleAction extends IdentityAction {
 	public void setIds(String ids) {
 		this.ids = ids;
 	}
+	
+	
 
 	
 	

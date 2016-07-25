@@ -3,12 +3,6 @@ package com.wenjiaxi.oa.core.log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-
-
-
-
-
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;

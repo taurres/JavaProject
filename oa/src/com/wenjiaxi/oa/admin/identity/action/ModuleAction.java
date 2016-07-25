@@ -20,7 +20,7 @@ public class ModuleAction extends IdentityAction {
 	private static final long serialVersionUID = -6303505451863805413L;
 	private Module module;
 	private List<Module> modules;
-	private String code;
+	private String parentCode;
 	private String codes;
 	
 
@@ -34,7 +34,7 @@ public class ModuleAction extends IdentityAction {
 			if (pageModel == null) {
 				pageModel = new PageModel();
 			}
-			modules = identityService.getModuleByPage(module, pageModel);	
+			modules = identityService.getModuleByPage(parentCode, pageModel);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -47,65 +47,68 @@ public class ModuleAction extends IdentityAction {
 	 */
 	public String addModule(){
 		try {
+			module.setCode(parentCode);
 			identityService.addModule(module);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
-	/**
-	 * 显示更新module页面
-	 * @return
-	 */
-	public String showUpdateModule(){
-		try {
-			module = identityService.getModule(module.getCode(), false);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
-	/**
-	 * 更新module
-	 * @return
-	 */
-	public String updateModule(){
-		try {
-			identityService.updateModule(module);
 			setMsg("success");
 		} catch (Exception e) {
+			e.printStackTrace();
 			setMsg("failed");
-			e.printStackTrace();
 		}
 		return SUCCESS;
 	}
-	/**
-	 * 批量删除用户
-	 * @return
-	 */
-	public String deleteModule(){
-		try {
-			identityService.deleteModule(codes.split(","));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
-	/**
-	 * 批量审批用户
-	 * @return
-	 */
-	public String checkModule(){
-		try {
-			identityService.checkModule(codes.split(","),module.getStatus());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
+//
+//	/**
+//	 * 显示更新module页面
+//	 * @return
+//	 */
+//	public String showUpdateModule(){
+//		try {
+//			module = identityService.getModule(module.getCode(), false);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return SUCCESS;
+//	}
+//	
+//	/**
+//	 * 更新module
+//	 * @return
+//	 */
+//	public String updateModule(){
+//		try {
+//			identityService.updateModule(module);
+//			setMsg("success");
+//		} catch (Exception e) {
+//			setMsg("failed");
+//			e.printStackTrace();
+//		}
+//		return SUCCESS;
+//	}
+//	/**
+//	 * 批量删除用户
+//	 * @return
+//	 */
+//	public String deleteModule(){
+//		try {
+//			identityService.deleteModule(codes.split(","));
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return SUCCESS;
+//	}
+//	
+//	/**
+//	 * 批量审批用户
+//	 * @return
+//	 */
+//	public String checkModule(){
+//		try {
+//			identityService.checkModule(codes.split(","),module.getStatus());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return SUCCESS;
+//	}
 
 	
 	// getter setter
@@ -125,12 +128,12 @@ public class ModuleAction extends IdentityAction {
 		this.modules = modules;
 	}
 
-	public String getCode() {
-		return code;
+	public String getParentCode() {
+		return parentCode;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setParentCode(String parentCode) {
+		this.parentCode = parentCode;
 	}
 
 	public String getCodes() {
@@ -140,6 +143,7 @@ public class ModuleAction extends IdentityAction {
 	public void setCodes(String codes) {
 		this.codes = codes;
 	}
+
 	
 		
 }

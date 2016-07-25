@@ -103,11 +103,36 @@
 		</action>
 		
 		<!--  ################### module action #####################   -->	
+		<!-- 异步加载dtree -->
+		<action name="loadModuleTree" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadModuleTree">
+			<result type="json">
+				<param name="root">responseMap</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
 		<!-- 返回module主页面(包含两个frame的页面) -->
 		<action name="moduleMain">
 			<result>/WEB-INF/jsp/admin/identity/moduleMain.jsp</result>
 		</action>
-		
+		<!-- 返回module左页面 -->
+		<action name="moduleLeft">
+			<result>/WEB-INF/jsp/admin/identity/moduleLeft.jsp</result>
+		</action>
+		<!-- 分页查询module -->
+		<action name="selectModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="selectModule">
+			<result>/WEB-INF/jsp/admin/identity/module.jsp</result>
+		</action>   
+		<!-- 返回添加module页面addModule.jsp -->
+		<action name="showAddModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction">
+			<result>/WEB-INF/jsp/admin/identity/addModule.jsp</result>
+		</action>
+		<!-- 添加module-->
+		<action name="addModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="addModule">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addModule.jsp</result>
+			<result>/WEB-INF/jsp/admin/identity/addModule.jsp</result>
+		</action>
     </package>
 </struts>
     

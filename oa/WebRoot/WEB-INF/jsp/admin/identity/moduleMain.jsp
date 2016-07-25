@@ -14,10 +14,8 @@
 	<meta name="Copyright" content="All Rights Reserved." />
 	<link href="${path}/logo.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
-<body>
 	<frameset cols="168,*" frameborder="yes" border="1">
 		<frame src="${path}/admin/identity/moduleLeft" name="leftFrame"/>
 		<frame src="${path}/admin/identity/selectModule" name="rightFrame" />
 	</frameset>
-</body>
 </html>

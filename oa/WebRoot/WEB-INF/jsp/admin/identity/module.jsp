@@ -45,61 +45,74 @@
 			
 			//点击添加按钮弹出添加角色窗口
 			$("#addModule").click(function(){
-				$("#divDialog").dialog({
-					title: "添加角色",
-					width: 400,
-					height: 220,
-					collapsible : true,
-					maximizable : true,
-					modal: true,
+				$("#divDialog").dialog({    
+					title: "添加操作",   // 标题  
+					width: 370,   // 宽度
+					height: 245,   // 高度
+					modal: true, // 模态窗口
+					collapsible : true, // 可伸缩
+					minimizable : false, // 最小化
+					maximizable : true, // 最大化
 					onClose : function(){
-						window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}";
+						/** 刷新左边的树 */
+						parent.leftFrame.location.reload();
+						/** 刷新操作的页面 */
+						window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 					}
 				});
-				$("#iframe").attr("src", "${path}/admin/identity/showAddModule").fadeIn(200);
+				$("#iframe").attr("src", "${path}/admin/identity/showAddModule?parentCode=${parentCode}").fadeIn(200);
 			});
 			
 			// 点击按钮修改用户
 			$("#updateModule").click(function(){
-				// 获取选中的checkbox 
-				var boxes = $("input[id^='box_']:checked");
-				if (boxes.length == 0){
-					alert("请选择要修改的角色！");
-				}else if (boxes.length == 1){
+				/** 获取下面选中的checkbox */
+				var boxs = $("input[type='checkbox'][id^='box_']:checked");
+				if (boxs.length == 0){
+					alert("请选择要修改的操作！");
+				}else if (boxs.length == 1){
 					$("#divDialog").dialog({    
-						title: "修改角色",   // 标题  
-						width: 400,   // 宽度
-						height: 220,   // 高度
+						title: "修改操作",   // 标题  
+						width: 370,   // 宽度
+						height: 245,   // 高度
 						modal: true, // 模态窗口.
 						collapsible : true, // 可伸缩
 						minimizable : false, // 最小化
 						maximizable : true, // 最大化
 						onClose : function(){
-							window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}";
-							location.reload();
+							/** 刷新左边的树 */
+							parent.leftFrame.location.reload();
+							/** 刷新操作的页面 */
+							window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 						}
 					});
-					$("#iframe").attr("src", "${path}/admin/identity/showUpdateModule?module.id=" + boxes.val()).fadeIn(200);
+					$("#iframe").attr("src", "${path}/admin/identity/showUpdateModule?module.code=" + boxs.val()).fadeIn(200);
 				}else{
-					alert("修改角色时，只能选择一个！");
+					alert("修改操作时，只能选择一个！");
 				}
 			});
 			
 			//点击按钮删除用户
 			$("#deleteModule").click(function(){
-				var boxes = $("input[id^='box_']:checked");
-				if(boxes.length == 0){
-					alert("请选择要删除的角色");
+				/** 获取下面选中的checkbox */
+				var boxs = $("input[type='checkbox'][id^='box_']:checked");
+				if (boxs.length == 0){
+					alert("请选择要删除的操作！");
 				}else{
-					if (confirm("确定要删除该角色吗?")){
-						var ids = boxes.map(function(){
+					if (confirm("您确定要删除吗？")){
+						/** 获取删除的code, map可以改变jQuery对象里面存放的是什么 , 是map方法中回调函数的返回值*/
+						var codes = boxs.map(function(){
 							return this.value;
 						});
-						window.location.href = "${path}/admin/identity/deleteModule?pageModel.pageIndex=${pageModel.pageIndex}&ids=" + ids.get();
-						alert("删除成功！");
-					};
+						window.location.href = "${path}/admin/identity/deleteModule?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}&codes=" + codes.get();
+					}
 				}
 			});
+			
+			/** 删除完成后 */
+			if ("${tip}" != ""){
+				/** 刷新左边的树 */
+				parent.leftFrame.location.reload();
+			}
 			
 			
 		});
@@ -156,6 +169,5 @@
     <div id="divDialog" style="overflow: hidden;">
 		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>
 	</div>
-	
 </body>
 </html>

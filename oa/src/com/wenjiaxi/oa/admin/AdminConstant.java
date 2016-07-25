@@ -21,6 +21,9 @@ public final class AdminConstant {
 	// 定义存放登录信息cookie的期限：一周
 	public static final int COOKIE_LOGIN_AGE = 86400 * 7;
 	
+	//定义module中每个层级code的长度
+	public static final int MODULE_CODE_LENGTH = 4;
+	
 	//返回session里面user的名字
 	public static User getSessionUser(){
 		return (User) ServletActionContext.getContext().getSession().get(SESSION_USER);

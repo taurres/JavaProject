@@ -20,6 +20,7 @@ import com.wenjiaxi.oa.admin.identity.dao.ModuleDao;
 import com.wenjiaxi.oa.admin.identity.dao.PopedomDao;
 import com.wenjiaxi.oa.admin.identity.dao.RoleDao;
 import com.wenjiaxi.oa.admin.identity.dao.UserDao;
+import com.wenjiaxi.oa.admin.identity.entity.Module;
 import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.admin.identity.service.IdentityService;
@@ -27,6 +28,7 @@ import com.wenjiaxi.oa.core.action.VerifyAction;
 import com.wenjiaxi.oa.core.common.security.MD5;
 import com.wenjiaxi.oa.core.common.web.CookieUtil;
 import com.wenjiaxi.oa.core.common.web.PageModel;
+import com.wenjiaxi.oa.core.dao.HierarchyIdGenerator;
 import com.wenjiaxi.oa.core.exception.OAException;
 
 
@@ -50,6 +52,8 @@ public class IdentityServiceImpl implements IdentityService {
 	private RoleDao roleDao;
 	@Resource
 	private UserDao userDao;
+	@Resource
+	private HierarchyIdGenerator hierarchyIdGenerator;
 
 	
 	/** TODO################### 用户业务 ##################### */
@@ -378,5 +382,73 @@ public class IdentityServiceImpl implements IdentityService {
 			e.printStackTrace();
 			throw new OAException("删除角色时出错",e);
 		}
+	}
+	
+	/** TODO################### 模块业务 ##################### */
+	
+	/**
+	 * 异步加载模块dtree
+	 * @return [{id: ,pid: ,name: },{},{}]
+	 */
+	public List<Map<String,Object>> loadModuleTree(){
+		try {
+			List<Map<String, Object>> maps = moduleDao.getModulesByCodeAndName();
+			for (Map<String, Object> map : maps) {
+				String code = (String) map.get("id");
+				//判断code长度，code大于4则截取code前面的作为parentCode，code等于4则parentCode为"0"
+				String pid = code.length() == 4 ? "0" : code.substring(0, code.length() - AdminConstant.MODULE_CODE_LENGTH);
+				//获取名字，同时把名字中的"-"去掉
+				String name = ((String) map.get("name")).replace("-", "");
+				//将数组格式设置为[{id: ,pid: ,name: },{},{}]
+				map.put("pid", pid);
+				map.put("name", name);
+			}
+			return maps;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("加载模块dtree时出错",e);
+		}
+	}
+	
+	/**
+	 * 分页查询module
+	 * @param module
+	 * @param pageModel
+	 * @return
+	 */
+	public List<Module> getModuleByPage(String code, PageModel pageModel){
+		List<Module> modules;
+		try {
+			modules = moduleDao.getModuleByPage(code, pageModel, AdminConstant.MODULE_CODE_LENGTH);
+			for (Module module : modules) {
+				if (modules != null) {
+					if (module.getCreater() != null) module.getCreater().getName();
+					if (module.getModifier() != null) module.getModifier().getName();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("分页查询module时出错",e);
+		}
+		return modules;
+	}
+	
+
+	/**
+	 * 添加module
+	 * @param module
+	 */
+	public void addModule(Module module){
+		try {
+			String parentCode = module.getCode();
+			String code = hierarchyIdGenerator.generateId(Module.class, "code", parentCode, AdminConstant.MODULE_CODE_LENGTH);
+			module.setCode(code);
+			module.setCreateDate(new Date());
+			module.setCreater(AdminConstant.getSessionUser());
+			moduleDao.save(module);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("添加module时出错",e);
+		}		
 	}
 }
