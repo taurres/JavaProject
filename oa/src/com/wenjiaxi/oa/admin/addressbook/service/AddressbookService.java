@@ -1,5 +1,11 @@
 package com.wenjiaxi.oa.admin.addressbook.service;
 
+import java.util.List;
+
+import com.wenjiaxi.oa.admin.addressbook.entity.Contact;
+import com.wenjiaxi.oa.admin.addressbook.entity.ContactGroup;
+import com.wenjiaxi.oa.core.common.web.PageModel;
+
 
 
 /**
@@ -11,5 +17,78 @@ package com.wenjiaxi.oa.admin.addressbook.service;
 
 public interface AddressbookService {
 
+	/** TODO ########################### contactGroup ########################## */
+
+	/**
+	 * 分页查询ContactGroup
+	 * @param contactGroup
+	 * @param pageModel
+	 * @return
+	 */
+	public List<ContactGroup> getContactGroupByPage(PageModel pageModel);
 	
+	/**
+	 * 添加contactGroup
+	 */
+	public void addContactGroup(ContactGroup contactGroup);
+
+	/**
+	 * 根据id查询contactGroup
+	 * @param id
+	 * @return
+	 */
+	public ContactGroup getContactGroup(Long id);
+
+	/**
+	 * 更新contactGroup
+	 * @param contactGroup
+	 */
+	public void updateContactGroup(ContactGroup contactGroup);
+
+	/**
+	 * 删除contactGroup
+	 * @param ids
+	 */
+	public void deleteContactGroup(String[] ids);
+
+	/**
+	 * 异步加载联系组dtree
+	 * @return
+	 */
+	public List<List<Object>> loadContactTree();
+	
+	/** TODO ########################### contact ########################## */
+
+	/**
+	 * 分页查询contact
+	 * @param contact
+	 * @param pageModel
+	 * @return
+	 */
+	public List<Contact> getContactByPage(String code, PageModel pageModel);
+
+	/**
+	 * 添加contact
+	 * @param contact
+	 */
+	public void addContact(Contact contact);
+
+	/**
+	 * 通过code查询contact
+	 * @param code
+	 * @return
+	 */
+	public Contact getContact(String code);
+
+	/**
+	 * 更新contact
+	 * @param contact
+	 */
+	public void updateContact(Contact contact);
+
+	/**
+	 * 批量删除contact
+	 * @param ids
+	 */
+	public void deleteContact(String[] codes);
 }

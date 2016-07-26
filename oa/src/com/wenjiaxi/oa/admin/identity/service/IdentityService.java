@@ -3,7 +3,6 @@ package com.wenjiaxi.oa.admin.identity.service;
 import java.util.List;
 import java.util.Map;
 
-import com.wenjiaxi.oa.admin.identity.entity.Dept;
 import com.wenjiaxi.oa.admin.identity.entity.Module;
 import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
@@ -142,6 +141,7 @@ public interface IdentityService {
 	 */
 	public void deleteRole(String[] split);
 
+	/** TODO ########################### module ########################## */
 	/**
 	 * 异步加载模块dtree
 	 * @return

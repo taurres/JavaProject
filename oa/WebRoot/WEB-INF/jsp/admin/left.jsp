@@ -70,8 +70,8 @@
 				    d.add(42, 4, "总署管理");
 				    
 				    d.add(5, 1, "通讯录管理");
-				    d.add(51, 5, "联系组管理");
-				    d.add(52, 5, "联系人管理");
+				    d.add(51, 5, "联系组管理", "javascript:parent.mainframe.addTab('联系组管理','/admin/addressbook/selectContactGroup')", "联系组管理");
+				    d.add(52, 5, "联系人管理", "javascript:parent.mainframe.addTab('联系人管理','/admin/addressbook/contactMain')", "联系人管理");
 				    					
 					document.write(d);
 					d.openAll();

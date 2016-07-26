@@ -9,7 +9,84 @@
     <constant name="struts.action.extension" value="jspx,action,do,"/>
     
     <package name="admin_addressbook" namespace="/admin/addressbook" extends="admin">
+		<!-- ################ ContactGroup ################### -->
+		<!-- 分页查询contactGroup -->
+		<action name="selectContactGroup" class="com.wenjiaxi.oa.admin.addressbook.action.ContactGroupAction" method="selectContactGroup">
+			<result>/WEB-INF/jsp/admin/addressbook/contactGroup.jsp</result>
+		</action>   
+		<!-- 添加contactGroup -->
+		<action name="addContactGroup" class="com.wenjiaxi.oa.admin.addressbook.action.ContactGroupAction" method="addContactGroup">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/addContactGroup.jsp</result>
+			<result>/WEB-INF/jsp/admin/addressbook/addContactGroup.jsp</result>
+		</action>
+		<!-- 返回添加contactGroup页面addContactGroup.jsp -->
+		<action name="showAddContactGroup">
+			<result>/WEB-INF/jsp/admin/addressbook/addContactGroup.jsp</result>
+		</action>
+		<!-- 返回更新contactGroup页面 -->
+		<action name="showUpdateContactGroup" class="com.wenjiaxi.oa.admin.addressbook.action.ContactGroupAction" method="showUpdateContactGroup">
+			<result>/WEB-INF/jsp/admin/addressbook/updateContactGroup.jsp</result>
+		</action>
+		<!-- 更新contactGroup -->
+		<action name="updateContactGroup" class="com.wenjiaxi.oa.admin.addressbook.action.ContactGroupAction" method="updateContactGroup">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/updateContactGroup.jsp</result>
+			<result>/WEB-INF/jsp/admin/addressbook/updateContactGroup.jsp</result>
+		</action>
+		<!-- 批量删除contactGroup -->
+		<action name="deleteContactGroup" class="com.wenjiaxi.oa.admin.addressbook.action.ContactGroupAction" method="deleteContactGroup">
+			<result type="chain">selectContactGroup</result>
+		</action>
 		
+		<!-- 异步加载联系组dtree -->
+		<action name="loadContactTree" class="com.wenjiaxi.oa.admin.addressbook.action.AddressbookAjax" method="loadContactTree">
+			<result type="json">
+				<param name="root">responseList</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!--  ################### contact action #####################   -->	
+		<!-- 返回contact主页面(包含两个frame的页面) -->
+		<action name="contactMain">
+			<result>/WEB-INF/jsp/admin/addressbook/contactMain.jsp</result>
+		</action>
+		<!-- 返回contact左页面 -->
+		<action name="contactLeft">
+			<result>/WEB-INF/jsp/admin/addressbook/contactLeft.jsp</result>
+		</action>
+		<!-- 分页查询contact -->
+		<action name="selectContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction" method="selectContact">
+			<result>/WEB-INF/jsp/admin/addressbook/contact.jsp</result>
+		</action>   
+		<!-- 返回添加contact页面addContact.jsp -->
+		<action name="showAddContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction">
+			<result>/WEB-INF/jsp/admin/addressbook/addContact.jsp</result>
+		</action>
+		<!-- 添加contact-->
+		<action name="addContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction" method="addContact">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/addContact.jsp</result>
+			<result>/WEB-INF/jsp/admin/addressbook/addContact.jsp</result>
+		</action>
+		<!-- 返回更新contact页面 -->
+		<action name="showUpdateContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction" method="showUpdateContact">
+			<result>/WEB-INF/jsp/admin/addressbook/updateContact.jsp</result>
+		</action>
+		<!-- 更新contact -->
+		<action name="updateContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction" method="updateContact">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/addressbook/updateContact.jsp</result>
+			<result>/WEB-INF/jsp/admin/addressbook/updateContact.jsp</result>
+		</action>
+		<!-- 批量删除contact -->
+		<action name="deleteContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction" method="deleteContact">
+			<result type="chain">selectContact</result>
+		</action>
     </package>
 </struts>
     
