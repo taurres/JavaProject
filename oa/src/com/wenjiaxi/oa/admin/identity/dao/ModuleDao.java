@@ -30,4 +30,10 @@ public interface ModuleDao extends BaseDao{
 	 */
 	List<Module> getModuleByPage(String code, PageModel pageModel, int codeLength);
 
+	/**
+	 * 批量删除module
+	 * @param codes
+	 */
+	void deleteModule(String[] codes);
+
 }

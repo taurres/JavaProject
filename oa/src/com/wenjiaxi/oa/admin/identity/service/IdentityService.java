@@ -162,6 +162,25 @@ public interface IdentityService {
 	 */
 	public void addModule(Module module);
 
+	/**
+	 * 通过code查询module
+	 * @param code
+	 * @return
+	 */
+	public Module getModule(String code);
+
+	/**
+	 * 更新module
+	 * @param module
+	 */
+	public void updateModule(Module module);
+
+	/**
+	 * 批量删除module
+	 * @param ids
+	 */
+	public void deleteModule(String[] codes);
+
 
 
 }

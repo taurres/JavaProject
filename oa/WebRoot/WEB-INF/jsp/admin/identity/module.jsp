@@ -54,9 +54,8 @@
 					minimizable : false, // 最小化
 					maximizable : true, // 最大化
 					onClose : function(){
-						/** 刷新左边的树 */
+						// 刷新左边的
 						parent.leftFrame.location.reload();
-						/** 刷新操作的页面 */
 						window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 					}
 				});
@@ -65,7 +64,6 @@
 			
 			// 点击按钮修改用户
 			$("#updateModule").click(function(){
-				/** 获取下面选中的checkbox */
 				var boxs = $("input[type='checkbox'][id^='box_']:checked");
 				if (boxs.length == 0){
 					alert("请选择要修改的操作！");
@@ -79,9 +77,8 @@
 						minimizable : false, // 最小化
 						maximizable : true, // 最大化
 						onClose : function(){
-							/** 刷新左边的树 */
+							// 刷新左边的树 
 							parent.leftFrame.location.reload();
-							/** 刷新操作的页面 */
 							window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 						}
 					});
@@ -93,13 +90,11 @@
 			
 			//点击按钮删除用户
 			$("#deleteModule").click(function(){
-				/** 获取下面选中的checkbox */
 				var boxs = $("input[type='checkbox'][id^='box_']:checked");
 				if (boxs.length == 0){
 					alert("请选择要删除的操作！");
 				}else{
 					if (confirm("您确定要删除吗？")){
-						/** 获取删除的code, map可以改变jQuery对象里面存放的是什么 , 是map方法中回调函数的返回值*/
 						var codes = boxs.map(function(){
 							return this.value;
 						});
@@ -108,9 +103,7 @@
 				}
 			});
 			
-			/** 删除完成后 */
-			if ("${tip}" != ""){
-				/** 刷新左边的树 */
+			if ("${msg}" != ""){
 				parent.leftFrame.location.reload();
 			}
 			

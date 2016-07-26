@@ -133,6 +133,21 @@
 			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addModule.jsp</result>
 			<result>/WEB-INF/jsp/admin/identity/addModule.jsp</result>
 		</action>
+		<!-- 返回更新module页面 -->
+		<action name="showUpdateModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="showUpdateModule">
+			<result>/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
+		</action>
+		<!-- 更新module -->
+		<action name="updateModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="updateModule">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
+			<result>/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
+		</action>
+		<!-- 批量删除module -->
+		<action name="deleteModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="deleteModule">
+			<result type="chain">selectModule</result>
+		</action>
     </package>
 </struts>
     

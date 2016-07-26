@@ -44,7 +44,9 @@ public class RoleAction extends IdentityAction {
 	public String addRole(){
 		try {
 			identityService.addRole(role);
+			setMsg("success");
 		} catch (Exception e) {
+			setMsg("failed");
 			e.printStackTrace();
 		}
 		return SUCCESS;
@@ -85,7 +87,9 @@ public class RoleAction extends IdentityAction {
 	public String deleteRole(){
 		try {
 			identityService.deleteRole(ids.split(","));
+			setMsg("success");
 		} catch (Exception e) {
+			setMsg("failed");
 			e.printStackTrace();
 		}
 		return SUCCESS;

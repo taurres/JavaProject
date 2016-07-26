@@ -41,7 +41,11 @@
 					}
 				});
 				
-				if("${msg}" == "success") parent.$("#divDialog").window("close");
+				if("${msg}" == "success") {
+					parent.$("#divDialog").window("close");
+					alert("添加成功");
+				}
+				
 			});
 		</script>
 	</head>
@@ -49,8 +53,6 @@
 	<table align="center">
 		<!-- 输出防表单重复提交的提示信息 -->
 		<s:actionerror cssStyle="font-size:12px;color:red;"/>
-		<!-- 输出后台校验失败的提示信息 -->
-		<s:fielderror cssStyle="font-size:12px;color:red;"/>
 		<s:form id="addModuleForm" action="/admin/identity/addModule" method="post" theme="simple">
 			<s:hidden name="parentCode"/>
 			<!-- 防表单重复提交需要传的token -->
@@ -79,7 +81,7 @@
 				<td colspan="2" align="center">
 					<input value="提 交" type="submit"/>
 					&nbsp;
-					<input value="重 置" type="reset" />&nbsp;<font color="red">${tip}</font>
+					<input value="重 置" type="reset" />&nbsp;<font color="red"></font>
 				</td>
 			</tr>
 		</s:form>

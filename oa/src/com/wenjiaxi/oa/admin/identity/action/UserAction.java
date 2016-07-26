@@ -49,7 +49,9 @@ public class UserAction extends IdentityAction {
 	public String addUser(){
 		try {
 			identityService.addUser(user);
+			setMsg("success");
 		} catch (Exception e) {
+			setMsg("failed");
 			e.printStackTrace();
 		}
 		return SUCCESS;
@@ -89,7 +91,9 @@ public class UserAction extends IdentityAction {
 	public String deleteUser(){
 		try {
 			identityService.deleteUser(userIds.split(","));
+			setMsg("success");
 		} catch (Exception e) {
+			setMsg("failed");
 			e.printStackTrace();
 		}
 		return SUCCESS;
@@ -102,7 +106,9 @@ public class UserAction extends IdentityAction {
 	public String checkUser(){
 		try {
 			identityService.checkUser(userIds.split(","),user.getStatus());
+			setMsg("success");
 		} catch (Exception e) {
+			setMsg("failed");
 			e.printStackTrace();
 		}
 		return SUCCESS;

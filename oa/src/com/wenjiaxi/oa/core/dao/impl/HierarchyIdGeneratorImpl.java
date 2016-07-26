@@ -15,7 +15,7 @@ import com.wenjiaxi.oa.core.dao.HierarchyIdGenerator;
  * @version 1.0
  */
 
-
+@Repository("hierarchyIdGenerator")
 public class HierarchyIdGeneratorImpl extends BaseDaoImpl implements HierarchyIdGenerator {
 
 	/**

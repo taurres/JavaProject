@@ -9,6 +9,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -41,6 +43,8 @@ import com.wenjiaxi.oa.core.exception.OAException;
 @Service("identityService")
 public class IdentityServiceImpl implements IdentityService {
 	@Resource
+	private HierarchyIdGenerator hierarchyIdGenerator;
+	@Resource
 	private DeptDao deptDao;
 	@Resource
 	private JobDao jobDao;
@@ -52,8 +56,7 @@ public class IdentityServiceImpl implements IdentityService {
 	private RoleDao roleDao;
 	@Resource
 	private UserDao userDao;
-	@Resource
-	private HierarchyIdGenerator hierarchyIdGenerator;
+
 
 	
 	/** TODO################### 用户业务 ##################### */
@@ -441,8 +444,11 @@ public class IdentityServiceImpl implements IdentityService {
 	public void addModule(Module module){
 		try {
 			String parentCode = module.getCode();
+			//生成有层次的code
 			String code = hierarchyIdGenerator.generateId(Module.class, "code", parentCode, AdminConstant.MODULE_CODE_LENGTH);
 			module.setCode(code);
+			//在name前添加对应层次的"-"
+			module.setName(parentCode.replaceAll(".", "-") + module.getName());
 			module.setCreateDate(new Date());
 			module.setCreater(AdminConstant.getSessionUser());
 			moduleDao.save(module);
@@ -450,5 +456,51 @@ public class IdentityServiceImpl implements IdentityService {
 			e.printStackTrace();
 			throw new OAException("添加module时出错",e);
 		}		
+	}
+	
+	/**
+	 * 通过code查询module
+	 * @param code
+	 * @return
+	 */
+	public Module getModule(String code){
+		try {
+			Module module = moduleDao.get(Module.class, code);
+			//将module名字中的---去掉再显示给用户
+			module.setName(module.getName().replace("-", ""));
+			return module;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("根据code查询module时出错",e);
+		}
+	}
+	
+	/**
+	 * 更新module
+	 * @param module
+	 */
+	public void updateModule(Module module){
+		try {
+			Module m = getModule(module.getCode());
+			String code = module.getCode();
+			//给module名字添加跟父节点长度一致的"-"前缀
+			String prefix = code.substring(0, code.length() - AdminConstant.MODULE_CODE_LENGTH).replaceAll(".", "-");
+			m.setName(prefix + module.getName());
+			m.setUrl(module.getUrl());
+			m.setRemark(module.getRemark());
+			m.setModifyDate(new Date());
+			m.setModifier(AdminConstant.getSessionUser());
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("更新module时出错",e);
+		}
+	}
+	
+	/**
+	 * 批量删除module
+	 * @param ids
+	 */
+	public void deleteModule(String[] codes){
+		moduleDao.deleteModule(codes);
 	}
 }

@@ -47,6 +47,7 @@ public class ModuleAction extends IdentityAction {
 	 */
 	public String addModule(){
 		try {
+			//将parentCode封装到module对象中传输给service层
 			module.setCode(parentCode);
 			identityService.addModule(module);
 			setMsg("success");
@@ -56,59 +57,48 @@ public class ModuleAction extends IdentityAction {
 		}
 		return SUCCESS;
 	}
-//
-//	/**
-//	 * 显示更新module页面
-//	 * @return
-//	 */
-//	public String showUpdateModule(){
-//		try {
-//			module = identityService.getModule(module.getCode(), false);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return SUCCESS;
-//	}
-//	
-//	/**
-//	 * 更新module
-//	 * @return
-//	 */
-//	public String updateModule(){
-//		try {
-//			identityService.updateModule(module);
-//			setMsg("success");
-//		} catch (Exception e) {
-//			setMsg("failed");
-//			e.printStackTrace();
-//		}
-//		return SUCCESS;
-//	}
-//	/**
-//	 * 批量删除用户
-//	 * @return
-//	 */
-//	public String deleteModule(){
-//		try {
-//			identityService.deleteModule(codes.split(","));
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return SUCCESS;
-//	}
-//	
-//	/**
-//	 * 批量审批用户
-//	 * @return
-//	 */
-//	public String checkModule(){
-//		try {
-//			identityService.checkModule(codes.split(","),module.getStatus());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return SUCCESS;
-//	}
+
+	/**
+	 * 显示更新module页面
+	 * @return
+	 */
+	public String showUpdateModule(){
+		try {
+			module = identityService.getModule(module.getCode());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 更新module
+	 * @return
+	 */
+	public String updateModule(){
+		try {
+			identityService.updateModule(module);
+			setMsg("success");
+		} catch (Exception e) {
+			setMsg("failed");
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	/**
+	 * 批量删除用户
+	 * @return
+	 */
+	public String deleteModule(){
+		try {
+			identityService.deleteModule(codes.split(","));
+			setMsg("success");
+		} catch (Exception e) {
+			setMsg("failed");
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
 
 	
 	// getter setter

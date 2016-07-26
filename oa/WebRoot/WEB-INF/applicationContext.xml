@@ -19,7 +19,7 @@
         				http://www.springframework.org/schema/util/spring-util-4.2.xsd">
 	  
 	 <!-- 开启注解 -->
-	 <context:component-scan base-package="com.wenjiaxi.oa.admin"/>
+	 <context:component-scan base-package="com.wenjiaxi.oa"/>
 	 <context:annotation-config />
 	 
 	 <!-- 加载数据库配置 -->
@@ -40,7 +40,6 @@
      	   p:configLocation="classpath:hibernate.cfg.xml">
      	   <property name="packagesToScan">
 	     	   	<array>
-	     	   		<value>com.wenjiaxi.oa.core.dao</value>
 	     	   		<value>com.wenjiaxi.oa.admin.identity</value>
 	     	   		<value>com.wenjiaxi.oa.admin.leave</value>
 	     	   		<value>com.wenjiaxi.oa.admin.addressbook</value>
@@ -74,6 +73,5 @@
      	</aop:aspect>
      </aop:config>
           
-     <bean id="hierarchyIdGenerator" class="com.wenjiaxi.oa.core.dao.impl.HierarchyIdGeneratorImpl"></bean>
     
 </beans>

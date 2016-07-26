@@ -53,5 +53,17 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
 		return this.findByPage("from Module where length(code) = ? and code like ? order by code", pageModel, params);
 	}
 	
+	/**
+	 * 批量删除module
+	 * @param codes
+	 */
+	public void deleteModule(String[] codes){
+		List<Object> params = new ArrayList<Object>();
+		for (int i = 0; i < codes.length; i++) {
+			String code = codes[i];
+			params.add(code + "%");
+			this.bulkUpdate("delete from Module where code like ? ", params.toArray());
+		}
+	}
 
 }

@@ -58,7 +58,6 @@
 		<s:actionerror cssStyle="font-size:12px;color:red;"/>
 		<!-- 输入表单 -->
 		<s:form id="updateRoleForm" action="/admin/identity/updateRole" method="post" theme="simple">
-			<!-- 防表单重复提交需要传的token -->
 			<s:token></s:token>
 			<s:hidden name="role.id"></s:hidden>
 			<tr><td colspan="4"></td></tr>
@@ -79,7 +78,7 @@
 				<td colspan="2" align="center">
 					<input value="提 交" type="button" id="btn_submit" />
 					&nbsp;
-					<input value="重 置" type="reset" />&nbsp;<font color="red">${tip}</font>
+					<input value="重 置" type="reset" />&nbsp;<font color="red">${msg}</font>
 				</td>
 			</tr>
 		</s:form>

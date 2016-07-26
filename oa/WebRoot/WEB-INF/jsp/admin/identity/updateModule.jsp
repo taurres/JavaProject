@@ -19,59 +19,69 @@
 			$(function(){
 			
 				//  提交表单
-				$("#btn_submit").click(function(){
-					// 校验表单数据
+				$("#addModuleForm").submit(function(){
 					var name = $("#name");
+					var url = $("#url");
 					var remark = $("#remark");
 					var msg = "";
 					if ($.trim(name.val()) == ""){
-						msg = "角色名称不能为空！";
+						msg = "名称不能为空！";
 						name.focus();
+					}else if ($.trim(url.val()) == ""){
+						msg = "链接不能为空！";
+						url.focus();
 					}else if ($.trim(remark.val()) == ""){
 						msg = "备注不能为空！";
 						remark.focus();
 					}
-					// 直接提交
 					if (msg != ""){
 						alert(msg);
+						return false;
 					}else{
-						// 提交表单 
-						$("#addRoleForm").submit();
+						return true;
 					}
 				});
-				
-				if("${msg}" == "success") {
+						
+				if("${msg}" == "success"){
 					parent.$("#divDialog").window("close");
-					alert("添加成功");
-				}
+					alert("修改成功")
+				}			
+		
 			});
 		</script>
 	</head>
 <body>
 	<table align="center">
+		<s:actionerror cssStyle="font-size:12px;color:red;"/>
 		<!-- 输入表单 -->
-		<s:form id="addRoleForm" action="/admin/identity/addRole" method="post" theme="simple">
-			<!-- 防表单重复提交需要传的token -->
+		<s:form id="updateModuleForm" action="/admin/identity/updateModule" method="post" theme="simple">
+			<s:token></s:token>
+			<s:hidden name="module.code"></s:hidden>
 			<s:token></s:token>
 			<tr><td colspan="4"></td></tr>
 			<tr>
-				<td>角色名称：</td>
+				<td>名称：</td>
 				<td>
-					<s:textfield name="role.name" size="33" id="name"/>
+					<s:textfield name="module.name" size="38" id="name"/>
 				</td>
 			</tr>
 			<tr>
-				<td>角色备注：</td>
+				<td>链接：</td>
 				<td>
-					<s:textarea name="role.remark"  cols="33" rows="5" id="remark"/>
+					<s:textfield name="module.url" size="38" id="url"/>
 				</td>
 			</tr>
-			
+			<tr>
+				<td>备注：</td>
+				<td>
+					<s:textarea name="module.remark"  cols="36" rows="5" id="remark"/>
+				</td>
+			</tr>
 			<tr>
 				<td colspan="2" align="center">
-					<input value="提 交" type="button" id="btn_submit" />
+					<input value="提 交" type="submit" />
 					&nbsp;
-					<input value="重 置" type="reset" />&nbsp;<font color="red">${tip}</font>
+					<input value="重 置" type="reset" />&nbsp;<font color="red">${msg}</font>
 				</td>
 			</tr>
 		</s:form>

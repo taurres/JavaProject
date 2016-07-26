@@ -1,11 +1,13 @@
 package com.wenjiaxi.oa.core.dao;
 
+
 /**
  * 层级ID生成器
  * @author WEN JIAXI
  * @date 2016年7月25日 下午10:55:51
  * @version 1.0
  */
+
 
 public interface HierarchyIdGenerator extends BaseDao{
 
