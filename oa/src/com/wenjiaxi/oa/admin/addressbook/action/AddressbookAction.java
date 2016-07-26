@@ -41,4 +41,6 @@ public class AddressbookAction extends ActionSupport{
 		this.msg = msg;
 	}
 
+
+
 }

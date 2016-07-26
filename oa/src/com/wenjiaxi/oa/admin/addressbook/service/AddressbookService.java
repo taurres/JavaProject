@@ -65,30 +65,30 @@ public interface AddressbookService {
 	 * @param pageModel
 	 * @return
 	 */
-	public List<Contact> getContactByPage(String code, PageModel pageModel);
+	public List<Contact> getContactByPage(long contactGroup, PageModel pageModel);
 
 	/**
 	 * 添加contact
 	 * @param contact
 	 */
-	public void addContact(Contact contact);
+	public void addContact(Contact contact, long contactGroup);
 
 	/**
 	 * 通过code查询contact
 	 * @param code
 	 * @return
 	 */
-	public Contact getContact(String code);
+	public Contact getContact(long id);
 
 	/**
 	 * 更新contact
 	 * @param contact
 	 */
-	public void updateContact(Contact contact);
+	public void updateContact(Contact contact, long contactGroup);
 
 	/**
 	 * 批量删除contact
 	 * @param ids
 	 */
-	public void deleteContact(String[] codes);
+	public void deleteContact(String[] ids);
 }

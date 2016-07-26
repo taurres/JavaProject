@@ -47,8 +47,8 @@
 			$("#addContact").click(function(){
 				$("#divDialog").dialog({    
 					title: "添加操作",   // 标题  
-					width: 370,   // 宽度
-					height: 245,   // 高度
+					width: 500,   // 宽度
+					height: 420,   // 高度
 					modal: true, // 模态窗口
 					collapsible : true, // 可伸缩
 					minimizable : false, // 最小化
@@ -56,10 +56,10 @@
 					onClose : function(){
 						// 刷新左边的
 						parent.leftFrame.location.reload();
-						window.location.href = "${path}/admin/addressbook/selectContact?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
+						window.location.href = "${path}/admin/addressbook/selectContact?pageModel.pageIndex=${pageModel.pageIndex}&contactGroup=${contactGroup}";
 					}
 				});
-				$("#iframe").attr("src", "${path}/admin/addressbook/showAddContact?parentCode=${parentCode}").fadeIn(200);
+				$("#iframe").attr("src", "${path}/admin/addressbook/showAddContact?contactGroup=${contactGroup}").fadeIn(200);
 			});
 			
 			// 点击按钮修改用户
@@ -70,8 +70,8 @@
 				}else if (boxs.length == 1){
 					$("#divDialog").dialog({    
 						title: "修改操作",   // 标题  
-						width: 370,   // 宽度
-						height: 245,   // 高度
+						width: 500,   // 宽度
+						height: 420,   // 高度
 						modal: true, // 模态窗口.
 						collapsible : true, // 可伸缩
 						minimizable : false, // 最小化
@@ -79,10 +79,10 @@
 						onClose : function(){
 							// 刷新左边的树 
 							parent.leftFrame.location.reload();
-							window.location.href = "${path}/admin/addressbook/selectContact?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
+							window.location.href = "${path}/admin/addressbook/selectContact?pageModel.pageIndex=${pageModel.pageIndex}&contactGroup=${contactGroup}";
 						}
 					});
-					$("#iframe").attr("src", "${path}/admin/addressbook/showUpdateContact?contact.code=" + boxs.val()).fadeIn(200);
+					$("#iframe").attr("src", "${path}/admin/addressbook/showUpdateContact?contact.id=" + boxs.val()).fadeIn(200);
 				}else{
 					alert("修改操作时，只能选择一个！");
 				}
@@ -95,10 +95,10 @@
 					alert("请选择要删除的操作！");
 				}else{
 					if (confirm("您确定要删除吗？")){
-						var codes = boxs.map(function(){
+						var ids = boxs.map(function(){
 							return this.value;
 						});
-						window.location.href = "${path}/admin/addressbook/deleteContact?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}&codes=" + codes.get();
+						window.location.href = "${path}/admin/addressbook/deleteContact?pageModel.pageIndex=${pageModel.pageIndex}&contactGroup=${contactGroup}&ids=" + ids.get();
 					}
 				}
 			});
@@ -125,7 +125,6 @@
 	<table width="100%" class="listTable" cellpadding="8" cellspacing="1">
 		<tr class="listHeaderTr">
 			<th><input type="checkbox" id="checkAll"/>全部</th>
-			<th>编号</th>
 			<th>姓名</th>
 			<th>性别</th>
 			<th>手机号码</th>
@@ -138,7 +137,6 @@
 			<s:iterator value="contacts" status="stat">
 				<tr id="tr_${stat.index}" class="listTr">
 					<td><input type="checkbox" id="box_${stat.index}" value="${id}"/>${stat.count}</td>
-					<td><s:property value="id"/></td>
 					<td><s:property value="name"/></td>
 					<td>${sex == 1 ? '男' : '女' }</td>
 					<td><s:property value="phone"/></td>
@@ -154,7 +152,7 @@
 		<page:pager pageIndex="${pageModel.pageIndex}" 
 		pageSize="${pageModel.pageSize}" 
 		recordCount="${pageModel.recordCount}" 
-		submitUrl="${path}/admin/addressbook/selectContact?pageModel.pageIndex={0}&parentCode=${parentCode}"/>
+		submitUrl="${path}/admin/addressbook/selectContact?pageModel.pageIndex={0}&contactGroup=${contactGroup}"/>
 	<!-- div作为弹出窗口 -->
     <div id="divDialog" style="overflow: hidden;">
 		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>

@@ -18,9 +18,8 @@ public class ContactAction extends AddressbookAction {
 
 	private Contact contact;
 	private List<Contact> contacts;
-	private String contactGroup;
-	private String ids;
-	
+	private long contactGroup;
+	private String ids;	
 
 	/**
 	 * 分页查询contact
@@ -45,8 +44,7 @@ public class ContactAction extends AddressbookAction {
 	 */
 	public String addContact(){
 		try {
-			//将parentCode封装到contact对象中传输给service层
-			addressbookService.addContact(contact);
+			addressbookService.addContact(contact, contactGroup);
 			setMsg("success");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,6 +59,7 @@ public class ContactAction extends AddressbookAction {
 	 */
 	public String showUpdateContact(){
 		try {
+			contact = addressbookService.getContact(contact.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,7 +72,7 @@ public class ContactAction extends AddressbookAction {
 	 */
 	public String updateContact(){
 		try {
-			addressbookService.updateContact(contact);
+			addressbookService.updateContact(contact, contactGroup);
 			setMsg("success");
 		} catch (Exception e) {
 			setMsg("failed");
@@ -114,11 +113,11 @@ public class ContactAction extends AddressbookAction {
 		this.contacts = contacts;
 	}
 
-	public String getContactGroup() {
+	public long getContactGroup() {
 		return contactGroup;
 	}
 
-	public void setContactGroup(String contactGroup) {
+	public void setContactGroup(long contactGroup) {
 		this.contactGroup = contactGroup;
 	}
 
@@ -129,6 +128,8 @@ public class ContactAction extends AddressbookAction {
 	public void setIds(String ids) {
 		this.ids = ids;
 	}
+
+
 
 
 }

@@ -34,5 +34,13 @@ public interface ContactDao extends BaseDao {
 	 * 批量删除contact
 	 * @param codes
 	 */
-	void deleteContact(String[] codes);
+	void deleteContact(String[] ids);
+
+	/**
+	 * 分页查询contact
+	 * @param contactGroup
+	 * @param pageModel
+	 * @return
+	 */
+	List<Contact> getContactByPage(long contactGroup, PageModel pageModel);
 }

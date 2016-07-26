@@ -22,6 +22,26 @@ import com.wenjiaxi.oa.core.dao.impl.BaseDaoImpl;
 public class ContactDaoImpl extends BaseDaoImpl implements ContactDao {
 
 	/**
+	 * 分页查询contact
+	 * @param contactGroup
+	 * @param pageModel
+	 * @return
+	 */
+	public List<Contact> getContactByPage(long contactGroup, PageModel pageModel){
+		StringBuilder hql = new StringBuilder();
+		List<Object> params = new ArrayList<Object>();
+		if (contactGroup != 0L) {
+			hql.append("from Contact where contactGroup.id = ? ");
+			params.add(contactGroup);
+			return this.findByPage(hql.toString(), pageModel, params);
+		}else {
+			return this.findByPage("from Contact", pageModel, null);
+		}
+		
+		
+	}
+	
+	/**
 	 * 获取所有模块的code和name
 	 * @return 包含code和name的集合
 	 */
@@ -53,12 +73,15 @@ public class ContactDaoImpl extends BaseDaoImpl implements ContactDao {
 	 * 批量删除contact
 	 * @param codes
 	 */
-	public void deleteContact(String[] codes){
-		List<Object> params = new ArrayList<Object>();
-		for (int i = 0; i < codes.length; i++) {
-			String code = codes[i];
-			params.add(code + "%");
-			this.bulkUpdate("delete from Contact where code like ? ", params.toArray());
+	public void deleteContact(String[] ids){
+		StringBuilder hql = new StringBuilder();
+		Long[] params = new Long[ids.length];
+		hql.append("delete from Contact where id in (");
+		for (int i = 0; i < ids.length; i++) {
+			hql.append(i == 0 ? "?" : ",?");
+			params[i] = Long.valueOf(ids[i]);
 		}
+		hql.append(")");
+		this.bulkUpdate(hql.toString(), params);
 	}
 }

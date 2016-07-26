@@ -429,11 +429,11 @@ public class IdentityServiceImpl implements IdentityService {
 					if (module.getModifier() != null) module.getModifier().getName();
 				}
 			}
+			return modules;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OAException("分页查询module时出错",e);
 		}
-		return modules;
 	}
 	
 

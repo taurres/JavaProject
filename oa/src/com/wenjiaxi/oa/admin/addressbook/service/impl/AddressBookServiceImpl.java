@@ -6,8 +6,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-import com.wenjiaxi.oa.admin.AdminConstant;
 import com.wenjiaxi.oa.admin.addressbook.dao.ContactDao;
 import com.wenjiaxi.oa.admin.addressbook.dao.ContactGroupDao;
 import com.wenjiaxi.oa.admin.addressbook.service.AddressbookService;
@@ -114,20 +114,22 @@ public class AddressbookServiceImpl implements AddressbookService {
 	 * @param pageModel
 	 * @return
 	 */
-	public List<Contact> getContactByPage(String code, PageModel pageModel){
+	public List<Contact> getContactByPage(long contactGroup, PageModel pageModel){
 		List<Contact> contacts;
 		try {
-			contacts = contactDao.getContactByPage(code, pageModel, AdminConstant.MODULE_CODE_LENGTH);
+			contacts = contactDao.getContactByPage(contactGroup, pageModel);
 			for (Contact contact : contacts) {
 				if (contacts != null) {
-
+					if (contact.getContactGroup() != null) {
+						contact.getContactGroup().getName();
+					}
 				}
 			}
+			return contacts;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OAException("分页查询contact时出错",e);
 		}
-		return contacts;
 	}
 	
 
@@ -135,9 +137,14 @@ public class AddressbookServiceImpl implements AddressbookService {
 	 * 添加contact
 	 * @param contact
 	 */
-	public void addContact(Contact contact){
+	public void addContact(Contact contact, long contactGroup){
 		try {
-			
+			if (!StringUtils.isEmpty(contactGroup)) {	
+				//根据id找到contactGroup
+				ContactGroup group = getContactGroup(contactGroup);
+				contact.setContactGroup(group);
+				contactDao.save(contact);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OAException("添加contact时出错",e);
@@ -149,9 +156,16 @@ public class AddressbookServiceImpl implements AddressbookService {
 	 * @param code
 	 * @return
 	 */
-	public Contact getContact(String code){
+	public Contact getContact(long id){
 		try {
-			return null;
+			Contact contact = contactDao.get(Contact.class, id);
+			//加载延迟属性
+			if (contact != null) {
+				if (contact.getContactGroup() != null) {
+					contact.getContactGroup().getId();
+				}
+			}
+			return contact;
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OAException("根据code查询contact时出错",e);
@@ -162,9 +176,17 @@ public class AddressbookServiceImpl implements AddressbookService {
 	 * 更新contact
 	 * @param contact
 	 */
-	public void updateContact(Contact contact){
+	public void updateContact(Contact contact, long contactGroup){
 		try {
-			
+			Contact con = getContact(contact.getId());
+			ContactGroup cg = getContactGroup(contactGroup);
+			con.setName(contact.getName());
+			con.setSex(contact.getSex());
+			con.setPhone(contact.getPhone());
+			con.setEmail(contact.getEmail());
+			con.setQqNum(contact.getQqNum());
+			con.setBirthday(contact.getBirthday());
+			con.setContactGroup(cg);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OAException("更新contact时出错",e);
@@ -175,8 +197,13 @@ public class AddressbookServiceImpl implements AddressbookService {
 	 * 批量删除contact
 	 * @param ids
 	 */
-	public void deleteContact(String[] codes){
-		contactDao.deleteContact(codes);
+	public void deleteContact(String[] ids){
+		try {
+			contactDao.deleteContact(ids);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("批量删除contact时出错",e);
+		}
 	}
 	
 }
