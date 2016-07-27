@@ -22,13 +22,13 @@
 			window.d = new dTree("d", "${path}/js/dtree/");
 			//添加根节点
 			d.add(-2, -1, "操作管理");
-			d.add(0, -2, "全部","${path}/admin/identity/selectModule","全部操作","rightFrame");
+			d.add(0, -2, "全部","${path}/admin/identity/selectModule","全部操作","moduleRightFrame");
 			//异步请求根据数据库内容加载节点
 			//返回数据格式:[{id: ,pid: ,name: },{},{}]
 			$.getJSON("${path}/admin/identity/loadModuleTree","post",function(data,status){
 				if(status=="success"){
 					$.each(data,function(){
-						d.add(this.id,this.pid,this.name,"${path}/admin/identity/selectModule?parentCode="+this.id,this.name,"rightFrame");
+						d.add(this.id,this.pid,this.name,"${path}/admin/identity/selectModule?parentCode="+this.id,this.name,"moduleRightFrame");
 					});
 				$(document.body).html(d.toString());
 				}else{

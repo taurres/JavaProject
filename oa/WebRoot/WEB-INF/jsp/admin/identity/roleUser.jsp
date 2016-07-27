@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>OA办公管理系统-用户管理</title>
+	<title>OA办公管理系统-绑定用户角色管理</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="cache-control" content="no-cache" />
@@ -43,62 +43,42 @@
 				$("#checkAll").attr("checked", boxes.filter(":checked").length == boxes.length);
 			});
 			
-			//点击添加按钮弹出添加角色窗口
-			$("#addRole").click(function(){
+			//点击按钮选择要绑定的用户
+			$("#bindBtn").click(function(){
 				$("#divDialog").dialog({
-					title: "添加角色",
-					width: 400,
-					height: 220,
+					title: "绑定用户",
+					width: 800,
+					height: 420,
 					collapsible : true,
 					maximizable : true,
 					modal: true,
 					onClose : function(){
-						window.location.href = "${path}/admin/identity/selectRole?msg=${msg}&pageModel.pageIndex=${pageModel.pageIndex}";
+						window.location.href = "${path}/admin/identity/showBindedUser?pageModel.pageIndex=${pageModel.pageIndex}&role.id=${role.id}&role.name=${role.name}";
 					}
 				});
-				$("#iframe").attr("src", "${path}/admin/identity/showAddRole").fadeIn(200);
+				$("#iframe").attr("src", "${path}/admin/identity/showBindableUser?role.id=${role.id}").fadeIn(200);
 			});
 			
-			// 点击按钮修改用户
-			$("#updateRole").click(function(){
+			// 点击按钮解除用户
+			$("#unbindBtn").click(function(){
 				// 获取选中的checkbox 
 				var boxes = $("input[id^='box_']:checked");
-				if (boxes.length == 0){
-					alert("请选择要修改的角色！");
-				}else if (boxes.length == 1){
-					$("#divDialog").dialog({    
-						title: "修改角色",   // 标题  
-						width: 400,   // 宽度
-						height: 220,   // 高度
-						modal: true, // 模态窗口.
-						collapsible : true, // 可伸缩
-						minimizable : false, // 最小化
-						maximizable : true, // 最大化
-						onClose : function(){
-							window.location.href = "${path}/admin/identity/selectRole?pageModel.pageIndex=${pageModel.pageIndex}";
-							location.reload();
-						}
-					});
-					$("#iframe").attr("src", "${path}/admin/identity/showUpdateRole?role.id=" + boxes.val()).fadeIn(200);
-				}else{
-					alert("修改角色时，只能选择一个！");
-				}
-			});
-			
-			//点击按钮删除用户
-			$("#deleteRole").click(function(){
-				var boxes = $("input[id^='box_']:checked");
 				if(boxes.length == 0){
-					alert("请选择要删除的角色");
+					alert("请选择要解除绑定的用户");
 				}else{
-					if (confirm("确定要删除该角色吗?")){
+					if (confirm("确定要解除绑定该角色吗?")){
 						var ids = boxes.map(function(){
 							return this.value;
 						});
-						window.location.href = "${path}/admin/identity/deleteRole?pageModel.pageIndex=${pageModel.pageIndex}&ids=" + ids.get();
-						alert("删除成功！");
+						window.location.href = "${path}/admin/identity/unbindUser?role.id=${role.id}&role.name=${role.name}&pageModel.pageIndex=${pageModel.pageIndex}&ids=" + ids.get();
+						alert("解除绑定成功！");
 					};
 				}
+			});
+			
+			//点击按钮返回角色页面
+			$("#backBtn").click(function(){
+				window.location.href = "${path}/admin/identity/selectRole";
 			});
 			
 			
@@ -109,10 +89,10 @@
 	<!-- 工具按钮区 -->
 		<table>
 			<tr>
-				<td><input type="button" value="添加" id="addRole"/></td>
-				<td><input type="button" value="修改" id="updateRole"/></td>
-				<td><input type="button" value="删除" id="deleteRole"/></td>
-				<td><span>${msg}</span><td>
+				<td><input type="button" value="绑定用户" id="bindBtn"/></td>
+				<td><input type="button" value="解除用户" id="unbindBtn"/></td>
+				<td><input type="button" value="返回" id="backBtn"/><span>&nbsp;&nbsp;正在给<font color="red">【${role.name}】</font>角色绑定用户</span></td>
+				
 			</tr>
 		</table>
 	
@@ -120,39 +100,58 @@
 	<table width="100%" class="listTable" cellpadding="8" cellspacing="1">
 		<tr class="listHeaderTr">
 			<th><input type="checkbox" id="checkAll"/>全部</th>
-			<th>名称</th>
-			<th>备注</th>
-			<th>操作</th>
-			<th>创建时间</th>
+			<th>编号</th>
+			<th>姓名</th>
+			<th>性别</th>
+			<th>部门</th>
+			<th>职位</th>
+			<th>手机号码</th>
+			<th>邮箱</th>
+			<th>状态</th>
+			<th>创建日期</th>
 			<th>创建人</th>
-			<th>修改时间</th>
-			<th>修改人</th>
+			<th>审核日期</th>
+			<th>审核人</th>
 		</tr>
 		<tbody style="background-color: #FFFFFF;">
-			<s:iterator value="roles" status="stat" >
+			<s:iterator value="users" status="stat">
 				<tr id="tr_${stat.index}" class="listTr">
-					<td><input type="checkbox" id="box_${stat.index}" value="${id}"/>${stat.count}</td>
+					<td><input type="checkbox" id="box_${stat.index}" value="${userId}"/>${stat.count}</td>
+					<td><s:property value="userId"/></td>
 					<td><s:property value="name"/></td>
-					<td><s:property value="remark"/></td>
-					<td><a href="${path}/admin/identity/showBindedUser?role.id=${id}&role.name=${name}">绑定用户</a>&nbsp;<a href="${path}/admin/identity/popedomMain?role.id=${id}&role.name=${name}">绑定操作</a></td>
+					<td>${sex == 1 ? '男' : '女'}</td>
+					<td><s:property value="dept.name"/></td>
+					<td><s:property value="job.name"/></td>
+					<td><s:property value="phone"/></td>
+					<td><s:property value="email"/></td>
+					<td>
+						<s:if test="status == 0">
+							<font color="blue">新建</font>
+						</s:if>
+						<s:elseif test="status == 1">
+							<font color="green">已审核</font>
+						</s:elseif>
+						<s:elseif test="status == 2">
+							<font color="red">不通过</font>
+						</s:elseif>
+						<s:else><font color="HotPink">冻结</font></s:else>
+					</td>
 					<td><s:date name="createDate" format="yyyy-MM-dd HH:mm:ss"/></td>
 					<td><s:property value="creater.name"/></td>
-					<td><s:date name="modifyDate" format="yyyy-MM-dd HH:mm:ss"/></td>
-					<td><s:property value="modifier.name"/></td>
+					<td><s:date name="checkDate" format="yyyy-MM-dd HH:mm:ss"/></td>
+					<td><s:property value="checker.name"/></td>
 				</tr>
 			</s:iterator>
-			
 		</tbody>
 	</table>
 	<!-- 分页标签区 -->
 		<page:pager pageIndex="${pageModel.pageIndex}" 
 		pageSize="${pageModel.pageSize}" 
 		recordCount="${pageModel.recordCount}" 
-		submitUrl="${path}/admin/identity/selectRole?pageModel.pageIndex={0}"/>
+		submitUrl="${path}/admin/identity/showBindedUser?pageModel.pageIndex={0}&role.id=${role.id}"/>
 	<!-- div作为弹出窗口 -->
     <div id="divDialog" style="overflow: hidden;">
 		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>
 	</div>
-	
 </body>
 </html>

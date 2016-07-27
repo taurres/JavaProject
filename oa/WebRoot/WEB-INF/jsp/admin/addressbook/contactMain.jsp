@@ -15,7 +15,7 @@
 	<link href="${path}/logo.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 	<frameset cols="168,*" frameborder="yes" border="1">
-		<frame src="${path}/admin/addressbook/contactLeft" name="leftFrame"/>
-		<frame src="${path}/admin/addressbook/selectContact" name="rightFrame" />
+		<frame src="${path}/admin/addressbook/contactLeft" name="contactLeftFrame"/>
+		<frame src="${path}/admin/addressbook/selectContact" name="contactRightFrame" />
 	</frameset>
 </html>

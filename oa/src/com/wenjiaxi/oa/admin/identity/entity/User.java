@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.apache.commons.lang3.ObjectUtils.Null;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -95,6 +96,19 @@ public class User implements Serializable {
 	@ManyToMany(fetch=FetchType.LAZY, targetEntity=Role.class, mappedBy="users")
 	private Set<Role> roles = new HashSet<>();
 	
+	
+	@Override
+	public int hashCode() {
+		return userId == null ? 0 : userId.hashCode();
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null || ! (obj instanceof User)) {
+			return false;
+		}
+		User u = (User)obj;
+		return u.getUserId().equals(this.getUserId());
+	}
 	/* getter and setter */
 	public String getUserId() {
 	return userId;

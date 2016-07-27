@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -501,6 +502,97 @@ public class IdentityServiceImpl implements IdentityService {
 	 * @param ids
 	 */
 	public void deleteModule(String[] codes){
-		moduleDao.deleteModule(codes);
+		try {
+			moduleDao.deleteModule(codes);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("批量删除module时出错",e);
+		}
+	}
+	
+	/** TODO################### 角色绑定业务 ##################### */
+	/**
+	 * 分页查询已绑定指定role的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindedUser(PageModel pageModel, Long id){
+		try {
+			List<User> users = userDao.getBindedUser(pageModel, id);
+			for (User u : users) {
+				if (u != null) {
+					if (u.getDept() != null) u.getDept().getName();
+					if (u.getJob() != null) u.getJob().getName(); 
+					if (u.getCreater() != null) u.getCreater().getName();
+					if (u.getChecker() != null) u.getChecker().getName();
+				}
+			}
+			return users;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("分页查询已绑定指定role的user时出错",e);
+		}
+	}
+	
+	/**
+	 * 分页查询可以绑定的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindableUser(PageModel pageModel, Long id){
+		try {
+			List<User> users = userDao.getBindableUser(pageModel, id);
+			for (User u : users) {
+				if (u != null) {
+					if (u.getJob() != null) u.getJob().getName(); 
+					if (u.getCreater() != null) u.getCreater().getName();
+				}
+			}
+			return users;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("分页查询已绑定指定role的user时出错",e);
+		}
+	}
+	
+	/**
+	 * 给用户绑定角色
+	 * @param roleId
+	 * @param userIds
+	 */
+	public void bindUser(Long roleId, String[] userIds){
+		try {
+			//user-role中间表由role维护,从role获取封装user的set集合
+			Role role = getRole(roleId);
+			Set<User> users = role.getUsers();
+			for (String userId : userIds) {
+				User user = new User();
+				user.setUserId(userId);
+				users.add(user);
+			}
+			//将更新后的user集合赋值给role
+			role.setUsers(users);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("给用户绑定角色时出错",e);
+		}
+	}
+	
+	/**
+	 * 解绑用户
+	 * @param id
+	 * @param split
+	 */
+	public void unbindUser(Long roleId, String[] userIds){
+		Role role = getRole(roleId);
+		Set<User> users = role.getUsers();
+		for (String userId : userIds) {
+			User user = new User();
+			user.setUserId(userId);
+			users.remove(user);
+		}
+		
 	}
 }

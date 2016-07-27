@@ -21,16 +21,14 @@
 		$(function(){
 			window.d = new dTree("d", "${path}/js/dtree/");
 			//添加根节点
-			d.add(-2, -1, "联系人管理");
-			d.add(0, -2, "全部","${path}/admin/addressbook/selectContact","全部联系人","contactRightFrame");
+			d.add(0, -1, "权限管理","${path}/admin/identity/selectPopedom","权限管理","popedomRightFrame");
 			//异步请求根据数据库内容加载节点
-			//返回数据格式: [[id,name],[],...]
-			$.getJSON("${path}/admin/addressbook/loadContactTree","post",function(data,status){
+			//返回数据格式:[{id: ,pid: ,name: },{},{}]
+			$.getJSON("${path}/admin/identity/loadPopedomTree","post",function(data,status){
 				if(status=="success"){
 					$.each(data,function(){
-						d.add(this[0],0,this[1],"${path}/admin/addressbook/selectContact?contactGroup="+this[0],this[1],"contactRightFrame");
+						d.add(this.id,this.pid,this.name,"${path}/admin/identity/selectPopedom?parentCode="+this.id,this.name,"popedomRightFrame");
 					});
-				d.openAll();
 				$(document.body).html(d.toString());
 				}else{
 					alert("加载失败");

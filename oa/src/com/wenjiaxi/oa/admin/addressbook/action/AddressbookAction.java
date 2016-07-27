@@ -20,7 +20,7 @@ public class AddressbookAction extends ActionSupport{
 	@Resource
 	protected AddressbookService addressbookService;
 	
-	protected PageModel pageModel;
+	protected PageModel pageModel = new PageModel();
 	
 	//操作结果信息
 	protected String msg;

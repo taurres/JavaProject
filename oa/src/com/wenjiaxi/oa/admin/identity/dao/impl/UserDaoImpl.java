@@ -117,6 +117,33 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 		}
 		hql.append(")");
 		this.bulkUpdate(hql.toString(), params.toArray());
-		
 	}
+	
+	/**
+	 * 分页查询已绑定指定role的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindedUser(PageModel pageModel, Long id){
+		List<Object> params = new ArrayList<Object>();
+		params.add(id);
+		return this.findByPage("select u from User u inner join u.roles as r where r.id = ?", pageModel, params);
+	}
+	
+	/**
+	 * 分页查询可以绑定的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindableUser(PageModel pageModel, Long id){
+		StringBuilder hql = new StringBuilder();
+		hql.append("select u from User u where u.id not in");
+		hql.append("(select u.id from User u inner join u.roles as r where r.id = ?)");
+		List<Object> params = new ArrayList<Object>();
+		params.add(id);
+		return this.findByPage(hql.toString(), pageModel, params);
+	}
+	
 }

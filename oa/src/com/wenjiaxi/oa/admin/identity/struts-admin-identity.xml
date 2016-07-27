@@ -148,6 +148,69 @@
 		<action name="deleteModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="deleteModule">
 			<result type="chain">selectModule</result>
 		</action>
+		<!--  ################### bindUser action #####################   -->	
+		<!-- 跳转到显示已绑定用户的页面 -->
+		<action name="showBindedUser" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="showBindedUser">
+			<result>/WEB-INF/jsp/admin/identity/roleUser.jsp</result>
+		</action>
+		<!-- 跳转到显示可以绑定的用户的页面 -->
+		<action name="showBindableUser" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="showBindableUser">
+			<result>/WEB-INF/jsp/admin/identity/bindableUser.jsp</result>
+		</action>
+		<!-- 给用户绑定角色 -->
+		<action name="bindUser" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="bindUser">
+			<result type="chain">showBindableUser</result>
+		</action>
+		<!-- 解除绑定用户 -->
+		<action name="unbindUser" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="unbindUser">
+			<result type="chain">showBindedUser</result>
+		</action>
+		<!--  ################### popedom action #####################   -->
+		<!-- 异步加载权限dtree -->
+		<action name="loadPopedomTree" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadPopedomTree">
+			<result type="json">
+				<param name="root">responseMap</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 返回popedom主页面(包含两个frame的页面) -->
+		<action name="popedomMain">
+			<result>/WEB-INF/jsp/admin/identity/popedomMain.jsp</result>
+		</action>
+		<!-- 返回popedom左页面 -->
+		<action name="popedomLeft">
+			<result>/WEB-INF/jsp/admin/identity/popedomLeft.jsp</result>
+		</action>
+		<!-- 分页查询popedom -->
+		<action name="selectPopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="selectPopedom">
+			<result>/WEB-INF/jsp/admin/identity/popedom.jsp</result>
+		</action>   
+		<!-- 返回添加popedom页面addPopedom.jsp -->
+		<action name="showAddPopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction">
+			<result>/WEB-INF/jsp/admin/identity/addPopedom.jsp</result>
+		</action>
+		<!-- 添加popedom-->
+		<action name="addPopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="addPopedom">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addPopedom.jsp</result>
+			<result>/WEB-INF/jsp/admin/identity/addPopedom.jsp</result>
+		</action>
+		<!-- 返回更新popedom页面 -->
+		<action name="showUpdatePopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="showUpdatePopedom">
+			<result>/WEB-INF/jsp/admin/identity/updatePopedom.jsp</result>
+		</action>
+		<!-- 更新popedom -->
+		<action name="updatePopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="updatePopedom">
+			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result name="invalid.token">/WEB-INF/jsp/admin/identity/updatePopedom.jsp</result>
+			<result>/WEB-INF/jsp/admin/identity/updatePopedom.jsp</result>
+		</action>
+		<!-- 批量删除popedom -->
+		<action name="deletePopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="deletePopedom">
+			<result type="chain">selectPopedom</result>
+		</action>	
     </package>
 </struts>
     

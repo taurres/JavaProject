@@ -55,7 +55,7 @@
 					maximizable : true, // 最大化
 					onClose : function(){
 						// 刷新左边的
-						parent.leftFrame.location.reload();
+						parent.moduleLeftFrame.location.reload();
 						window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 					}
 				});
@@ -78,7 +78,7 @@
 						maximizable : true, // 最大化
 						onClose : function(){
 							// 刷新左边的树 
-							parent.leftFrame.location.reload();
+							parent.moduleLeftFrame.location.reload();
 							window.location.href = "${path}/admin/identity/selectModule?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 						}
 					});
@@ -104,7 +104,7 @@
 			});
 			
 			if ("${msg}" != ""){
-				parent.leftFrame.location.reload();
+				parent.moduleLeftFrame.location.reload();
 			}
 			
 			

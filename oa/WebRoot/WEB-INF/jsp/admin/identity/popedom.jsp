@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-	<title>OA办公管理系统-用户管理</title>
+	<title>OA办公管理系统-模块管理</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="pragma" content="no-cache" />
 	<meta http-equiv="cache-control" content="no-cache" />
@@ -44,62 +44,68 @@
 			});
 			
 			//点击添加按钮弹出添加角色窗口
-			$("#addRole").click(function(){
-				$("#divDialog").dialog({
-					title: "添加角色",
-					width: 400,
-					height: 220,
-					collapsible : true,
-					maximizable : true,
-					modal: true,
+			$("#addPopedom").click(function(){
+				$("#divDialog").dialog({    
+					title: "添加操作",   // 标题  
+					width: 370,   // 宽度
+					height: 245,   // 高度
+					modal: true, // 模态窗口
+					collapsible : true, // 可伸缩
+					minimizable : false, // 最小化
+					maximizable : true, // 最大化
 					onClose : function(){
-						window.location.href = "${path}/admin/identity/selectRole?msg=${msg}&pageModel.pageIndex=${pageModel.pageIndex}";
+						// 刷新左边的
+						parent.popedomLeftFrame.location.reload();
+						window.location.href = "${path}/admin/identity/selectPopedom?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 					}
 				});
-				$("#iframe").attr("src", "${path}/admin/identity/showAddRole").fadeIn(200);
+				$("#iframe").attr("src", "${path}/admin/identity/showAddPopedom?parentCode=${parentCode}").fadeIn(200);
 			});
 			
 			// 点击按钮修改用户
-			$("#updateRole").click(function(){
-				// 获取选中的checkbox 
-				var boxes = $("input[id^='box_']:checked");
-				if (boxes.length == 0){
-					alert("请选择要修改的角色！");
-				}else if (boxes.length == 1){
+			$("#updatePopedom").click(function(){
+				var boxs = $("input[type='checkbox'][id^='box_']:checked");
+				if (boxs.length == 0){
+					alert("请选择要修改的操作！");
+				}else if (boxs.length == 1){
 					$("#divDialog").dialog({    
-						title: "修改角色",   // 标题  
-						width: 400,   // 宽度
-						height: 220,   // 高度
+						title: "修改操作",   // 标题  
+						width: 370,   // 宽度
+						height: 245,   // 高度
 						modal: true, // 模态窗口.
 						collapsible : true, // 可伸缩
 						minimizable : false, // 最小化
 						maximizable : true, // 最大化
 						onClose : function(){
-							window.location.href = "${path}/admin/identity/selectRole?pageModel.pageIndex=${pageModel.pageIndex}";
-							location.reload();
+							// 刷新左边的树 
+							parent.popedomLeftFrame.location.reload();
+							window.location.href = "${path}/admin/identity/selectPopedom?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
 						}
 					});
-					$("#iframe").attr("src", "${path}/admin/identity/showUpdateRole?role.id=" + boxes.val()).fadeIn(200);
+					$("#iframe").attr("src", "${path}/admin/identity/showUpdatePopedom?popedom.code=" + boxs.val()).fadeIn(200);
 				}else{
-					alert("修改角色时，只能选择一个！");
+					alert("修改操作时，只能选择一个！");
 				}
 			});
 			
 			//点击按钮删除用户
-			$("#deleteRole").click(function(){
-				var boxes = $("input[id^='box_']:checked");
-				if(boxes.length == 0){
-					alert("请选择要删除的角色");
+			$("#deletePopedom").click(function(){
+				var boxs = $("input[type='checkbox'][id^='box_']:checked");
+				if (boxs.length == 0){
+					alert("请选择要删除的操作！");
 				}else{
-					if (confirm("确定要删除该角色吗?")){
-						var ids = boxes.map(function(){
+					if (confirm("您确定要删除吗？")){
+						var codes = boxs.map(function(){
 							return this.value;
 						});
-						window.location.href = "${path}/admin/identity/deleteRole?pageModel.pageIndex=${pageModel.pageIndex}&ids=" + ids.get();
-						alert("删除成功！");
-					};
+						window.location.href = "${path}/admin/identity/deletePopedom?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}&codes=" + codes.get();
+					}
 				}
 			});
+			
+			if ("${msg}" != ""){
+				parent.popedomLeftFrame.location.reload();
+			}
 			
 			
 		});
@@ -109,10 +115,9 @@
 	<!-- 工具按钮区 -->
 		<table>
 			<tr>
-				<td><input type="button" value="添加" id="addRole"/></td>
-				<td><input type="button" value="修改" id="updateRole"/></td>
-				<td><input type="button" value="删除" id="deleteRole"/></td>
-				<td><span>${msg}</span><td>
+				<td><input type="button" value="添加" id="addPopedom"/></td>
+				<td><input type="button" value="修改" id="updatePopedom"/></td>
+				<td><input type="button" value="删除" id="deletePopedom"/></td>
 			</tr>
 		</table>
 	
@@ -120,21 +125,25 @@
 	<table width="100%" class="listTable" cellpadding="8" cellspacing="1">
 		<tr class="listHeaderTr">
 			<th><input type="checkbox" id="checkAll"/>全部</th>
+			<th>编号</th>
 			<th>名称</th>
 			<th>备注</th>
+			<th>链接</th>
 			<th>操作</th>
-			<th>创建时间</th>
+			<th>创建日期</th>
 			<th>创建人</th>
-			<th>修改时间</th>
+			<th>修改日期</th>
 			<th>修改人</th>
 		</tr>
 		<tbody style="background-color: #FFFFFF;">
-			<s:iterator value="roles" status="stat" >
+			<s:iterator value="popedoms" status="stat" >
 				<tr id="tr_${stat.index}" class="listTr">
-					<td><input type="checkbox" id="box_${stat.index}" value="${id}"/>${stat.count}</td>
+					<td><input type="checkbox" id="box_${stat.index}" value="${code}"/>${stat.count}</td>
+					<td><s:property value="code"/></td>
 					<td><s:property value="name"/></td>
 					<td><s:property value="remark"/></td>
-					<td><a href="${path}/admin/identity/showBindedUser?role.id=${id}&role.name=${name}">绑定用户</a>&nbsp;<a href="${path}/admin/identity/popedomMain?role.id=${id}&role.name=${name}">绑定操作</a></td>
+					<td><s:property value="url"/></td>
+					<td><a href="${path}/admin/identity/selectPopedom?parentCode=${code}">查看下级</a></td>
 					<td><s:date name="createDate" format="yyyy-MM-dd HH:mm:ss"/></td>
 					<td><s:property value="creater.name"/></td>
 					<td><s:date name="modifyDate" format="yyyy-MM-dd HH:mm:ss"/></td>
@@ -148,11 +157,10 @@
 		<page:pager pageIndex="${pageModel.pageIndex}" 
 		pageSize="${pageModel.pageSize}" 
 		recordCount="${pageModel.recordCount}" 
-		submitUrl="${path}/admin/identity/selectRole?pageModel.pageIndex={0}"/>
+		submitUrl="${path}/admin/identity/selectPopedom?pageModel.pageIndex={0}&parentCode=${parentCode}"/>
 	<!-- div作为弹出窗口 -->
     <div id="divDialog" style="overflow: hidden;">
 		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>
 	</div>
-	
 </body>
 </html>

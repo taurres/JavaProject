@@ -51,6 +51,22 @@ public interface UserDao extends BaseDao{
 	 */
 	public void checkUser(String[] userIds, Short status);
 
+	/**
+	 * 分页查询已绑定指定role的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindedUser(PageModel pageModel, Long id);
+
+	/**
+	 * 分页查询可以绑定的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindableUser(PageModel pageModel, Long id);
+
 
 
 }

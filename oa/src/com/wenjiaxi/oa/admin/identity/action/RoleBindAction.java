@@ -3,34 +3,33 @@ package com.wenjiaxi.oa.admin.identity.action;
 import java.util.List;
 
 import com.wenjiaxi.oa.admin.identity.entity.Role;
+import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.core.common.web.PageModel;
 
 /**
- * 用户绑定权限action
+ * 用户绑定角色权限action
  * @author WEN JIAXI
  * @date 2016年7月23日 下午5:58:23
  * @version 1.0
  */
 
-public class RoleAction extends IdentityAction {
+public class RoleBindAction extends IdentityAction {
 
-	private static final long serialVersionUID = -5411041136062662346L;
+	private static final long serialVersionUID = -2219677877282646338L;
 	
 	private Role role;
 	private List<Role> roles;
+	private User user;
+	private List<User> users;
 	private String ids;
-	
+
 	/**
-	 * 分页查询role
+	 * 分页查询已绑定指定role的user
 	 * @return
 	 */
-	public String selectRole(){
-		try {
-			if (pageModel == null) {
-				pageModel = new PageModel();
-			}
-			
-			roles = identityService.getRoleByPage(pageModel);	
+	public String showBindedUser(){
+		try {	
+			users = identityService.getBindedUser(pageModel, role.getId());	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -38,12 +37,27 @@ public class RoleAction extends IdentityAction {
 	}
 	
 	/**
-	 * 添加role
+	 * 分页查询可以绑定的user
 	 * @return
 	 */
-	public String addRole(){
+	public String showBindableUser(){
+		try {	
+			System.out.println("action:"+role.getId());
+			pageModel.setPageSize(5);
+			users = identityService.getBindableUser(pageModel, role.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
+	/**
+	 * 给用户绑定角色
+	 * @return
+	 */
+	public String bindUser(){
 		try {
-			identityService.addRole(role);
+			identityService.bindUser(role.getId(), ids.split(","));
 			setMsg("success");
 		} catch (Exception e) {
 			setMsg("failed");
@@ -53,40 +67,12 @@ public class RoleAction extends IdentityAction {
 	}
 	
 	/**
-	 * 返回更新role页面
+	 * 解除绑定用户
 	 * @return
 	 */
-	public String showUpdateRole(){
+	public String unbindUser(){
 		try {
-			role = identityService.getRole(role.getId());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
-	/**
-	 * 更新role
-	 * @return
-	 */
-	public String updateRole(){
-		try {
-			identityService.updateRole(role);
-			setMsg("success");
-		} catch (Exception e) {
-			setMsg("failed");
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
-	/**
-	 * 删除role
-	 * @return
-	 */
-	public String deleteRole(){
-		try {
-			identityService.deleteRole(ids.split(","));
+			identityService.unbindUser(role.getId(), ids.split(","));
 			setMsg("success");
 		} catch (Exception e) {
 			setMsg("failed");
@@ -119,10 +105,22 @@ public class RoleAction extends IdentityAction {
 	public void setIds(String ids) {
 		this.ids = ids;
 	}
-	
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 	
 
-	
-	
-	
 }

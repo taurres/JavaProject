@@ -20,7 +20,7 @@ public class IdentityAction extends ActionSupport {
 	@Resource
 	protected IdentityService identityService;
 	
-	protected PageModel pageModel;
+	protected PageModel pageModel = new PageModel();
 	
 	//操作结果信息
 	protected String msg;

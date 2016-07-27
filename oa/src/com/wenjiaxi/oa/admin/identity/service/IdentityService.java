@@ -181,6 +181,36 @@ public interface IdentityService {
 	 */
 	public void deleteModule(String[] codes);
 
+	/**
+	 * 分页查询已绑定指定role的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindedUser(PageModel pageModel, Long id);
+
+	/**
+	 * 分页查询可以绑定的user
+	 * @param pageModel
+	 * @param id
+	 * @return
+	 */
+	public List<User> getBindableUser(PageModel pageModel, Long id);
+
+	/**
+	 * 给用户绑定角色
+	 * @param roleId
+	 * @param userIds
+	 */
+	public void bindUser(Long roleId, String[] userIds);
+
+	/**
+	 * 解绑用户
+	 * @param id
+	 * @param split
+	 */
+	public void unbindUser(Long roleId, String[] userIds);
+
 
 
 }

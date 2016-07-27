@@ -46,7 +46,7 @@
 			//点击添加按钮弹出添加角色窗口
 			$("#addContact").click(function(){
 				$("#divDialog").dialog({    
-					title: "添加操作",   // 标题  
+					title: "添加联系人",   // 标题  
 					width: 500,   // 宽度
 					height: 420,   // 高度
 					modal: true, // 模态窗口
@@ -55,7 +55,7 @@
 					maximizable : true, // 最大化
 					onClose : function(){
 						// 刷新左边的
-						parent.leftFrame.location.reload();
+						parent.contactLeftFrame.location.reload();
 						window.location.href = "${path}/admin/addressbook/selectContact?pageModel.pageIndex=${pageModel.pageIndex}&contactGroup=${contactGroup}";
 					}
 				});
@@ -78,7 +78,7 @@
 						maximizable : true, // 最大化
 						onClose : function(){
 							// 刷新左边的树 
-							parent.leftFrame.location.reload();
+							parent.contactLeftFrame.location.reload();
 							window.location.href = "${path}/admin/addressbook/selectContact?pageModel.pageIndex=${pageModel.pageIndex}&contactGroup=${contactGroup}";
 						}
 					});
@@ -104,7 +104,7 @@
 			});
 			
 			if ("${msg}" != ""){
-				parent.leftFrame.location.reload();
+				parent.contactLeftFrame.location.reload();
 			}
 			
 			
