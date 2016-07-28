@@ -211,6 +211,37 @@ public interface IdentityService {
 	 */
 	public void unbindUser(Long roleId, String[] userIds);
 
+	/**
+	 * 查询指定module下的所有操作权限
+	 * @param moduleCode
+	 * @return
+	 */
+	public List<Module> getOps(String moduleCode);
+
+	/**
+	 * 异步加载权限树
+	 * @return
+	 */
+	public List<Map<String, Object>> loadPopedomTree();
+
+	/**
+	 * 绑定popedom
+	 * @param moduleCode
+	 * @param role
+	 * @param split
+	 */
+	public void bindPopedom(String moduleCode, Role role, String[] codes);
+
+	/**
+	 * 异步查询指定模块指定角色下已经绑定的popedom
+	 * @param id
+	 * @param code
+	 * @return
+	 */
+	public List<String> getBindedPopedom(String code, Long id);
+
+
+
 
 
 }

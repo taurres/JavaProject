@@ -134,7 +134,10 @@
 					<td><input type="checkbox" id="box_${stat.index}" value="${id}"/>${stat.count}</td>
 					<td><s:property value="name"/></td>
 					<td><s:property value="remark"/></td>
-					<td><a href="${path}/admin/identity/showBindedUser?role.id=${id}&role.name=${name}">绑定用户</a>&nbsp;<a href="${path}/admin/identity/popedomMain?role.id=${id}&role.name=${name}">绑定操作</a></td>
+					<td>
+						<a href="${path}/admin/identity/showBindedUser?role.id=${id}&role.name=${name}">绑定用户</a>&nbsp;
+						<a href="${path}/admin/identity/popedomMain?role.id=${id}&role.name=${name}">绑定操作</a>
+					</td>
 					<td><s:date name="createDate" format="yyyy-MM-dd HH:mm:ss"/></td>
 					<td><s:property value="creater.name"/></td>
 					<td><s:date name="modifyDate" format="yyyy-MM-dd HH:mm:ss"/></td>

@@ -59,7 +59,7 @@
      </tx:advice>
 
 	<!-- 日志事务类 -->
-	<bean id="logAdvice" class="com.wenjiaxi.oa.core.log.LogAdvice"></bean>
+	<!-- <bean id="logAdvice" class="com.wenjiaxi.oa.core.log.LogAdvice"></bean> -->
      <!-- 配置切面 -->
      <aop:config>
           <!-- 事务切面 -->

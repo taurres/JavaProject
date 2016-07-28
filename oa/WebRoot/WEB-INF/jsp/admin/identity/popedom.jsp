@@ -11,11 +11,8 @@
 	<meta http-equiv="description" content="This is my page" />
 	<link href="${path}/logo.ico" rel="shortcut icon" type="image/x-icon" />
 	<link href="${path}/css/common/admin.css" type="text/css" rel="stylesheet"/>
-	<link href="${path}/css/common/pager.css" type="text/css" rel="stylesheet"/>
-	<link href="${path}/js/jqeasyui/themes/bootstrap/easyui.css" type="text/css" rel="stylesheet"/>
 	<script type="text/javascript" src="${path}/js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="${path}/js/jquery-migrate-1.2.1.min.js"></script>
-	<script type="text/javascript" src="${path}/js/jqeasyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			
@@ -43,69 +40,48 @@
 				$("#checkAll").attr("checked", boxes.filter(":checked").length == boxes.length);
 			});
 			
-			//点击添加按钮弹出添加角色窗口
-			$("#addPopedom").click(function(){
-				$("#divDialog").dialog({    
-					title: "添加操作",   // 标题  
-					width: 370,   // 宽度
-					height: 245,   // 高度
-					modal: true, // 模态窗口
-					collapsible : true, // 可伸缩
-					minimizable : false, // 最小化
-					maximizable : true, // 最大化
-					onClose : function(){
-						// 刷新左边的
-						parent.popedomLeftFrame.location.reload();
-						window.location.href = "${path}/admin/identity/selectPopedom?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
-					}
-				});
-				$("#iframe").attr("src", "${path}/admin/identity/showAddPopedom?parentCode=${parentCode}").fadeIn(200);
-			});
+			//定义成员变量来装载返回的json数据，表示已经绑定的权限的code
+			window.binded = "";
+			//自动选中已经绑定的操作的复选框，全选则自动选中全选复选框
+			$.ajax({
+				url: "${path}/admin/identity/showBindedPopedom", 
+				type: "post",
+				data: {"moduleCode":"${moduleCode}", "role.id":"${role.id}"},
+				dataType: "json",
+				success: function(data){
+					binded = data;
+					boxes.each(function(){
+						if(data.toString().indexOf(this.value) != -1){
+							//触发复选框的click和mouseover事件
+							$(this).trigger("click").trigger("mouseover");
+						}
+					});	
+				}
+			}); 
 			
-			// 点击按钮修改用户
-			$("#updatePopedom").click(function(){
-				var boxs = $("input[type='checkbox'][id^='box_']:checked");
-				if (boxs.length == 0){
-					alert("请选择要修改的操作！");
-				}else if (boxs.length == 1){
-					$("#divDialog").dialog({    
-						title: "修改操作",   // 标题  
-						width: 370,   // 宽度
-						height: 245,   // 高度
-						modal: true, // 模态窗口.
-						collapsible : true, // 可伸缩
-						minimizable : false, // 最小化
-						maximizable : true, // 最大化
-						onClose : function(){
-							// 刷新左边的树 
-							parent.popedomLeftFrame.location.reload();
-							window.location.href = "${path}/admin/identity/selectPopedom?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}";
+			//点击绑定按钮实现绑定和解绑
+			$("#bindPopedom").click(function(){
+				//获取选中的checkbox的code
+				var boxes = $("input[id^='box_']:checked");
+				var codes = boxes.map(function() {
+					return this.value;
+				})
+				//如果绑定前后选中的个数相等，但是内容有不一样，则提交绑定请求，如果选中个数相等且内容一样，则不提交请求
+				if(binded.length == boxes.length){
+					boxes.each(function(){
+						//遍历比较选中的与已经绑定的，有不同(index = -1)则提交请求
+						if(binded.toString().indexOf(this.value) == -1){
+							alert("test");
+							window.location.href = "${path}/admin/identity/bindPopedom?moduleCode=${moduleCode}&role.id=${role.id}&codes="+codes.get();
 						}
 					});
-					$("#iframe").attr("src", "${path}/admin/identity/showUpdatePopedom?popedom.code=" + boxs.val()).fadeIn(200);
 				}else{
-					alert("修改操作时，只能选择一个！");
+					//前后选中个数不相等，则一定提交请求
+					alert("test2");
+					window.location.href = "${path}/admin/identity/bindPopedom?moduleCode=${moduleCode}&role.id=${role.id}&codes="+codes.get();
 				}
 			});
 			
-			//点击按钮删除用户
-			$("#deletePopedom").click(function(){
-				var boxs = $("input[type='checkbox'][id^='box_']:checked");
-				if (boxs.length == 0){
-					alert("请选择要删除的操作！");
-				}else{
-					if (confirm("您确定要删除吗？")){
-						var codes = boxs.map(function(){
-							return this.value;
-						});
-						window.location.href = "${path}/admin/identity/deletePopedom?pageModel.pageIndex=${pageModel.pageIndex}&parentCode=${parentCode}&codes=" + codes.get();
-					}
-				}
-			});
-			
-			if ("${msg}" != ""){
-				parent.popedomLeftFrame.location.reload();
-			}
 			
 			
 		});
@@ -115,9 +91,7 @@
 	<!-- 工具按钮区 -->
 		<table>
 			<tr>
-				<td><input type="button" value="添加" id="addPopedom"/></td>
-				<td><input type="button" value="修改" id="updatePopedom"/></td>
-				<td><input type="button" value="删除" id="deletePopedom"/></td>
+				<td><input type="button" value="绑定" id="bindPopedom"/><span>&nbsp;&nbsp;正在给<font color="red">【${role.name}】</font>角色绑定操作权限</span></td>
 			</tr>
 		</table>
 	
@@ -127,40 +101,21 @@
 			<th><input type="checkbox" id="checkAll"/>全部</th>
 			<th>编号</th>
 			<th>名称</th>
-			<th>备注</th>
 			<th>链接</th>
-			<th>操作</th>
-			<th>创建日期</th>
-			<th>创建人</th>
-			<th>修改日期</th>
-			<th>修改人</th>
+			<th>备注</th>
 		</tr>
 		<tbody style="background-color: #FFFFFF;">
-			<s:iterator value="popedoms" status="stat" >
+			<s:iterator value="ops" status="stat">
 				<tr id="tr_${stat.index}" class="listTr">
 					<td><input type="checkbox" id="box_${stat.index}" value="${code}"/>${stat.count}</td>
 					<td><s:property value="code"/></td>
 					<td><s:property value="name"/></td>
-					<td><s:property value="remark"/></td>
 					<td><s:property value="url"/></td>
-					<td><a href="${path}/admin/identity/selectPopedom?parentCode=${code}">查看下级</a></td>
-					<td><s:date name="createDate" format="yyyy-MM-dd HH:mm:ss"/></td>
-					<td><s:property value="creater.name"/></td>
-					<td><s:date name="modifyDate" format="yyyy-MM-dd HH:mm:ss"/></td>
-					<td><s:property value="modifier.name"/></td>
+					<td><s:property value="remark"/></td>
 				</tr>
 			</s:iterator>
 			
 		</tbody>
 	</table>
-	<!-- 分页标签区 -->
-		<page:pager pageIndex="${pageModel.pageIndex}" 
-		pageSize="${pageModel.pageSize}" 
-		recordCount="${pageModel.recordCount}" 
-		submitUrl="${path}/admin/identity/selectPopedom?pageModel.pageIndex={0}&parentCode=${parentCode}"/>
-	<!-- div作为弹出窗口 -->
-    <div id="divDialog" style="overflow: hidden;">
-		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>
-	</div>
 </body>
 </html>

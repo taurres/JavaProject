@@ -65,5 +65,29 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
 			this.bulkUpdate("delete from Module where code like ? ", params.toArray());
 		}
 	}
+	
+	/**
+	 * 查询指定module下的所有操作(12位module)
+	 * @param moduleCode
+	 * @param codeLength
+	 * @return
+	 */
+	public List<Module> getOps(String moduleCode, int codeLength){
+		
+		List<Object> params = new ArrayList<Object>();
+		params.add(codeLength + moduleCode.length());
+		params.add(moduleCode + "%");
+		return this.find("select m from Module m where length(m.code) = ? and m.code like ? order by m.code asc", params.toArray());
+	}
+	
+	/**
+	 * 根据code长度查询module，获取小于指定长度的module
+	 * @param codeLength
+	 * @return [{id: ,name: },{},{}]
+	 */
+	public List<Map<String, Object>> getPopedomByCodeLength(int codeLength){
+		String hql = "select new map(m.code as id, m.name as name) from Module m where length(m.code) <= ? order by m.code asc";
+		return this.find(hql, new Object[]{codeLength});
+	}
 
 }

@@ -27,17 +27,20 @@
 			$.getJSON("${path}/admin/identity/loadPopedomTree","post",function(data,status){
 				if(status=="success"){
 					$.each(data,function(){
-						d.add(this.id,this.pid,this.name,"${path}/admin/identity/selectPopedom?parentCode="+this.id,this.name,"popedomRightFrame");
+						//url为查询popedom的action，传入role.id和moduleCode
+						var url = "${path}/admin/identity/selectPopedom?moduleCode=" + this.id + "&role.id=${role.id}&role.name=${role.name}";
+						//父节点不添加url
+						url = this.pid == 0 ? "" : url;
+						d.add(this.id,this.pid,this.name, url, this.name,"popedomRightFrame");
 					});
 				$(document.body).html(d.toString());
+				d.openAll("true");
 				}else{
 					alert("加载失败");
 				}
 			});
 			
-
-		});
-		
+		});	
 	</script>
 </head>
 <body>

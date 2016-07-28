@@ -35,5 +35,21 @@ public interface ModuleDao extends BaseDao{
 	 * @param codes
 	 */
 	void deleteModule(String[] codes);
+	
+
+	/**
+	 * 查询指定module下的所有操作(12位的module)
+	 * @param moduleCode
+	 * @param codeLength
+	 * @return
+	 */
+	List<Module> getOps(String moduleCode, int codeLength);
+
+	/**
+	 * 根据code长度查询module
+	 * @param codeLength
+	 * @return
+	 */
+	List<Map<String, Object>> getPopedomByCodeLength(int codeLength);
 
 }

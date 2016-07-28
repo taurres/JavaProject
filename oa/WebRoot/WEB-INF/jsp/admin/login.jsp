@@ -16,6 +16,11 @@
   <script type="text/javascript" src="${path}/js/bootstrap.min.js"></script>
   <script type="text/javascript">
     $(function(){
+    	//让登录页面不被包含
+	    if (window != parent) {
+			//如果页面被包含
+			parent.location = window.location;
+			
       //看不清楚按钮绑定点击事件
       $("#unclear").click(function(){
         $("#img").attr("src", "${path}/verifyCode?random=" + Math.random());

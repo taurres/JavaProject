@@ -24,6 +24,7 @@ import com.wenjiaxi.oa.admin.identity.dao.PopedomDao;
 import com.wenjiaxi.oa.admin.identity.dao.RoleDao;
 import com.wenjiaxi.oa.admin.identity.dao.UserDao;
 import com.wenjiaxi.oa.admin.identity.entity.Module;
+import com.wenjiaxi.oa.admin.identity.entity.Popedom;
 import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.admin.identity.service.IdentityService;
@@ -586,13 +587,101 @@ public class IdentityServiceImpl implements IdentityService {
 	 * @param split
 	 */
 	public void unbindUser(Long roleId, String[] userIds){
-		Role role = getRole(roleId);
-		Set<User> users = role.getUsers();
-		for (String userId : userIds) {
-			User user = new User();
-			user.setUserId(userId);
-			users.remove(user);
+		try {
+			Role role = getRole(roleId);
+			Set<User> users = role.getUsers();
+			for (String userId : userIds) {
+				User user = new User();
+				user.setUserId(userId);
+				users.remove(user);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("解绑用户时出错",e);
 		}
-		
+	}
+	
+	/**
+	 * 查询指定module下的所有操作权限
+	 * @param moduleCode
+	 * @return
+	 */
+	public List<Module> getOps(String moduleCode){
+		try {
+			return moduleDao.getOps(moduleCode, AdminConstant.MODULE_CODE_LENGTH);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("查询指定module下的所有操作权限时出错",e);
+		}
+	}
+	
+	/**
+	 * 异步加载权限树(4位 8位的module)
+	 * @return [{id: ,pid: ,name: },{},{}]
+	 */
+	public List<Map<String, Object>> loadPopedomTree(){
+		try {
+			List<Map<String, Object>> modules = moduleDao.getPopedomByCodeLength(AdminConstant.MODULE_CODE_LENGTH * 2);
+			for (Map<String, Object> m : modules) {
+				String id = m.get("id").toString();
+				//若是4位，则表明是父节点，pid为0，若是8位，则pid为前4位
+				m.put("pid", id.length() == AdminConstant.MODULE_CODE_LENGTH ? "0" : id.substring(0, id.length() - AdminConstant.MODULE_CODE_LENGTH));
+				//将name中的-去掉
+				m.put("name", m.get("name").toString().replace("-", ""));
+			}
+			return modules;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("异步加载权限树时出错",e);
+		}
+	}
+	
+	/**
+	 * 绑定新的popedom
+	 * @param moduleCode
+	 * @param role
+	 * @param split
+	 */
+	public void bindPopedom(String moduleCode, Role role, String[] codes){
+		try {
+			//先删除之前存在的所有权限
+			popedomDao.deletePopedom(moduleCode, role.getId());
+			if (!StringUtils.isEmpty(codes)) {
+				for (String code : codes) {
+					Popedom popedom = new Popedom();
+					popedom.setCreateDate(new Date());
+					popedom.setCreater(AdminConstant.getSessionUser());
+					popedom.setRole(role);
+					//添加module
+					Module module = new Module();
+					module.setCode(moduleCode);
+					popedom.setModule(module);
+					//添加操作
+					Module op = new Module();
+					op.setCode(code);
+					popedom.setOpera(op);
+					//添加权限
+					popedomDao.save(popedom);
+				}	
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("绑定权限时出错",e);
+		}
+	}
+	
+	/**
+	 * 异步查询指定模块指定角色下已经绑定的popedom
+	 * @param id
+	 * @param code
+	 * @return
+	 */
+	public List<String> getBindedPopedom(String code, Long id){
+		try {
+			return popedomDao.getCodes(code, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("异步查询指定模块指定角色下已经绑定的popedom时出错",e);
+		}
 	}
 }

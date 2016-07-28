@@ -174,43 +174,28 @@
 			</result>
 		</action>
 		<!-- 返回popedom主页面(包含两个frame的页面) -->
-		<action name="popedomMain">
+		<action name="popedomMain" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction">
 			<result>/WEB-INF/jsp/admin/identity/popedomMain.jsp</result>
 		</action>
 		<!-- 返回popedom左页面 -->
-		<action name="popedomLeft">
+		<action name="popedomLeft" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction">
 			<result>/WEB-INF/jsp/admin/identity/popedomLeft.jsp</result>
 		</action>
 		<!-- 分页查询popedom -->
-		<action name="selectPopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="selectPopedom">
+		<action name="selectPopedom" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="selectPopedom">
 			<result>/WEB-INF/jsp/admin/identity/popedom.jsp</result>
-		</action>   
-		<!-- 返回添加popedom页面addPopedom.jsp -->
-		<action name="showAddPopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction">
-			<result>/WEB-INF/jsp/admin/identity/addPopedom.jsp</result>
 		</action>
-		<!-- 添加popedom-->
-		<action name="addPopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="addPopedom">
-			<interceptor-ref name="loginStack"></interceptor-ref>
-			<interceptor-ref name="token"></interceptor-ref>
-			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addPopedom.jsp</result>
-			<result>/WEB-INF/jsp/admin/identity/addPopedom.jsp</result>
-		</action>
-		<!-- 返回更新popedom页面 -->
-		<action name="showUpdatePopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="showUpdatePopedom">
-			<result>/WEB-INF/jsp/admin/identity/updatePopedom.jsp</result>
-		</action>
-		<!-- 更新popedom -->
-		<action name="updatePopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="updatePopedom">
-			<interceptor-ref name="loginStack"></interceptor-ref>
-			<interceptor-ref name="token"></interceptor-ref>
-			<result name="invalid.token">/WEB-INF/jsp/admin/identity/updatePopedom.jsp</result>
-			<result>/WEB-INF/jsp/admin/identity/updatePopedom.jsp</result>
-		</action>
-		<!-- 批量删除popedom -->
-		<action name="deletePopedom" class="com.wenjiaxi.oa.admin.identity.action.PopedomAction" method="deletePopedom">
+		<!-- 绑定popedom-->
+		<action name="bindPopedom" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="bindPopedom">
 			<result type="chain">selectPopedom</result>
-		</action>	
+		</action>
+		<!-- 显示已绑定的popedom-->
+		<action name="showBindedPopedom" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="showBindedPopedom">
+			<result type="json">
+				<param name="root">codes</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
     </package>
 </struts>
     

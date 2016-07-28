@@ -15,7 +15,7 @@
 	<link href="${path}/logo.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 	<frameset cols="168,*" frameborder="yes" border="1">
-		<frame src="${path}/admin/identity/popedomLeft" name="popedomLeftFrame"/>
-		<frame src="${path}/admin/identity/selectPopedom" name="popedomRightFrame" />
+		<frame src="${path}/admin/identity/popedomLeft?role.id=${role.id}&role.name=${role.name}" name="popedomLeftFrame"/>
+		<frame src="${path}/admin/identity/selectPopedom?role.id=${role.id}&role.name=${role.name}" name="popedomRightFrame" />
 	</frameset>
 </html>
