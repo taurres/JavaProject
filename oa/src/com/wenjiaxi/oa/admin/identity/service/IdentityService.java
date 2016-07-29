@@ -30,6 +30,21 @@ public interface IdentityService {
 			String vcode, Integer key);
 	
 	/**
+	 * 修改密码
+	 * @param oldPwd
+	 * @param newPwd
+	 * @param checkPwd
+	 * @return
+	 */
+	public boolean updatePwd(String oldPwd, String newPwd, String checkPwd);
+	
+	/**
+	 * 根据用户id查询用户角色并查询其所有权限对应的url
+	 * @param userId
+	 * @return {"00010001": ["url1","url2"...],"00010002":["url",...]}
+	 */
+	public Map<String, List<String>> getUserPopodomURL(String userId);
+	/**
 	 * 根据id查询User，根据是否进行MD5加密调用不同dao方法
 	 * @param userId
 	 * @param isMD5
@@ -230,7 +245,7 @@ public interface IdentityService {
 	 * @param role
 	 * @param split
 	 */
-	public void bindPopedom(String moduleCode, Role role, String[] codes);
+	public void bindPopedom(String moduleCode, Role role, String codes);
 
 	/**
 	 * 异步查询指定模块指定角色下已经绑定的popedom
@@ -239,6 +254,13 @@ public interface IdentityService {
 	 * @return
 	 */
 	public List<String> getBindedPopedom(String code, Long id);
+
+	/**
+	 * 根据权限加载主菜单
+	 * @return
+	 */
+	public List<Map<String, Object>> getMenuTree();
+
 
 
 

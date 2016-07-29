@@ -5,6 +5,7 @@ package com.wenjiaxi.oa.admin.identity.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
@@ -42,10 +43,36 @@ public class PopedomDaoImpl extends BaseDaoImpl implements PopedomDao {
 	 * @param roleId
 	 * @return
 	 */
-	public List<String> getCodes(String moduleCode, Long roleId){
+	public List<String> getOpCodes(String moduleCode, Long roleId){
 		List<Object> params = new ArrayList<Object>();
 		params.add(moduleCode);
 		params.add(roleId);
 		return this.find("select opera.code from Popedom where module.code = ? and role.id = ?", params.toArray());
+	}
+	
+	/**
+	 * 查询指定用户的权限的module
+	 * @param userId
+	 */
+	public List<String> getModuleCodes(String userId){
+		StringBuilder hql = new StringBuilder();
+		List<Object> params = new ArrayList<Object>();
+		hql.append("select module.code from Popedom where role.id in");
+		hql.append("(select r.id from Role r inner join r.users as u where u.userId = ?)");
+		hql.append(" group by module.code order by module.code");
+		params.add(userId);
+		return this.find(hql.toString(), params.toArray());
+	}
+	
+	/**
+	 * 根据用户id获取其所有权限的opCode
+	 * @param userId
+	 */
+	public List<String> getOpCodes(String userId){
+		StringBuilder hql = new StringBuilder();
+		hql.append("select opera.code from Popedom where role.id in");
+		hql.append("(select r.id from Role r inner join r.users as u where u.userId = ?)");
+		hql.append(" group by opera.code order by opera.code");
+		return this.find(hql.toString(), new Object[]{userId});
 	}
 }

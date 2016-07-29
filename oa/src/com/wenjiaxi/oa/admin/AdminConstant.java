@@ -24,6 +24,12 @@ public final class AdminConstant {
 	//定义module中每个层级code的长度
 	public static final int MODULE_CODE_LENGTH = 4;
 	
+	//定义session中存放用户权限的名称
+	public static final String SESSION_USER_POPEDOM = "session_user_popedom";
+	
+	//定义session中某个操作的权限
+	public static final String SESSION_POPEDOM = "session_popedom";
+	
 	//返回session里面user的名字
 	public static User getSessionUser(){
 		return (User) ServletActionContext.getContext().getSession().get(SESSION_USER);

@@ -13,6 +13,7 @@
     	<!--  ################### user action #####################  -->
     	<!-- 异步请求部门菜单 -->
 		<action name="loadDepts" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadDepts">
+			<interceptor-ref name="loginStack"/>
 			<result type="json">
 				<param name="root">responseMap</param>
 				<param name="enableGZIP">true</param>
@@ -20,6 +21,7 @@
 		</action>
     	<!-- 异步请求部门和职业 -->
 		<action name="loadDeptsJobs" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadDeptsJobs">
+			<interceptor-ref name="loginStack"/>
 			<result type="json">
 				<param name="root">responseMaps</param>
 				<param name="enableGZIP">true</param>
@@ -27,6 +29,7 @@
 		</action>
 		<!-- 异步请求符合条件的user名字 -->
 		<action name="loadUserName" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadUserName">
+			<interceptor-ref name="loginStack"/>
 			<result type="json">
 				<param name="root">usernameList</param>
 				<param name="enableGZIP">true</param>
@@ -34,27 +37,31 @@
 		</action>
 		<!-- 异步请求确认用户名是否重复 -->
 		<action name="confirmUserId" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="confirmUserId">
+			<interceptor-ref name="loginStack"/>
 			<result type="json">
 				<param name="root">isExisted</param>
 			</result>
 		</action>
 		<!-- 分页查询user -->
 		<action name="selectUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="selectUser">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/user.jsp</result>
 		</action>   
 		<!-- 添加user -->
 		<action name="addUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="addUser">
-			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="authStack"/>
 			<interceptor-ref name="token"></interceptor-ref>
 			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 		</action>
 		<!-- 返回添加user页面addUser.jsp -->
 		<action name="showAddUser">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/addUser.jsp</result>
 		</action>
 		<!-- 返回更新user页面 -->
 		<action name="showUpdateUser" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="showUpdateUser">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/updateUser.jsp</result>
 		</action>
 		<!-- 更新user -->
@@ -73,26 +80,29 @@
 		<!--  ################### role action #####################   -->	
 		<!-- 分页查询role -->
 		<action name="selectRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="selectRole">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/role.jsp</result>
 		</action>   
 		<!-- 添加role -->
 		<action name="addRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="addRole">
-			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="authStack"/>
 			<interceptor-ref name="token"></interceptor-ref>
 			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addRole.jsp</result>
 			<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
 		</action>
 		<!-- 返回添加role页面addRole.jsp -->
 		<action name="showAddRole">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/addRole.jsp</result>
 		</action>
 		<!-- 返回更新role页面 -->
 		<action name="showUpdateRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="showUpdateRole">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
 		</action>
 		<!-- 更新role -->
 		<action name="updateRole" class="com.wenjiaxi.oa.admin.identity.action.RoleAction" method="updateRole">
-			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="authStack"/>
 			<interceptor-ref name="token"></interceptor-ref>
 			<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
 			<result>/WEB-INF/jsp/admin/identity/updateRole.jsp</result>
@@ -105,6 +115,7 @@
 		<!--  ################### module action #####################   -->	
 		<!-- 异步加载dtree -->
 		<action name="loadModuleTree" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadModuleTree">
+			<interceptor-ref name="loginStack"/>
 			<result type="json">
 				<param name="root">responseMap</param>
 				<param name="enableGZIP">true</param>
@@ -112,34 +123,39 @@
 		</action>
 		<!-- 返回module主页面(包含两个frame的页面) -->
 		<action name="moduleMain">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/moduleMain.jsp</result>
 		</action>
 		<!-- 返回module左页面 -->
 		<action name="moduleLeft">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/moduleLeft.jsp</result>
 		</action>
 		<!-- 分页查询module -->
 		<action name="selectModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="selectModule">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/module.jsp</result>
 		</action>   
 		<!-- 返回添加module页面addModule.jsp -->
 		<action name="showAddModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/addModule.jsp</result>
 		</action>
 		<!-- 添加module-->
 		<action name="addModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="addModule">
-			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="authStack"/>
 			<interceptor-ref name="token"></interceptor-ref>
 			<result name="invalid.token">/WEB-INF/jsp/admin/identity/addModule.jsp</result>
 			<result>/WEB-INF/jsp/admin/identity/addModule.jsp</result>
 		</action>
 		<!-- 返回更新module页面 -->
 		<action name="showUpdateModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="showUpdateModule">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
 		</action>
 		<!-- 更新module -->
 		<action name="updateModule" class="com.wenjiaxi.oa.admin.identity.action.ModuleAction" method="updateModule">
-			<interceptor-ref name="loginStack"></interceptor-ref>
+			<interceptor-ref name="authStack"></interceptor-ref>
 			<interceptor-ref name="token"></interceptor-ref>
 			<result name="invalid.token">/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
 			<result>/WEB-INF/jsp/admin/identity/updateModule.jsp</result>
@@ -151,10 +167,12 @@
 		<!--  ################### bindUser action #####################   -->	
 		<!-- 跳转到显示已绑定用户的页面 -->
 		<action name="showBindedUser" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="showBindedUser">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/roleUser.jsp</result>
 		</action>
 		<!-- 跳转到显示可以绑定的用户的页面 -->
 		<action name="showBindableUser" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="showBindableUser">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/bindableUser.jsp</result>
 		</action>
 		<!-- 给用户绑定角色 -->
@@ -168,6 +186,7 @@
 		<!--  ################### popedom action #####################   -->
 		<!-- 异步加载权限dtree -->
 		<action name="loadPopedomTree" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadPopedomTree">
+			<interceptor-ref name="loginStack"/>
 			<result type="json">
 				<param name="root">responseMap</param>
 				<param name="enableGZIP">true</param>
@@ -175,14 +194,17 @@
 		</action>
 		<!-- 返回popedom主页面(包含两个frame的页面) -->
 		<action name="popedomMain" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/popedomMain.jsp</result>
 		</action>
 		<!-- 返回popedom左页面 -->
 		<action name="popedomLeft" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/popedomLeft.jsp</result>
 		</action>
 		<!-- 分页查询popedom -->
 		<action name="selectPopedom" class="com.wenjiaxi.oa.admin.identity.action.RoleBindAction" method="selectPopedom">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/identity/popedom.jsp</result>
 		</action>
 		<!-- 绑定popedom-->
@@ -191,8 +213,17 @@
 		</action>
 		<!-- 显示已绑定的popedom-->
 		<action name="showBindedPopedom" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="showBindedPopedom">
+			<interceptor-ref name="loginStack"/>
 			<result type="json">
 				<param name="root">codes</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 根据权限加载主菜单 -->
+		<action name="loadMenuTree" class="com.wenjiaxi.oa.admin.identity.action.IdentityAjax" method="loadMenuTree">
+			<interceptor-ref name="loginStack"/>
+			<result type="json">
+				<param name="root">responseMap</param>
 				<param name="enableGZIP">true</param>
 			</result>
 		</action>

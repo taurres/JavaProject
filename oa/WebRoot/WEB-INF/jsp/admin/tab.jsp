@@ -62,10 +62,24 @@
 				});
 			}
 		};
+		//显示更改密码窗口的函数
+		var showPwdDialog = function(){
+			$("#divDialog").dialog({    
+				title: "修改密码",   // 标题  
+				width: 370,   // 宽度
+				height: 225,   // 高度
+				modal: true, // 模态窗口.
+				collapsible : true // 可伸缩
+			});
+			$("#iframe").attr("src", "${path}/admin/password.jspx").fadeIn(200);
+			};
 		
 	</script>
 </head>
 <body>
 <div id="tab"></div>
+ <div id="divDialog" style="overflow: hidden;">
+		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>
+</div>
 </body>
 </html>

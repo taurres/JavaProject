@@ -18,25 +18,28 @@
 		<script type="text/javascript">
 			$(function(){
 				$("#pwd_submit").click(function(){
-					var oldpwd = $("#oldpwd");
-					var newpwd = $("#newpwd");
-					var okpwd = $("#okpwd");
+					var oldPwd = $("#oldPwd");
+					var newPwd = $("#newPwd");
+					var checkPwd = $("#checkPwd");
 					var  msg = "";
-					if ($.trim(oldpwd.val()) == ""){
+					if ($.trim(oldPwd.val()) == ""){
 						msg = "旧密码不能为空!";
-						oldpwd.focus();
-					}else if (!/^\w{6,20}$/.test(oldpwd.val())){
+						oldPwd.focus();
+					}else if (!/^\w{6,20}$/.test(oldPwd.val())){
 						msg = "旧密码长度必须在6-20之间!";
-						oldpwd.focus();
-					}else if ($.trim(newpwd.val()) == ""){
+						oldPwd.focus();
+					}else if ($.trim(newPwd.val()) == ""){
 						msg = "新密码不能为空!";
-						newpwd.focus();
-					}else if (!/^\w{6,20}$/.test(newpwd.val())){
+						newPwd.focus();
+					}else if (!/^\w{6,20}$/.test(newPwd.val())){
 						msg = "新密码长度必须在6-20之间!";
-						newpwd.focus();
-					}else if ($.trim(newpwd.val()) != $.trim(okpwd.val())){
+						newPwd.focus();
+					}else if($.trim(oldPwd.val()) == $.trim(newPwd.val())){
+						msg = "新密码不能与旧密码相同";
+						newPwd.focus();
+					}else if ($.trim(newPwd.val()) != $.trim(checkPwd.val())){
 						msg = "新密码与确认密码不一致!";
-						okpwd.focus();
+						checkPwd.focus();
 					}
 					if (msg != ""){
 						alert(msg);
@@ -50,22 +53,22 @@
 <body>
 	<div align="center">
 		<s:if test="tip != null">
-			<center style="color:red;">${tip}</center>
+			<center style="color:red;">${msg}</center>
 		</s:if>
-		<form action="${path}/admin/updatePwd.jspx" method="post" id="pwdForm">
+		<form action="${path}/admin/updatePwd" method="post" id="pwdForm">
 			<s:token></s:token>
 			<table cellpadding="10px">
 				<tr>
 					<td>旧密码：</td>
-					<td><input type="password" id="oldpwd" size="30" name="oldpwd"/></td>
+					<td><input type="password" id="oldPwd" size="30" name="oldPwd"/></td>
 				</tr>
 				<tr>
 					<td>新密码：</td>
-					<td><input type="password" id="newpwd" size="30" name="newpwd"/></td>
+					<td><input type="password" id="newPwd" size="30" name="newPwd"/></td>
 				</tr>
 				<tr>
 					<td>确认密码：</td>
-					<td><input type="password" id="okpwd" size="30" name="okpwd"/></td>
+					<td><input type="password" id="checkPwd" size="30" name="checkPwd"/></td>
 				</tr>
 				<tr align="center">
 					<td colspan="2">

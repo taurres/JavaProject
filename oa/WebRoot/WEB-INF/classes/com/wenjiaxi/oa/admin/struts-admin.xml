@@ -9,16 +9,23 @@
 	<constant name="struts.action.extension" value="jspx,action,do," />
 
 	<package name="admin" namespace="/admin" extends="default">
-		<!-- 声明登录拦截器 -->
+		<!-- 声明登录拦截器栈 -->
 		<interceptors>
 			<interceptor name="loginInterceptor" class="com.wenjiaxi.oa.admin.interceptor.LoginInterceptor"></interceptor>
 			<interceptor-stack name="loginStack">
 				<interceptor-ref name="defaultStack"/>
 				<interceptor-ref name="loginInterceptor"/>
 			</interceptor-stack>
+
+		<!-- 声明权限拦截器栈 包含登录拦截器栈 -->
+			<interceptor name="authInterceptor" class="com.wenjiaxi.oa.admin.interceptor.AuthInterceptor"></interceptor>
+			<interceptor-stack name="authStack">
+				<interceptor-ref name="loginStack"/>
+				<interceptor-ref name="authInterceptor"/>
+			</interceptor-stack>
 		</interceptors>
 		<!-- 配置全局拦截器 -->
-		<default-interceptor-ref name="loginStack"/>
+		<default-interceptor-ref name="authStack"/>
 		
 		<!-- 全局result -->
 		<global-results>
@@ -37,10 +44,20 @@
 			</result>
 		</action>
 		<!-- 登出action -->
-		<action name="logout" class="com.wenjiaxi.oa.admin.LogoutAction"/>
+		<action name="logout" class="com.wenjiaxi.oa.admin.LogoutAction">
+			<interceptor-ref name="loginStack"/>
+		</action>
+		<!-- 修改密码 -->
+		<action name="updatePwd" class="com.wenjiaxi.oa.admin.UpdatePwdAction">
+			<!-- 排除登录拦截器的拦截 -->
+			<interceptor-ref name="loginStack"/>
+			<result type="redirectAction">logout</result>
+			<result name="input">/WEB-INF/jsp/admin/password.jsp</result>
+		</action>
 
 		<!-- 访问WEB-INF下的jsp页面 -->
 		<action name="*">
+			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/{1}.jsp</result>
 		</action>
 	</package>

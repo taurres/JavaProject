@@ -20,6 +20,7 @@
 	    if (window != parent) {
 			//如果页面被包含
 			parent.location = window.location;
+		}
 			
       //看不清楚按钮绑定点击事件
       $("#unclear").click(function(){

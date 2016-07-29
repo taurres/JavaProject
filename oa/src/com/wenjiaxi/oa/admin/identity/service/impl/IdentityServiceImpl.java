@@ -1,5 +1,6 @@
 package com.wenjiaxi.oa.admin.identity.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +93,11 @@ public class IdentityServiceImpl implements IdentityService {
 					if (key != null && key.equals(1)) {
 						CookieUtil.addCookie(AdminConstant.COOKIE_LOGIN, MD5.getMD5(user.getUserId()), AdminConstant.COOKIE_LOGIN_AGE);
 					}
+					//登陆成功则进行权限控制
+					//根据用户查询其角色，再查询它的权限，然后存入session中
+					Map<String, List<String>> userPopedoms = getUserPopodomURL(user.getUserId());
+					ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER_POPEDOM, userPopedoms);
+					
 				}else {
 					//登录失败
 					data.put("msg", "用户名或密码不正确");
@@ -103,6 +109,70 @@ public class IdentityServiceImpl implements IdentityService {
 			e.printStackTrace();
 			throw new OAException("登录方法异常",e);
 		}
+	}
+	
+	/**
+	 * 修改密码
+	 * @param oldPwd
+	 * @param newPwd
+	 * @param checkPwd
+	 * @return
+	 */
+	public boolean updatePwd(String oldPwd, String newPwd, String checkPwd){
+		try {
+			//判断新密码两次是否输入正确
+			if (!StringUtils.isEmpty(newPwd) && newPwd.equals(checkPwd)) {
+				User user = getUser(AdminConstant.getSessionUser().getUserId(), false);
+				//判断旧密码是否输入正确
+				if (user.getPassWord().equals(MD5.getMD5(oldPwd))) {
+					user.setPassWord(MD5.getMD5(newPwd));
+					return true;
+				}
+			}
+			return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("修改密码异常",e);
+		}
+	}
+	
+	/**
+	 * 根据用户id查询用户角色并查询其所有权限对应的url
+	 * @param userId
+	 * @return {"00010001": ["url1","url2"...],"00010002":["url",...]}
+	 */
+	public Map<String, List<String>> getUserPopodomURL(String userId){
+		try {
+			List<String> opCodes = popedomDao.getOpCodes(userId);
+			//返回的map
+			Map<String, List<String>> responseMap = new HashMap<String, List<String>>();
+			//map里面的list
+			List<String> urls = new ArrayList<String>();
+			//存放上次循环的moduleCode
+			String moduleCode = null;
+			for (String opCode : opCodes) {
+				//遍历完一个module则把含有该module所有url的list存入map，并新建一个list给下一个module使用
+				if (moduleCode != null && !opCode.startsWith(moduleCode)) {
+					responseMap.put(moduleCode, urls);
+					urls = new ArrayList<String>();
+				}
+				moduleCode = opCode.substring(0, opCode.length() - AdminConstant.MODULE_CODE_LENGTH);
+				//获取opCode对应的操作的url并放入list中
+				urls.add(getModule(moduleCode).getUrl());		
+			}
+			//最后一组url没有进入上面的if判断，需要另外加入map
+			if (moduleCode != null && urls.size()> 0) {
+				responseMap.put(moduleCode, urls);
+			}
+			/*for (Map.Entry<String, List<String>> entry : responseMap.entrySet()) {
+				System.out.println(entry.getKey()+"-->"+entry.getValue());
+			}*/
+			return responseMap;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("根据用户id查询用户角色并查询其所有权限时发生异常",e);
+		}
+		
 	}
 	
 	/**
@@ -642,19 +712,20 @@ public class IdentityServiceImpl implements IdentityService {
 	 * @param role
 	 * @param split
 	 */
-	public void bindPopedom(String moduleCode, Role role, String[] codes){
+	public void bindPopedom(String moduleCode, Role role, String codes){
 		try {
 			//先删除之前存在的所有权限
 			popedomDao.deletePopedom(moduleCode, role.getId());
 			if (!StringUtils.isEmpty(codes)) {
-				for (String code : codes) {
+				//添加module，均为同一个module
+				Module module = new Module();
+				module.setCode(moduleCode);
+				String[] codesArr = codes.split(",");
+				for (String code : codesArr) {
 					Popedom popedom = new Popedom();
 					popedom.setCreateDate(new Date());
 					popedom.setCreater(AdminConstant.getSessionUser());
 					popedom.setRole(role);
-					//添加module
-					Module module = new Module();
-					module.setCode(moduleCode);
 					popedom.setModule(module);
 					//添加操作
 					Module op = new Module();
@@ -678,10 +749,59 @@ public class IdentityServiceImpl implements IdentityService {
 	 */
 	public List<String> getBindedPopedom(String code, Long id){
 		try {
-			return popedomDao.getCodes(code, id);
+			return popedomDao.getOpCodes(code, id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OAException("异步查询指定模块指定角色下已经绑定的popedom时出错",e);
+		}
+	}
+	
+	/**
+	 * 根据权限加载主菜单
+	 * @return
+	 */
+	public List<Map<String, Object>> getMenuTree(){
+		try {
+			//获取权限的moduleCode
+			List<String> codes = popedomDao.getModuleCodes(AdminConstant.getSessionUser().getUserId());
+			List<Map<String, Object>> responseMaps = new ArrayList<Map<String,Object>>();
+			HashMap<String, Object> map;
+			//记录上次循环的pid,初始值为-1代表没有lastPid
+			String lastPid = "-1";
+			for (String moduleCode : codes) {
+				//新建一个map给高层级的的模块，相当于在菜单中添加一个父节点，用于包含下面层级的操作
+				//进入if则说明遍历到了新的模块
+				if (!moduleCode.startsWith(lastPid)) {
+					//将当前的pid赋值给lastPid
+					lastPid = moduleCode.substring(0, moduleCode.length() - AdminConstant.MODULE_CODE_LENGTH);
+					map = new HashMap<String, Object>();
+					//父节点的id是moduleCode的前N位
+					String id = lastPid;
+					Module module = getModule(id);
+					String name = module.getName();
+					String url = module.getUrl();
+					map.put("id", id);
+					map.put("pid", "0");
+					map.put("name", name);
+					map.put("url", url);
+					responseMaps.add(map);
+				}
+				//给普通操作新建map
+				map = new HashMap<String, Object>();
+				String pid = moduleCode.substring(0, moduleCode.length() - AdminConstant.MODULE_CODE_LENGTH);
+				Module module = getModule(moduleCode);
+				String name = module.getName();
+				String url = module.getUrl();
+				map.put("id", moduleCode);
+				map.put("pid", pid);
+				map.put("name", name);
+				map.put("url", url);
+				responseMaps.add(map);
+			}
+			return responseMaps;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("根据权限加载主菜单时出错",e);
 		}
 	}
 }

@@ -12,9 +12,11 @@
 	<meta name="Copyright" content="All Rights Reserved." />
 	<link href="${path}/logo.ico" rel="shortcut icon" type="image/x-icon" />
 	<link rel="stylesheet" type="text/css" href="${path}/css/common/global.css"/>
+	<link href="${path}/js/jqeasyui/themes/bootstrap/easyui.css" type="text/css" rel="stylesheet"/>
 	<script type="text/javascript" src="${path}/js/jquery-1.11.3.min.js"></script>
 	<script type="text/javascript" src="${path}/js/jquery-migrate-1.2.1.min.js"></script>
 	<script type="text/javascript" src="${path}/js/jquery-clock-1.0.js"></script>
+	<script type="text/javascript" src="${path}/js/jqeasyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript">
 		$(function(){
 			//clock动态时钟
@@ -36,6 +38,10 @@
 					$("#nav_title").attr("title", "隐藏菜单栏");
 			});
 			
+			//更改密码按钮
+			$("#changepwd").click(function(){
+				parent.mainframe.showPwdDialog();
+			});
 			//安全退出按钮退出登录
 			$("#logout").click(function(){
 				window.parent.location.href = "${path}/admin/logout";
@@ -51,7 +57,7 @@
         <div class="headmenutop">
         	
         	<a class="headtopout" id="logout" title="退出系统" href="javascript:void(0);" >安全退出</a>
-        	<a class="headtopout" title="密码修改" href="javascript:void(0);" >密码修改</a>
+        	<a class="headtopout" id="changepwd" title="密码修改" href="javascript:void(0);" >密码修改</a>
 			<div class="titlexx">
 				<span style="font-size:14px;">${session_user.name}</span><font style="font-size:14px;">&nbsp;您好，欢迎使用本系统&nbsp;&nbsp;</font>
 				<span id="time" style="color:#fff;font-size:14px;"></span>
@@ -63,5 +69,6 @@
       	<a href="javascript:void(0);" class="t_link" title="隐藏菜单栏" id="nav_title">
 		<img src="${path}/images/system/top_yc.gif" id="showNav"/><!--隐藏时反显示的图片<img src="images/top_xs.gif" />--></a>
     </div>
+       
   </body>
 </html>

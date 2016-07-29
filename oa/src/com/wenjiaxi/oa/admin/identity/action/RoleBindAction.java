@@ -2,6 +2,8 @@ package com.wenjiaxi.oa.admin.identity.action;
 
 import java.util.List;
 
+import org.springframework.util.StringUtils;
+
 import com.wenjiaxi.oa.admin.identity.entity.Module;
 import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
@@ -104,7 +106,8 @@ public class RoleBindAction extends IdentityAction {
 	 */
 	public String bindPopedom(){
 		try {
-			identityService.bindPopedom(moduleCode, role, codes.split(","));
+			System.out.println("action"+ !StringUtils.isEmpty(codes.split(",")));
+			identityService.bindPopedom(moduleCode, role, codes);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

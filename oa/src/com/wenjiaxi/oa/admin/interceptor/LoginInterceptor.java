@@ -1,5 +1,8 @@
 package com.wenjiaxi.oa.admin.interceptor;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 
@@ -49,6 +52,9 @@ public class LoginInterceptor extends AbstractInterceptor {
 				//若查询到user，则把userId存入session,并放行
 				if (user != null) {
 					invocation.getInvocationContext().getSession().put(AdminConstant.SESSION_USER, user);
+					//登录成功则获取该用户的权限，并将用户权限放入session
+					Map<String, List<String>> userPopedoms = identityService.getUserPopodomURL(user.getUserId());
+					invocation.getInvocationContext().getSession().put(AdminConstant.SESSION_USER_POPEDOM, userPopedoms);
 					//如果访问的是login页面，直接跳转到main页面
 					if (actionName.equals("login")) {
 						return "main";

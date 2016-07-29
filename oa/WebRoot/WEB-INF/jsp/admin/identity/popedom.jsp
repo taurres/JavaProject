@@ -71,18 +71,19 @@
 					boxes.each(function(){
 						//遍历比较选中的与已经绑定的，有不同(index = -1)则提交请求
 						if(binded.toString().indexOf(this.value) == -1){
-							alert("test");
 							window.location.href = "${path}/admin/identity/bindPopedom?moduleCode=${moduleCode}&role.id=${role.id}&codes="+codes.get();
 						}
 					});
 				}else{
 					//前后选中个数不相等，则一定提交请求
-					alert("test2");
 					window.location.href = "${path}/admin/identity/bindPopedom?moduleCode=${moduleCode}&role.id=${role.id}&codes="+codes.get();
 				}
 			});
 			
-			
+			//点击按钮返回角色页面
+			$("#backBtn").click(function(){
+				parent.window.location.href = "${path}/admin/identity/selectRole";
+			});
 			
 		});
 	</script>
@@ -91,7 +92,8 @@
 	<!-- 工具按钮区 -->
 		<table>
 			<tr>
-				<td><input type="button" value="绑定" id="bindPopedom"/><span>&nbsp;&nbsp;正在给<font color="red">【${role.name}】</font>角色绑定操作权限</span></td>
+				<td><input type="button" value="绑定" id="bindPopedom"/>
+				<td><input type="button" value="返回" id="backBtn"/><span>&nbsp;&nbsp;正在给<font color="red">【${role.name}】</font>角色绑定操作权限</span></td>
 			</tr>
 		</table>
 	

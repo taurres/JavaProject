@@ -119,6 +119,19 @@ public class IdentityAjax extends IdentityAction {
 		return SUCCESS;
 	}
 	
+	/**
+	 * 根据权限加载主菜单
+	 * @return 数据格式[{id : '', pid : '', name : '', url : ''},{}]
+	 */
+	public String loadMenuTree(){
+		try {
+			responseMap = identityService.getMenuTree();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SUCCESS;
+	}
+	
 	//getter setter
 	public List<Map<String, Object>> getResponseMap() {
 		return responseMap;

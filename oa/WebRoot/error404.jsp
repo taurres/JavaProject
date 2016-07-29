@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-您浏览的页面不存在╮(╯_╰)╭(错误代码:404)
+${msg}
 </body>
 </html>
