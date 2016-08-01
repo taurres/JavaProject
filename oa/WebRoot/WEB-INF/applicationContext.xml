@@ -58,8 +58,6 @@
      	 </tx:attributes>
      </tx:advice>
 
-	<!-- 日志事务类 -->
-	<!-- <bean id="logAdvice" class="com.wenjiaxi.oa.core.log.LogAdvice"></bean> -->
      <!-- 配置切面 -->
      <aop:config>
           <!-- 事务切面 -->
@@ -73,5 +71,16 @@
      	</aop:aspect>
      </aop:config>
           
-    
+    <!-- 配置javamail -->
+    <bean id="javaMailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl" 
+    p:defaultEncoding="utf-8"
+    p:host="smtp.163.com"
+    p:username="fkjava8888"
+    p:password="fkjava888">
+    	<property name="javaMailProperties">
+    		<props>
+    			<prop key="mail.smpt.auth">true</prop>
+    		</props>
+    	</property>
+    </bean>
 </beans>

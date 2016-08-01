@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -30,6 +31,7 @@ import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.admin.identity.service.IdentityService;
 import com.wenjiaxi.oa.core.action.VerifyAction;
+import com.wenjiaxi.oa.core.common.email.EmailSender;
 import com.wenjiaxi.oa.core.common.security.MD5;
 import com.wenjiaxi.oa.core.common.web.CookieUtil;
 import com.wenjiaxi.oa.core.common.web.PageModel;
@@ -59,6 +61,9 @@ public class IdentityServiceImpl implements IdentityService {
 	private RoleDao roleDao;
 	@Resource
 	private UserDao userDao;
+	//自己的emailsender接口
+	@Resource
+	private EmailSender emailSender;
 
 
 	
@@ -132,7 +137,39 @@ public class IdentityServiceImpl implements IdentityService {
 			return false;
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new OAException("修改密码异常",e);
+			throw new OAException("修改密码时异常",e);
+		}
+	}
+	
+	/**
+	 * 找回密码
+	 * @param userId
+	 * @param question
+	 * @param answer
+	 * @return
+	 */
+	public String findPwd(String userId, int question, String answer){
+		try {
+			//根据userId找到对应的user
+			User user = getUser(userId, false);
+			String msg = "找回密码失败";
+			//若问题回答正确，则随机生成新的密码并更改该user的密码，同时通过邮件将新密码发给用户
+			if (user.getQuestion() == question && user.getAnswer().equals(answer)) {
+				//截取随机生成的UUID作为密码
+				String newPwd = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6);
+				//将新密码通过邮件发给用户
+				String mailContent = "您的新密码为 " + newPwd + " 请登录并修改密码！";
+				boolean success = emailSender.send(user.getEmail(), "OA系统-找回密码", mailContent, true);
+				//邮件发送成功则修改user的密码
+				if (success) {
+					user.setPassWord(MD5.getMD5(newPwd));
+					msg = "您的新密码已发到您的邮箱" + user.getEmail() + "，请及时更改。";
+				}
+			}
+			return msg;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("找回密码时异常",e);
 		}
 	}
 	

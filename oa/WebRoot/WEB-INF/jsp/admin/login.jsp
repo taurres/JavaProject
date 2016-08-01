@@ -11,9 +11,11 @@
   <link rel="stylesheet" type="text/css" href="${path}/css/common/login2.css"/>
   <link rel="stylesheet" type="text/css" href="${path}/css/common/login3.css"/>
   <link rel="stylesheet" type="text/css" href="${path}/css/common/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="${path}/js/jqeasyui/themes/bootstrap/easyui.css"/>
   <script type="text/javascript" src="${path}/js/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="${path}/js/jquery-migrate-1.2.1.min.js"></script>
   <script type="text/javascript" src="${path}/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="${path}/js/jqeasyui/jquery.easyui.min.js"></script>
   <script type="text/javascript">
     $(function(){
     	//让登录页面不被包含
@@ -163,6 +165,18 @@
         }
       });
       
+      //找回密码链接
+      $("#findPwd").click(function(){
+    	  $("#divDialog").dialog({
+    		  title: "找回密码",   // 标题  
+				width: 370,   // 宽度
+				height: 225,   // 高度
+				modal: true, // 模态窗口.
+				collapsible : true // 可伸缩
+			});
+			$("#iframe").attr("src", "${path}/admin/showFindPwd").fadeIn(200);
+      });
+      
     });
   </script>
 </head>
@@ -218,7 +232,7 @@
 	            <input class="form-control input-block" id="userId" name="userId" tabindex="1" type="text" />
 	            <!-- 密码 -->
 	            <label for="password">
-	              	 请输入密码 <a href="javascript:void(0)" class="label-link">忘记密码？</a>
+	              	 请输入密码 <a href="javascript:void(0)" class="label-link" id="findPwd">忘记密码？</a>
 	            </label>
 	            <input class="form-control form-control input-block" id="password" name="password" tabindex="2" type="password" />
 	          <!-- 验证码 -->
@@ -266,4 +280,7 @@
       <li><font>version 1.0</font></li>
     </ul>
   </div>
+   <div id="divDialog" style="overflow: hidden;">
+		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>
+   </div>
 </html>

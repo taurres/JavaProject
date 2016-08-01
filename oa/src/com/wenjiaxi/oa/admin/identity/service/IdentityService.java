@@ -261,6 +261,15 @@ public interface IdentityService {
 	 */
 	public List<Map<String, Object>> getMenuTree();
 
+	/**
+	 * 找回密码
+	 * @param userId
+	 * @param question
+	 * @param answer
+	 * @return
+	 */
+	public String findPwd(String userId, int question, String answer);
+
 
 
 

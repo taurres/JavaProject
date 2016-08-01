@@ -60,6 +60,17 @@
 			<interceptor-ref name="loginStack"/>
 			<result>/WEB-INF/jsp/admin/{1}.jsp</result>
 		</action>
+		
+		 <!-- 显示找回密码页面 -->
+        <action name="showFindPwd">
+        	<interceptor-ref name="defaultStack"/>
+        	<result>/WEB-INF/jsp/admin/findPwd.jsp</result>
+        </action>
+		 <!-- 找回密码 -->
+        <action name="findPwd" class="com.wenjiaxi.oa.admin.FindPwdAction">
+        	<interceptor-ref name="defaultStack"/>
+        	<result>/WEB-INF/jsp/admin/findPwd.jsp</result>
+        </action>
 	</package>
 
 	<include file="com/wenjiaxi/oa/admin/addressbook/struts-admin-addressbook.xml" />
