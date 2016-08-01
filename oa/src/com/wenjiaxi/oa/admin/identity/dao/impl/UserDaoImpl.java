@@ -146,4 +146,13 @@ public class UserDaoImpl extends BaseDaoImpl implements UserDao {
 		return this.findByPage(hql.toString(), pageModel, params);
 	}
 	
+	/**
+	 * 根据手机查询用户
+	 * @param phone
+	 * @return
+	 */
+	public User getUserByPhone(String phone){
+		return this.findUniqueEntity("from User where phone = ?", new Object[]{phone});
+	}
+	
 }

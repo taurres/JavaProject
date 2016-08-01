@@ -31,8 +31,6 @@ public class LoginAjax extends ActionSupport {
 	private Map<String, Object> responseData = new HashMap<String, Object>();
 	@Override
 	public String execute() throws Exception {
-//		responseData.put("data", "data");
-//		responseData.put("status", 1);
 		responseData = identityService.login(userId, password, vcode, key);
 		System.out.println(responseData);
 		return SUCCESS;

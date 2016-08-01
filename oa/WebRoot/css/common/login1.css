@@ -309,7 +309,9 @@ sup {
 }
 
 img {
-	border-style: none
+	border-style: none;
+	position: relative;
+    left: 5%
 }
 
 svg:not (:root ){
@@ -936,10 +938,10 @@ pre {
 }
 
 .btn-outline {
-	color: #4078c0;
-	background-color: #fff;
+	color: #ffffff;
+	background-color: #4078c0;
 	background-image: none;
-	border: 1px solid #e5e5e5
+	border: 1px solid #e5e5e5;
 }
 
 .btn-outline .counter {
@@ -1185,6 +1187,9 @@ label {
 	font-family: "宋体"
 }
 
+form {
+	margin-top: 10px;
+}
 .form-control, .form-select {
 	min-height: 34px;
 	padding: 6px 8px;

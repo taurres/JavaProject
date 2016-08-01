@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -33,6 +34,7 @@ import com.wenjiaxi.oa.admin.identity.service.IdentityService;
 import com.wenjiaxi.oa.core.action.VerifyAction;
 import com.wenjiaxi.oa.core.common.email.EmailSender;
 import com.wenjiaxi.oa.core.common.security.MD5;
+import com.wenjiaxi.oa.core.common.sms.SmsUtils;
 import com.wenjiaxi.oa.core.common.web.CookieUtil;
 import com.wenjiaxi.oa.core.common.web.PageModel;
 import com.wenjiaxi.oa.core.dao.HierarchyIdGenerator;
@@ -64,6 +66,7 @@ public class IdentityServiceImpl implements IdentityService {
 	//自己的emailsender接口
 	@Resource
 	private EmailSender emailSender;
+	
 
 
 	
@@ -170,6 +173,83 @@ public class IdentityServiceImpl implements IdentityService {
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new OAException("找回密码时异常",e);
+		}
+	}
+	
+	/**
+	 * 发送短信验证码
+	 * @param phone
+	 * @return {"result": true/false, "smsCodeSent": "1234"}
+	 */
+	public Map<String, Object> sendSms(String phone){
+		try {
+			//生成验证码
+			String smsCode = String.valueOf(new Random().nextInt(8999) + 1000);
+			System.out.println("number:" + smsCode);
+			
+			Map<String, Object> responseData = new HashMap<>();
+			//发送验证码，返回发送结果
+			boolean result = SmsUtils.send(phone, smsCode);
+			responseData.put("result", result);
+			responseData.put("smsCodeSent", smsCode);
+			return responseData;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("发送短信验证码时发生异常",e);
+		}
+	}
+	
+	/**
+	 * 使用手机验证码登录
+	 * @param phone
+	 * @param smsCodeInput
+	 * @param smsCodeSent
+	 * @return
+	 */
+	public Map<String, Object> smsLogin(String phone, String smsCodeInput, String smsCodeSent){
+		try {
+			Map<String, Object> responseData = new HashMap<>();
+			responseData.put("status", 1);
+			responseData.put("msg", "验证码错误");
+			//若验证码输入正确，则通过手机号查找用户
+			if (!StringUtils.isEmpty(smsCodeInput) && smsCodeInput.equals(smsCodeSent)) {
+				if (!StringUtils.isEmpty(phone)) {
+					User user = getUserByPhone(phone);
+					if (user != null) {
+						//如果查找到用户且密码正确,将user放入session，登录状态为0
+						ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER, user);
+						responseData.put("msg", "登录成功");
+						responseData.put("status", 0);
+						//登陆成功则进行权限控制
+						//根据用户查询其角色，再查询它的权限，然后存入session中
+						Map<String, List<String>> userPopedoms = getUserPopodomURL(user.getUserId());
+						ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER_POPEDOM, userPopedoms);
+					}else{
+						responseData.put("msg", "未找到用户");
+						responseData.put("status", 1);
+					}
+				}
+			}
+			return responseData;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("使用手机验证码登录时发生异常",e);
+		}
+		
+		
+	}
+	
+	/**
+	 * 根据手机查询User
+	 * @param phone
+	 * @return
+	 */
+	public User getUserByPhone(String phone){
+		try {
+			return userDao.getUserByPhone(phone);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("根据手机查询User时发生异常",e);
 		}
 	}
 	

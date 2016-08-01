@@ -39,8 +39,14 @@
       //按回车提交表单
       $(document).keyup(function(event){
         if(event.keyCode == 13){
-          $("#vcode").blur();
-          $(login_btn).trigger("click");
+        	if($("#vcode").val() != "") {
+	          $("#vcode").blur();
+	          $("#login_btn").trigger("click");	
+        	}
+        	if($("#smsCode").val() != ""){
+        		$("#smsCode").blur();
+        		$("#login_btn2").trigger("click");	
+      		}
         }
       });
       
@@ -121,7 +127,6 @@
       
       //账号登陆表单提交验证
       $("#login_btn").click(function(){
-        $("#unclear").trigger("click");
         //验证没有发生错误时发送异步请求
         if(usermsg=="" && pwmsg=="" && vcmsg=="") {
           //序列化表格数据
@@ -177,6 +182,95 @@
 			$("#iframe").attr("src", "${path}/admin/showFindPwd").fadeIn(200);
       });
       
+    //验证手机号码
+      $("#phone").on("blur",function(){
+    	  window.pmsg = "";
+        if($(this).val()=="") {
+          //判断是否为空
+          pmsg = "手机号码不能为空";
+          $(this).attr("type","text");
+          $(this).attr("value",pmsg);
+          $(this).css({"background-color":"#FFDEDE"});
+        }else if(!/^1[3|4|5|7|8]\d{9}$/.test($(this).val())){
+          //判断格式
+          pmsg = "请输入正确的手机号码";
+          $(this).attr("type","text");
+          $(this).attr("value",pmsg);
+          $(this).css({"background-color":"#FFDEDE"});
+        }
+      }).on("focus",function(){
+        if($(this).css("background-color") == "rgb(255, 222, 222)"){
+          $(this).attr("type","password");
+          $(this).attr("value","");
+          $(this).css({"background-color":"WHITE"});
+          pmsg="";
+        }
+      });
+    
+    //检验短信验证码
+      $("#smsCode").on("blur",function(){
+      	window.scmsg = "";
+        if($(this).val()=="") {
+          //判断是否为空
+          scmsg = "验证码不能为空";
+          $(this).attr("value",scmsg);
+          $(this).css({"background-color":"#FFDEDE"});
+        }else if(!/^[0-9]{4}$/.test($(this).val())){
+          //判断格式
+          scmsg = "验证码长度为4位";
+          $(this).attr("value",scmsg);
+          $(this).css({"background-color":"#FFDEDE"});          
+        }
+      }).on("focus",function(){
+        if($(this).css("background-color") == "rgb(255, 222, 222)"){
+          $(this).attr("value","");
+          $(this).css({"background-color":"WHITE"});
+          scmsg="";
+        }
+      });
+    
+      //获取验证码
+      $("#sms_btn").click(function(){
+    	  if($("#phone").val() == ""){
+    		  $("#phone").trigger("blur");
+    	  }else{
+	    	  $.get("${path}/admin/sendSms", {"phone": $("#phone").val()}, function(data){
+	    		  $("#sms_btn").attr("disabled", true);
+	    		  $("#smsCodeSent").val(data.smsCodeSent);
+	    	  }, "json");
+    	  }
+      });
+    
+      //短信验证码登录表单提交
+      $("#login_btn2").click(function(){
+    	  var formData = $("#sms_login_form").serialize();
+    	  if(pmsg == "" && scmsg == ""){
+	    	  //异步请求登录
+	    	  $.ajax({
+	              url: "${path}/admin/smsLogin",
+	              type: "post",
+	              data: formData,
+	              dataType: "json",
+	              success:function(data){
+	            	  //如果登录成功，页面跳转
+	            	  if(data.status == 0){
+		            	  window.locaiton.href = window.location.href = "${path}/admin/main";            		  
+	            	  }else if(data.status == 1){
+	            		  //验证码错误
+	            		  $("#js-flash-container").css({"display":"inherit"});
+	                      $("#js-flash-container font").text("验证码错误");
+	            	  }else if(data.status == 2) {
+	            		  //找不到手机对应的用户
+	            		  $("#js-flash-container").css({"display":"inherit"});
+	                      $("#js-flash-container font").text("找不到该用户，请检查手机号码");
+	            	  }
+	              }
+	          });
+    	  }
+      });
+      
+ 
+      
     });
   </script>
 </head>
@@ -196,8 +290,6 @@
     <div id="js-pjax-container" >
       <div class="auth-form p-3" id="login">
 
-        <!-- 登录表单 -->
-        <form id="login_form" accept-charset="UTF-8" action="#" method="post">
           <div style="margin:0;padding:0;display:inline"></div>      
             <div class="auth-form-header">
               <h1>欢迎登录办公管理系统</h1>
@@ -218,7 +310,6 @@
           </div>
 
 
-          <!-- 登录表单输入框 -->
           <div class="auth-form-body mt-4 tab-content" id="login_tab">
            <ul class="nav nav-tabs">
    			<li class="active"><a href="#home" data-toggle="tab">账号登录</a></li>
@@ -227,6 +318,8 @@
 		   </ul>
 		   <!-- 第一个标签页 -->
 		   <div class="tab-pane fade in active" id="home">
+       		 <!-- 登录表单 -->
+        	<form id="login_form" accept-charset="UTF-8" action="#" method="post">
 	            <!-- 用户名 -->
 	            <label for="userId">请输入用户名</label>
 	            <input class="form-control input-block" id="userId" name="userId" tabindex="1" type="text" />
@@ -248,20 +341,25 @@
 	            <input type="checkbox" name="key" value="1" id="key"/>&nbsp;记住我&nbsp;&nbsp;&nbsp;
 	            <!-- 登录按钮 -->
 	            <input class="btn btn-primary btn-block" id="login_btn" name="commit" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
+      		  </form>
 			</div>
 			<!-- 第二个标签页 -->
 			<div class="tab-pane fade" id="sms">
+			 <form id="sms_login_form" accept-charset="UTF-8" action="#" method="post">
+			 	<input type="hidden" id="smsCodeSent" name="smsCodeSent" />
 	            <label for="phone">请输入您的手机号码</label>
 	            <input class="form-control input-block" id="phone" name="phone" type="text" />
 	            <label for="smsCode">请输入短信验证码</label>
-	            <input class="form-control input-block" id="smsCode" name="smsCode" type="text" style="width:40%;float:left" />
+	            <input class="form-control input-block" id="smsCode" name="smsCodeInput" type="text" style="width:40%;float:left" />
 	            <input class="btn btn-outline btn-block" id="sms_btn" type="button" value="获取验证码" style="width:50%;float:right;margin-top:5px"/>
 	            <input class="btn btn-primary btn-block" id="login_btn2" name="commit" type="button" value="登&nbsp;&nbsp;&nbsp;&nbsp;录" />
+	          </form>
 			</div>
 			<!-- 第三个标签页 -->
-			<div class="tab-pane fade" id="qrCode"></div>
+			<div class="tab-pane fade" id="qrCode">
+				<img src="${path}/admin/qrCode">
+			</div>
           </div>
-        </form>
 
         <p class="create-account-callout mt-3">
          	 没有账号？

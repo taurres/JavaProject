@@ -26,8 +26,8 @@ import com.opensymphony.xwork2.ActionSupport;
 public class QRCodeAction extends ActionSupport {
 
 	private String url;
-	private final static int WIDTH = 300;
-	private final static int HEIGHT = 300;
+	private final static int WIDTH = 270;
+	private final static int HEIGHT = 270;
 	@Override
 	public String execute() throws Exception {
 		HttpServletResponse response = ServletActionContext.getResponse();

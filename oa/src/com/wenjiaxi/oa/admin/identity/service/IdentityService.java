@@ -39,6 +39,38 @@ public interface IdentityService {
 	public boolean updatePwd(String oldPwd, String newPwd, String checkPwd);
 	
 	/**
+	 * 找回密码
+	 * @param userId
+	 * @param question
+	 * @param answer
+	 * @return
+	 */
+	public String findPwd(String userId, int question, String answer);
+	
+	/**
+	 * 发送短信验证码
+	 * @param phone
+	 * @return
+	 */
+	public Map<String, Object> sendSms(String phone);
+	
+	/**
+	 * 使用手机验证码登录
+	 * @param phone
+	 * @param smsCodeInput
+	 * @param smsCodeSent
+	 * @return
+	 */
+	public Map<String, Object> smsLogin(String phone, String smsCodeInput, String smsCodeSent);
+	
+	/**
+	 * 根据手机查询User
+	 * @param phone
+	 * @return
+	 */
+	public User getUserByPhone(String phone);
+	
+	/**
 	 * 根据用户id查询用户角色并查询其所有权限对应的url
 	 * @param userId
 	 * @return {"00010001": ["url1","url2"...],"00010002":["url",...]}
@@ -261,14 +293,11 @@ public interface IdentityService {
 	 */
 	public List<Map<String, Object>> getMenuTree();
 
-	/**
-	 * 找回密码
-	 * @param userId
-	 * @param question
-	 * @param answer
-	 * @return
-	 */
-	public String findPwd(String userId, int question, String answer);
+
+
+
+
+	
 
 
 

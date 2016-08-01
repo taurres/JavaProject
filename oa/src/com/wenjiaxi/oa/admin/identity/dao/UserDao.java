@@ -67,6 +67,13 @@ public interface UserDao extends BaseDao{
 	 */
 	public List<User> getBindableUser(PageModel pageModel, Long id);
 
+	/**
+	 * 根据手机查询用户
+	 * @param phone
+	 * @return
+	 */
+	public User getUserByPhone(String phone);
+
 
 
 

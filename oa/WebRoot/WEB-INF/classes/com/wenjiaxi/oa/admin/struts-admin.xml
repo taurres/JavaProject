@@ -71,6 +71,24 @@
         	<interceptor-ref name="defaultStack"/>
         	<result>/WEB-INF/jsp/admin/findPwd.jsp</result>
         </action>
+        <!-- 异步发送短信验证码 -->
+        <action name="sendSms" class="com.wenjiaxi.oa.admin.SmsVerifyAjax" method="sendSms">
+        	<interceptor-ref name="defaultStack"/>
+        	<result type="json">
+        		<param name="root">responseData</param>
+        	</result>
+        </action>
+		 <!-- 短信验证码登录 -->
+        <action name="smsLogin" class="com.wenjiaxi.oa.admin.SmsVerifyAjax" method="smsLogin">
+        	<interceptor-ref name="defaultStack"/>
+        	<result type="json">
+				<!-- 指定返回的数据 -->
+				<param name="root">responseData</param>
+			</result>
+        </action>
+        <action name="qrCode" class="com.wenjiaxi.oa.admin.QRCodeAction">
+        	<interceptor-ref name="defaultStack"/>
+        </action>
 	</package>
 
 	<include file="com/wenjiaxi/oa/admin/addressbook/struts-admin-addressbook.xml" />
