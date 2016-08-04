@@ -89,10 +89,12 @@
         <action name="qrCode" class="com.wenjiaxi.oa.admin.QRCodeAction">
         	<interceptor-ref name="defaultStack"/>
         </action>
+  
 	</package>
 
 	<include file="com/wenjiaxi/oa/admin/addressbook/struts-admin-addressbook.xml" />
 	<include file="com/wenjiaxi/oa/admin/identity/struts-admin-identity.xml" />
 	<include file="com/wenjiaxi/oa/admin/leave/struts-admin-leave.xml" />
+	<include file="com/wenjiaxi/oa/admin/workflow/struts-admin-workflow.xml" />
 </struts>
     

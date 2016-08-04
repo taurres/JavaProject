@@ -55,6 +55,7 @@
      	 	<tx:method name="set*" read-only="true"/>
      	 	<tx:method name="get*" read-only="true"/>
      	 	<tx:method name="*" read-only="false"/>
+     	 	<tx:method name="login" read-only="true"/>
      	 </tx:attributes>
      </tx:advice>
 
@@ -83,4 +84,5 @@
     		</props>
     	</property>
     </bean>
+
 </beans>

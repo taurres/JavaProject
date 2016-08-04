@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.action.extension" value="jspx,action,do,"/>
+    
+    <package name="admin_workflow" namespace="/admin/workflow" extends="admin">
+    	<!-- 显示流程部署页面 -->
+		<action name="showDeployProcess">
+			<result>/WEB-INF/jsp/admin/workflow/deployProcess.jsp</result>
+		</action>
+    	<!-- 流程部署 -->
+		<action name="deployProcess" class="com.wenjiaxi.oa.admin.workflow.action.WorkflowAction" method="deployProcess">
+			<interceptor-ref name="authStack"/>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result>/WEB-INF/jsp/admin/workflow/deployProcess.jsp</result>
+			<result name="input">/WEB-INF/jsp/admin/workflow/deployProcess.jsp</result>
+			<result name="invalid.token">/WEB-INF/jsp/admin/workflow/deployProcess.jsp</result>
+		</action>
+    	<!-- 分页查询流程部署 -->
+		<action name="selectDeployment" class="com.wenjiaxi.oa.admin.workflow.action.WorkflowAction" method="selectDeployment">
+			<result>/WEB-INF/jsp/admin/workflow/deployment.jsp</result>
+		</action>
+		<!-- 批量删除流程部署 -->
+		<action name="deleteDeployment" class="com.wenjiaxi.oa.admin.workflow.action.WorkflowAction" method="deleteDeployment">
+			<result type="chain">selectDeployment</result>
+		</action>
+		
+    </package>
+</struts>
+    

@@ -275,7 +275,7 @@ public class IdentityServiceImpl implements IdentityService {
 				}
 				moduleCode = opCode.substring(0, opCode.length() - AdminConstant.MODULE_CODE_LENGTH);
 				//获取opCode对应的操作的url并放入list中
-				urls.add(getModule(moduleCode).getUrl());		
+				urls.add(getModule(opCode).getUrl());		
 			}
 			//最后一组url没有进入上面的if判断，需要另外加入map
 			if (moduleCode != null && urls.size()> 0) {
