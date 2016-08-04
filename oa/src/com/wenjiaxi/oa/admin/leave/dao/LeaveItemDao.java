@@ -1,5 +1,9 @@
 package com.wenjiaxi.oa.admin.leave.dao;
 
+import java.util.List;
+
+import com.wenjiaxi.oa.admin.leave.entity.LeaveItem;
+import com.wenjiaxi.oa.core.common.web.PageModel;
 import com.wenjiaxi.oa.core.dao.BaseDao;
 
 /**
@@ -10,5 +14,13 @@ import com.wenjiaxi.oa.core.dao.BaseDao;
  */
 
 public interface LeaveItemDao extends BaseDao {
+
+	/**
+	 * 按条件分页查询指定用户的休假
+	 * @param pageModel
+	 * @param leaveItem
+	 * @return
+	 */
+	List<LeaveItem> getLeaveItemByPageAndUser(PageModel pageModel, LeaveItem leaveItem);
 
 }

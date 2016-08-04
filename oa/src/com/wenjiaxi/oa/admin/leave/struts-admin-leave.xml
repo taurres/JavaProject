@@ -9,7 +9,23 @@
     <constant name="struts.action.extension" value="jspx,action,do,"/>
     
     <package name="admin_leave" namespace="/admin/leave" extends="admin">
-		
+		<!-- 分页查询leave -->
+		<action name="selectUserLeave" class="com.wenjiaxi.oa.admin.leave.action.LeaveItemAction" method="selectUserLeave">
+			<interceptor-ref name="loginStack"/>
+			<result>/WEB-INF/jsp/admin/leave/userLeave.jsp</result>
+		</action>   
+		<!-- 返回添加LeaveItem页面 -->
+		<action name="showAddLeaveItem" class="com.wenjiaxi.oa.admin.leave.action.LeaveItemAction">
+			<interceptor-ref name="loginStack"/>
+			<result>/WEB-INF/jsp/admin/leave/addLeaveItem.jsp</result>
+		</action>
+		<!-- 添加LeaveItem -->
+		<action name="addLeaveItem" class="com.wenjiaxi.oa.admin.leave.action.LeaveItemAction" method="addLeaveItem">
+			<interceptor-ref name="authStack"/>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result>/WEB-INF/jsp/admin/leave/addLeaveItem.jsp</result>
+			<result name="invalid.token">/WEB-INF/jsp/admin/leave/addLeaveItem.jsp</result>
+		</action>
     </package>
 </struts>
     
