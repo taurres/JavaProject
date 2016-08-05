@@ -1,5 +1,6 @@
 package com.wenjiaxi.oa.admin.leave.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
+import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +95,61 @@ public class LeaveServiceImpl implements LeaveService {
 			e.printStackTrace();
 			throw new OAException("为指定用户添加休假时出现异常", e);
 		}
-		
+	}
+	
+	/**
+	 * 异步加载leavetype
+	 * @return
+	 */
+	public List<Map<String, Object>> getLeaveType(){
+		try {
+			return leaveTypeDao.getLeaveType();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("异步加载leavetype时出现异常", e);
+		}
+	}
+	
+	/**
+	 * 获取所有ProcessDefinition
+	 * @return [{id:"", name:""}, {}, {}]
+	 */
+	private List<Map<String, Object>> getProcessDefinition(){
+		try {
+			//获取所有ProcessDefinition
+			List<ProcessDefinition> processDefinitions = repositoryService.createProcessDefinitionQuery()
+																		  .latestVersion()
+																		  .list();
+			List<Map<String, Object>> responseList = new ArrayList<>();
+			for (ProcessDefinition processDefinition : processDefinitions) {
+				Map<String, Object> map = new HashMap<>();
+				//存入id和name
+				map.put("id", processDefinition.getId());
+				map.put("name", processDefinition.getName());
+				responseList.add(map);
+			}
+			return responseList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("获取所有ProcessDefinition时出现异常", e);
+		}	
+	}
+	
+	/**
+	 * 异步加载leavetype和process
+	 * @return
+	 */
+	public List<List<Map<String, Object>>> getLeaveTypeAndProcess(){
+		try {
+			List<List<Map<String, Object>>> responseList = new ArrayList<>();
+			//往list中加入leaveType数据
+			responseList.add(getLeaveType());
+			//往list中加入process数据
+			responseList.add(getProcessDefinition());
+			return responseList;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new OAException("异步加载leavetype和process时出现异常", e);
+		}
 	}
 }

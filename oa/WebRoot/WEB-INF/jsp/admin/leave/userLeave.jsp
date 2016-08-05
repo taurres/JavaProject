@@ -31,6 +31,24 @@
 				
 			});
 			
+			//异步加载审核状态 [{code:0, name:"新建"},{},{}]
+			$.ajax({
+				url: "${path}/admin/leave/loadLeaveType",
+				type: "post",
+				dataType: "json",
+				success: function(data){
+					$.each(data,function(){
+						$("<option/>").val(this.code)
+									  .text(this.name)
+									  .attr("selected", this.code == "${leaveItem.leaveType.code}")
+									  .appendTo("#leaveType");
+					});
+				},
+				error: function(){
+					alert("加载失败");
+				}
+			});
+			
 			//点击添加按钮弹出添加角色窗口
 			$("#addLeaveItem").click(function(){
 				$("#divDialog").dialog({
@@ -48,6 +66,20 @@
 			});
 				
 		});
+		
+		//点击链接查看流程图
+		var showProcessDiagram = function(processInstanceId){
+			$("#divDialog").dialog({    
+				title: "请假-流程图",   // 标题  
+				width: 850,   // 宽度
+				height: 500,   // 高度
+				modal: true, // 模态窗口
+				collapsible : true, // 可伸缩
+				minimizable : false, // 最小化
+				maximizable : true // 最大化
+			});
+			$("#iframe").attr("src", "${path}/admin/workflow/showProcessDiagram?processInstanceId=" + processInstanceId).fadeIn(200);
+		};
 	</script>
 </head>
 <body>
@@ -97,12 +129,12 @@
 				</td>
 				<td>
 					<s:if test="status == 0">
-						<a href="#">查看流程图</a>
+						<a href="javascript:void(0)" onclick="showProcessDiagram(${procInstanceId})">查看流程图</a>
 					</s:if>
 					<s:else>
-						<a href="#">查看历史任务</a>
+						<a href="javascript:void(0)">查看历史任务</a>
 					</s:else>
-					<a href="#">| 审批意见</a>
+					<a href="javascript:void(0)">| 审批意见</a>
 				</td>
 			</tr>
 			</s:iterator>
@@ -112,11 +144,10 @@
 		<page:pager pageIndex="${pageModel.pageIndex}" 
 		pageSize="${pageModel.pageSize}" 
 		recordCount="${pageModel.recordCount}" 
-		submitUrl="${path}/admin/leave/selectUserLeave?pageModel.pageIndex={0}"/>
+		submitUrl="${path}/admin/leave/selectUserLeave?pageModel.pageIndex={0}&leaveItem.leaveType.code=${leaveItem.leaveType.code}"/>
 	<!-- div作为弹出窗口 -->
     <div id="divDialog" style="overflow: hidden;">
 		<iframe id="iframe" frameborder="0" width="100%" height="100%" style="display:none;"></iframe>
 	</div>
-	
 </body>
 </html>

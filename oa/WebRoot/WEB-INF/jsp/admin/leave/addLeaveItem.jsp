@@ -17,8 +17,29 @@
 		<script type="text/javascript" src="${path}/js/My97DatePicker/WdatePicker.js"></script>
 		<script type="text/javascript">
 			$(function(){
-				// 异步加载假期类型与流程定义
-				
+				// 异步加载假期类型与流程定义 [[{leaveType},{},{}...], [{process},{},{}...]]
+				$.ajax({
+				url: "${path}/admin/leave/loadLeaveTypeAndProcess",
+				type: "post",
+				dataType: "json",
+				success: function(data){
+					//加载LeaveType
+					$.each(data[0],function(){
+						$("<option/>").val(this.code)
+									  .text(this.name)
+									  .appendTo("#leaveType");						
+					});
+					//加载process
+					$.each(data[1],function(){
+						$("<option/>").val(this.id)
+									  .text(this.name)
+									  .appendTo("#process");						
+					});
+				},
+				error: function(){
+					alert("加载失败");
+				}
+			});
 			
 				// 为表单绑定onsubmit事件
 				$("#addLeaveItemForm").submit(function(){
@@ -68,7 +89,7 @@
 			<tr>
 				<td>假期类型：</td>
 				<td>
-					<select id="leaveTypeSelect" name="leaveItem.leaveType.code"></select>
+					<select id="leaveType" name="leaveItem.leaveType.code"></select>
 				</td>
 			</tr>
 			<tr>
@@ -96,7 +117,7 @@
 			<tr>
 				<td>选择流程：</td>
 				<td>
-					<select id="processDefSelect" name="leaveItem.procInstanceId"></select>
+					<select id="process" name="leaveItem.procInstanceId"></select>
 				</td>
 			</tr>
 			<tr>

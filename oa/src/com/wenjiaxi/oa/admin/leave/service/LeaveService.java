@@ -1,6 +1,7 @@
 package com.wenjiaxi.oa.admin.leave.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.wenjiaxi.oa.admin.leave.entity.LeaveItem;
 import com.wenjiaxi.oa.core.common.web.PageModel;
@@ -27,6 +28,18 @@ public interface LeaveService {
 	 * @param leaveItem
 	 */
 	void addLeaveItem(LeaveItem leaveItem);
+
+	/**
+	 * 异步加载leavetype
+	 * @return
+	 */
+	List<Map<String, Object>> getLeaveType();
+
+	/**
+	 * 异步加载leavetype和process
+	 * @return
+	 */
+	List<List<Map<String, Object>>> getLeaveTypeAndProcess();
 
 
 

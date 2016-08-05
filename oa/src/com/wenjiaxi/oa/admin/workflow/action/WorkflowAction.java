@@ -5,6 +5,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.activiti.engine.HistoryService;
+import org.activiti.engine.RepositoryService;
+import org.activiti.engine.RuntimeService;
+import org.activiti.engine.TaskService;
 import org.activiti.engine.repository.Deployment;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.util.StringUtils;
@@ -22,82 +26,23 @@ import com.wenjiaxi.oa.core.common.web.PageModel;
 
 public class WorkflowAction extends ActionSupport{
 
-	private static final long serialVersionUID = 1796909007907283118L;
+	protected static final long serialVersionUID = 1796909007907283118L;
 
 	@Resource
-	private WorkflowService workflowService;
+	protected WorkflowService workflowService;
+	@Resource
+	protected RepositoryService repositoryService;
+	@Resource
+	protected RuntimeService runtimeService;
+	@Resource
+	protected TaskService taskService;
+	@Resource
+	protected HistoryService historyService;
 	
-	private String bpmnFileName;
-	private String name;
-	private File bpmn;
-	private String msg;
-	private PageModel pageModel = new PageModel();
-	private List<Deployment> deployments;
-	private String ids;
-	
-	/**
-	 * 部署流程
-	 * @return
-	 */
-	public String deployProcess(){
-		try {
-			workflowService.deployProcess(bpmn, bpmnFileName, name);
-			setMsg("部署成功！");
-		} catch (Exception e) {
-			e.printStackTrace();
-			setMsg("部署失败！");
-		}
-		return SUCCESS;
-	}
-	
-	/**
-	 * 按条件分页查询流程部署
-	 * @return
-	 */
-	public String selectDeployment(){
-		try {
-			if (!StringUtils.isEmpty(name) && ServletActionContext.getRequest().getMethod().equalsIgnoreCase("get")) {
-				name = new String(name.getBytes("iso8895-1"), "utf-8");
-			}
-			deployments = workflowService.getDeploymentByPage(name, pageModel);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
-	/** 批量删除流程部署 */
-	public String deleteDeployment(){
-		try{
-			workflowService.deleteDeployment(ids.split(","));
-			setMsg("删除成功！");
-		}catch(Exception ex){
-			setMsg("删除失败！");
-			ex.printStackTrace();
-		}
-		return SUCCESS;
-	}
-	
+	protected String msg;
+	protected PageModel pageModel = new PageModel();
 	
 	//getter setter
-	public String getBpmnFileName() {
-		return bpmnFileName;
-	}
-	public void setBpmnFileName(String bpmnFileName) {
-		this.bpmnFileName = bpmnFileName;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public File getBpmn() {
-		return bpmn;
-	}
-	public void setBpmn(File bpmn) {
-		this.bpmn = bpmn;
-	}
 	public String getMsg() {
 		return msg;
 	}
@@ -110,19 +55,5 @@ public class WorkflowAction extends ActionSupport{
 	public void setPageModel(PageModel pageModel) {
 		this.pageModel = pageModel;
 	}
-	public List<Deployment> getDeployments() {
-		return deployments;
-	}
-	public void setDeployments(List<Deployment> deployments) {
-		this.deployments = deployments;
-	}
-	public String getIds() {
-		return ids;
-	}
-	public void setIds(String ids) {
-		this.ids = ids;
-	}
-
-	
 	
 }

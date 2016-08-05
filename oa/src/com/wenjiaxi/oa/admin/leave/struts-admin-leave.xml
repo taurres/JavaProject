@@ -26,6 +26,23 @@
 			<result>/WEB-INF/jsp/admin/leave/addLeaveItem.jsp</result>
 			<result name="invalid.token">/WEB-INF/jsp/admin/leave/addLeaveItem.jsp</result>
 		</action>
+		<!-- 异步加载leaveType -->
+		<action name="loadLeaveType" class="com.wenjiaxi.oa.admin.leave.action.LeaveAjax" method="loadLeaveType">
+			<interceptor-ref name="loginStack"/>
+			<result type="json">
+				<param name="root">responseMap</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 异步加载leaveType和processs -->
+		<action name="loadLeaveTypeAndProcess" class="com.wenjiaxi.oa.admin.leave.action.LeaveAjax" method="loadLeaveTypeAndProcess">
+			<interceptor-ref name="loginStack"/>
+			<result type="json">
+				<param name="root">responseList</param>
+				<param name="enableGZIP">true</param>
+			</result>
+		</action>
+		<!-- 添加LeaveItem -->
     </package>
 </struts>
     

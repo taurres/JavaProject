@@ -14,7 +14,7 @@
 			<result>/WEB-INF/jsp/admin/workflow/deployProcess.jsp</result>
 		</action>
     	<!-- 流程部署 -->
-		<action name="deployProcess" class="com.wenjiaxi.oa.admin.workflow.action.WorkflowAction" method="deployProcess">
+		<action name="deployProcess" class="com.wenjiaxi.oa.admin.workflow.action.DeployProcessAction" method="deployProcess">
 			<interceptor-ref name="authStack"/>
 			<interceptor-ref name="token"></interceptor-ref>
 			<result>/WEB-INF/jsp/admin/workflow/deployProcess.jsp</result>
@@ -22,14 +22,21 @@
 			<result name="invalid.token">/WEB-INF/jsp/admin/workflow/deployProcess.jsp</result>
 		</action>
     	<!-- 分页查询流程部署 -->
-		<action name="selectDeployment" class="com.wenjiaxi.oa.admin.workflow.action.WorkflowAction" method="selectDeployment">
+		<action name="selectDeployment" class="com.wenjiaxi.oa.admin.workflow.action.DeployProcessAction" method="selectDeployment">
 			<result>/WEB-INF/jsp/admin/workflow/deployment.jsp</result>
 		</action>
 		<!-- 批量删除流程部署 -->
-		<action name="deleteDeployment" class="com.wenjiaxi.oa.admin.workflow.action.WorkflowAction" method="deleteDeployment">
+		<action name="deleteDeployment" class="com.wenjiaxi.oa.admin.workflow.action.DeployProcessAction" method="deleteDeployment">
 			<result type="chain">selectDeployment</result>
 		</action>
-		
+		<!-- 返回显示流程图页面 -->
+		<action name="showProcessDiagram" class="com.wenjiaxi.oa.admin.workflow.action.ProcessDiagramAction">
+		<interceptor-ref name="loginStack"/>
+			<result>/WEB-INF/jsp/admin/workflow/processDiagram.jsp</result>
+		</action>
+		<!-- 显示流程图 -->
+		<action name="processDiagram" class="com.wenjiaxi.oa.admin.workflow.action.ProcessDiagramAction" method="showProcessDiagram">
+		</action>
     </package>
 </struts>
     

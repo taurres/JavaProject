@@ -1,5 +1,8 @@
 package com.wenjiaxi.oa.admin.leave.dao;
 
+import java.util.List;
+import java.util.Map;
+
 import com.wenjiaxi.oa.core.dao.BaseDao;
 
 /**
@@ -10,5 +13,11 @@ import com.wenjiaxi.oa.core.dao.BaseDao;
  */
 
 public interface LeaveTypeDao extends BaseDao {
+
+	/**
+	 * 获取leavetype
+	 * @return
+	 */
+	List<Map<String, Object>> getLeaveType();
 
 }
