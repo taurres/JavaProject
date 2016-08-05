@@ -58,12 +58,14 @@ public class ModuleDaoImpl extends BaseDaoImpl implements ModuleDao {
 	 * @param codes
 	 */
 	public void deleteModule(String[] codes){
+		StringBuilder hql = new StringBuilder();
+		hql.append("delete from Module where code ");
 		List<Object> params = new ArrayList<Object>();
-		for (int i = 0; i < codes.length; i++) {
-			String code = codes[i];
-			params.add(code + "%");
-			this.bulkUpdate("delete from Module where code like ? ", params.toArray());
+		for (int i = 0; i < codes.length; i++){
+			hql.append(i == 0 ? " like ?" : " or code like ?");
+			params.add(codes[i] + "%");
 		}
+		this.bulkUpdate(hql.toString(), params.toArray());
 	}
 	
 	/**

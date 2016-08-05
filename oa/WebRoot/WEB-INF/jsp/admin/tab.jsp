@@ -29,10 +29,18 @@
 			//设置tab大小为适应frame
 			$("#tab").tabs({
 				fit: true,
-				onSelect: function(title,index){
-				 	var tab = $("#tab").tabs("getSelected");
-				 	tab.panel("refresh");
-				 }	
+				onAdd : function(){ // 监听是不是添加新的选项卡
+					window.isAdd = true; // 设置标记
+				},
+				onSelect : function(title, index){ // 当选项卡选中时
+					if (!window.isAdd){ // 防止再请求一次
+						// 获取选中的选项卡
+						var tab = $("#tab").tabs("getSelected");
+						// 让里面的面板刷新
+						tab.panel("refresh");
+					}
+					window.isAdd = false;
+				}
 			});
 			
 			//创建用户信息tab，该tab不可关闭

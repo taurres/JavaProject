@@ -42,7 +42,22 @@
 				<param name="enableGZIP">true</param>
 			</result>
 		</action>
-		<!-- 添加LeaveItem -->
+		<!-- 查询当前登录用户需要审批的休假 -->
+	     <action name="selectAuditLeave" class="com.wenjiaxi.oa.admin.leave.action.LeaveAuditAction" method="selectAuditLeave">
+	     	<result>/WEB-INF/jsp/admin/leave/auditLeave.jsp</result>
+	     </action>
+	     <!-- 返回审批休假页面 -->
+		<action name="showAudit" class="com.wenjiaxi.oa.admin.leave.action.LeaveAuditAction" method="showAudit">
+			<interceptor-ref name="loginStack"/>
+			<result>/WEB-INF/jsp/admin/leave/audit.jsp</result>
+		</action>
+		<!-- 审批休假 -->
+		<action name="audit" class="com.wenjiaxi.oa.admin.leave.action.LeaveAuditAction" method="audit">
+			<interceptor-ref name="authStack"/>
+			<interceptor-ref name="token"></interceptor-ref>
+			<result>/WEB-INF/jsp/admin/leave/audit.jsp</result>
+			<result name="invalid.token">/WEB-INF/jsp/admin/leave/audit.jsp</result>
+		</action>
     </package>
 </struts>
     

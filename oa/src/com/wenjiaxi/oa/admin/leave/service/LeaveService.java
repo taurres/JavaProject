@@ -3,6 +3,7 @@ package com.wenjiaxi.oa.admin.leave.service;
 import java.util.List;
 import java.util.Map;
 
+import com.wenjiaxi.oa.admin.leave.entity.LeaveAudit;
 import com.wenjiaxi.oa.admin.leave.entity.LeaveItem;
 import com.wenjiaxi.oa.core.common.web.PageModel;
 
@@ -40,6 +41,26 @@ public interface LeaveService {
 	 * @return
 	 */
 	List<List<Map<String, Object>>> getLeaveTypeAndProcess();
+	
+	/**
+	 * 查询指定用户要审批的休假
+	 * @return
+	 */
+	List<LeaveItem> fetchLeaveItemByUser();
+	
+	/**
+	 * 根据主键id查询请假单
+	 * @param id
+	 * @return 请假单
+	 */
+	public LeaveItem getLeaveItem(Long id);
+
+	/**
+	 * 审批休假
+	 * @param leaveAudit
+	 * @param taskId
+	 */
+	void audit(LeaveAudit leaveAudit, String taskId);
 
 
 
