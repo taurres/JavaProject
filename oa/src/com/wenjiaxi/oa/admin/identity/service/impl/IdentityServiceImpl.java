@@ -114,7 +114,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return data;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("登录方法异常",e);
 		}
 	}
@@ -139,7 +138,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return false;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("修改密码时异常",e);
 		}
 	}
@@ -171,7 +169,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return msg;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("找回密码时异常",e);
 		}
 	}
@@ -192,7 +189,6 @@ public class IdentityServiceImpl implements IdentityService {
 			responseData.put("smsCodeSent", smsCode);
 			return responseData;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("发送短信验证码时发生异常",e);
 		}
 	}
@@ -232,7 +228,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return responseData;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("使用手机验证码登录时发生异常",e);
 		}
 		
@@ -248,7 +243,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			return userDao.getUserByPhone(phone);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("根据手机查询User时发生异常",e);
 		}
 	}
@@ -286,7 +280,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}*/
 			return responseMap;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("根据用户id查询用户角色并查询其所有权限时发生异常",e);
 		}
 		
@@ -313,7 +306,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return user;
 		}catch(Exception e){
-			e.printStackTrace();
 			throw new OAException("查询User出现异常",e);
 		}
 	}
@@ -337,7 +329,6 @@ public class IdentityServiceImpl implements IdentityService {
 
 			return users;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("分页查询出现异常",e);
 		}
 	}
@@ -350,7 +341,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			return deptDao.getDeptsByIdAndName();
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("异步请求部门菜单时出错",e);
 		}
 	}
@@ -363,7 +353,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			return jobDao.getJobsByCodeAndName();
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("异步请求部门菜单时出错",e);
 		}
 	}
@@ -381,7 +370,6 @@ public class IdentityServiceImpl implements IdentityService {
 			deptsJobs.put("jobs", jobs);
 			return deptsJobs;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("异步请求部门和职位菜单时出错",e);
 		}
 	}
@@ -399,7 +387,6 @@ public class IdentityServiceImpl implements IdentityService {
 			//删除登录cookie
 			CookieUtil.removeCookie(AdminConstant.COOKIE_LOGIN);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("登出时出错",e);
 		}
 	}
@@ -413,7 +400,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			return userDao.getUserName(username);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("搜索user名字时出错",e);
 		}
 	}
@@ -429,7 +415,6 @@ public class IdentityServiceImpl implements IdentityService {
 			user.setCreater(AdminConstant.getSessionUser());
 			userDao.save(user);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("添加用户时出错",e);
 		}
 		
@@ -443,7 +428,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			return getUser(userId, false) != null;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("确认用户名是否重复时出错",e);
 		}
 	}
@@ -468,7 +452,7 @@ public class IdentityServiceImpl implements IdentityService {
 			u.setSex(user.getSex());
 			u.setTel(user.getTel());
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("更新用户时出错",e);
 		}
 	}
@@ -481,7 +465,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			userDao.deleteUser(userIds);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("删除用户时出错",e);
 		}
 	}
@@ -495,7 +478,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			userDao.checkUser(userIds, status);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("审批用户时出错",e);
 		}
 	}
@@ -517,7 +499,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return roles;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("分页查询角色时出错",e);
 		}
 	}
@@ -531,7 +512,6 @@ public class IdentityServiceImpl implements IdentityService {
 			role.setCreater(AdminConstant.getSessionUser());
 			roleDao.save(role);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("添加角色时出错",e);
 		}		
 	}
@@ -558,7 +538,6 @@ public class IdentityServiceImpl implements IdentityService {
 			r.setModifyDate(new Date());
 			r.setModifier(AdminConstant.getSessionUser());
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("更新角色时出错",e);
 		}
 	}
@@ -571,7 +550,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			roleDao.deleteRole(ids);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("删除角色时出错",e);
 		}
 	}
@@ -597,7 +575,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return maps;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("加载模块dtree时出错",e);
 		}
 	}
@@ -620,7 +597,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return modules;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("分页查询module时出错",e);
 		}
 	}
@@ -642,7 +618,6 @@ public class IdentityServiceImpl implements IdentityService {
 			module.setCreater(AdminConstant.getSessionUser());
 			moduleDao.save(module);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("添加module时出错",e);
 		}		
 	}
@@ -657,7 +632,6 @@ public class IdentityServiceImpl implements IdentityService {
 			Module module = moduleDao.get(Module.class, code);
 			return module;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("根据code查询module时出错",e);
 		}
 	}
@@ -680,7 +654,6 @@ public class IdentityServiceImpl implements IdentityService {
 			m.setModifyDate(new Date());
 			m.setModifier(AdminConstant.getSessionUser());
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("更新module时出错",e);
 		}
 	}
@@ -693,7 +666,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			moduleDao.deleteModule(codes);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("批量删除module时出错",e);
 		}
 	}
@@ -718,7 +690,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return users;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("分页查询已绑定指定role的user时出错",e);
 		}
 	}
@@ -740,7 +711,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return users;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("分页查询已绑定指定role的user时出错",e);
 		}
 	}
@@ -763,7 +733,6 @@ public class IdentityServiceImpl implements IdentityService {
 			//将更新后的user集合赋值给role
 			role.setUsers(users);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("给用户绑定角色时出错",e);
 		}
 	}
@@ -783,7 +752,6 @@ public class IdentityServiceImpl implements IdentityService {
 				users.remove(user);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("解绑用户时出错",e);
 		}
 	}
@@ -797,7 +765,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			return moduleDao.getOps(moduleCode, AdminConstant.MODULE_CODE_LENGTH);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("查询指定module下的所有操作权限时出错",e);
 		}
 	}
@@ -818,7 +785,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return modules;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("异步加载权限树时出错",e);
 		}
 	}
@@ -853,7 +819,6 @@ public class IdentityServiceImpl implements IdentityService {
 				}	
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("绑定权限时出错",e);
 		}
 	}
@@ -868,7 +833,6 @@ public class IdentityServiceImpl implements IdentityService {
 		try {
 			return popedomDao.getOpCodes(code, id);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("异步查询指定模块指定角色下已经绑定的popedom时出错",e);
 		}
 	}
@@ -917,7 +881,6 @@ public class IdentityServiceImpl implements IdentityService {
 			}
 			return responseMaps;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("根据权限加载主菜单时出错",e);
 		}
 	}

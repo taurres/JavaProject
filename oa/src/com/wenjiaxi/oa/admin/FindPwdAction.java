@@ -19,8 +19,8 @@ public class FindPwdAction extends ActionSupport {
 	public String execute() {
 		try{
 			msg = identityService.findPwd(userId, question, answer);
-		}catch(Exception ex){
-			ex.printStackTrace();
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		return SUCCESS;
 	}

@@ -20,8 +20,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<script type="text/javascript">
 		$(function(){
 		
-			$("<a style='color: red;'/>").html("Welcome to my System!").appendTo("#div1");
-			alert($("#div1").html());
 		
 		});
 	</script>

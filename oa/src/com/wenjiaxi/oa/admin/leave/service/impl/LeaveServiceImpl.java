@@ -72,7 +72,7 @@ public class LeaveServiceImpl implements LeaveService {
 			}
 			return leaveItems;
 		} catch (Exception e) {
-			e.printStackTrace();
+
 			throw new OAException("按条件分页查询指定用户的休假时出现异常", e);
 		}
 	}
@@ -104,7 +104,7 @@ public class LeaveServiceImpl implements LeaveService {
 			//将新添加的leaveItem与对应的流程实例关联(将leaveItemId传给流程实例)
 			runtimeService.setVariable(processInstance.getId(), "leaveItemId", leaveItem.getId());
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("为指定用户添加休假时出现异常", e);
 		}
 	}
@@ -117,7 +117,7 @@ public class LeaveServiceImpl implements LeaveService {
 		try {
 			return leaveTypeDao.getLeaveType();
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("异步加载leavetype时出现异常", e);
 		}
 	}
@@ -142,7 +142,7 @@ public class LeaveServiceImpl implements LeaveService {
 			}
 			return responseList;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("获取所有ProcessDefinition时出现异常", e);
 		}	
 	}
@@ -160,7 +160,7 @@ public class LeaveServiceImpl implements LeaveService {
 			responseList.add(getProcessDefinition());
 			return responseList;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("异步加载leavetype和process时出现异常", e);
 		}
 	}
@@ -202,7 +202,7 @@ public class LeaveServiceImpl implements LeaveService {
 			}
 			return leaveItems;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("查询指定用户需要审批的休假时出现异常", e);
 		}
 	}

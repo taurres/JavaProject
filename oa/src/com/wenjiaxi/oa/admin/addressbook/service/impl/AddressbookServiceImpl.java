@@ -20,7 +20,7 @@ import com.wenjiaxi.oa.core.exception.OAException;
 /**
  * 
  * @author WEN JIAXI
- * @date 2016�?7�?16�? 下午7:58:13
+ * @date 2016年7月16日 下午7:58:13
  * @version 1.0
  */
 @Service("addressBookService")
@@ -44,7 +44,7 @@ public class AddressbookServiceImpl implements AddressbookService {
 			List<ContactGroup> contactGroups = contactGroupDao.getContactGroupByPage(pageModel);
 			return contactGroups;
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("分页查询联系组时出错",e);
 		}
 	}
@@ -56,7 +56,7 @@ public class AddressbookServiceImpl implements AddressbookService {
 		try {
 			contactGroupDao.save(contactGroup);
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("添加联系组时出错",e);
 		}		
 	}
@@ -81,7 +81,7 @@ public class AddressbookServiceImpl implements AddressbookService {
 			cg.setName(contactGroup.getName());
 			cg.setRemark(contactGroup.getRemark());
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("更新联系组时出错",e);
 		}
 	}
@@ -94,7 +94,7 @@ public class AddressbookServiceImpl implements AddressbookService {
 		try {
 			contactGroupDao.deleteContactGroup(ids);
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 			throw new OAException("删除联系组时出错",e);
 		}
 	}
@@ -127,8 +127,8 @@ public class AddressbookServiceImpl implements AddressbookService {
 			}
 			return contacts;
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new OAException("分页查询contact时出�?",e);
+			
+			throw new OAException("分页查询contact时出出现异常",e);
 		}
 	}
 	
@@ -146,8 +146,8 @@ public class AddressbookServiceImpl implements AddressbookService {
 				contactDao.save(contact);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new OAException("添加contact时出�?",e);
+			
+			throw new OAException("添加contact时出出现异常",e);
 		}		
 	}
 	
@@ -159,7 +159,7 @@ public class AddressbookServiceImpl implements AddressbookService {
 	public Contact getContact(long id){
 		try {
 			Contact contact = contactDao.get(Contact.class, id);
-			//加载延迟属�??
+			//加载延迟属出现异常?
 			if (contact != null) {
 				if (contact.getContactGroup() != null) {
 					contact.getContactGroup().getId();
@@ -167,8 +167,8 @@ public class AddressbookServiceImpl implements AddressbookService {
 			}
 			return contact;
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new OAException("根据code查询contact时出�?",e);
+			
+			throw new OAException("根据code查询contact时出出现异常",e);
 		}
 	}
 	
@@ -188,8 +188,8 @@ public class AddressbookServiceImpl implements AddressbookService {
 			con.setBirthday(contact.getBirthday());
 			con.setContactGroup(cg);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new OAException("更新contact时出�?",e);
+			
+			throw new OAException("更新contact时出出现异常",e);
 		}
 	}
 	
@@ -201,8 +201,8 @@ public class AddressbookServiceImpl implements AddressbookService {
 		try {
 			contactDao.deleteContact(ids);
 		} catch (Exception e) {
-			e.printStackTrace();
-			throw new OAException("批量删除contact时出�?",e);
+			
+			throw new OAException("批量删除contact时出现异常",e);
 		}
 	}
 	
