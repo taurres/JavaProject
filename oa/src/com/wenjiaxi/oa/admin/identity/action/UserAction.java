@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
+import com.opensymphony.xwork2.ActionContext;
+import com.wenjiaxi.oa.admin.AdminConstant;
 import com.wenjiaxi.oa.admin.identity.entity.User;
 import com.wenjiaxi.oa.core.common.web.PageModel;
 
@@ -76,10 +78,18 @@ public class UserAction extends IdentityAction {
 	 */
 	public String updateUser(){
 		try {
+			//如果修改的是当前用户，则从session中获取用户id
+			if (StringUtils.isEmpty(user.getUserId())){
+				user.setUserId(AdminConstant.getSessionUser().getUserId());
+			}
 			identityService.updateUser(user);
-			setMsg("success");
+			//修改完当前用户后将新的用户信息存入session
+			if (user.getUserId().equals(AdminConstant.getSessionUser().getUserId())){
+				ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER, user);
+			}
+			setMsg("修改成功");
 		} catch (Exception e) {
-			setMsg("failed");
+			setMsg("修改失败");
 			e.printStackTrace();
 		}
 		return SUCCESS;
@@ -116,9 +126,6 @@ public class UserAction extends IdentityAction {
 	
 	
 
-	
-	
-	
 	// getter setter
 	public User getUser() {
 		return user;
@@ -155,10 +162,5 @@ public class UserAction extends IdentityAction {
 		this.userIds = userIds;
 	}
 
-
-
 	
-	
-	
-		
 }

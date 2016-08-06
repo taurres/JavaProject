@@ -89,6 +89,14 @@
         <action name="qrCode" class="com.wenjiaxi.oa.admin.QRCodeAction">
         	<interceptor-ref name="defaultStack"/>
         </action>
+        <!-- 修改用户自己的信息 -->
+        <action name="updateSelf" class="com.wenjiaxi.oa.admin.identity.action.UserAction" method="updateUser">
+        	<interceptor-ref name="loginStack"/>
+        	<interceptor-ref name="token"/>
+        	<result>/WEB-INF/jsp/admin/self.jsp</result>
+        	<result name="input">/WEB-INF/jsp/admin/self.jsp</result>
+        	<result name="invalid.token">/WEB-INF/jsp/admin/self.jsp</result>
+        </action>
   
 	</package>
 

@@ -91,6 +91,8 @@ public class IdentityServiceImpl implements IdentityService {
 				//验证码正确则查找用户
 				User user = userDao.get(User.class, userId);
 				if (user != null && user.getPassWord().equals(MD5.getMD5(password))) {
+					if(user.getDept() != null) user.getDept().getId();
+					if(user.getJob() != null) user.getJob().getCode();
 					//如果查找到用户且密码正确,将user放入session，登录状态为0
 					ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER, user);
 					data.put("msg", "登录成功");
@@ -182,9 +184,7 @@ public class IdentityServiceImpl implements IdentityService {
 	public Map<String, Object> sendSms(String phone){
 		try {
 			//生成验证码
-			String smsCode = String.valueOf(new Random().nextInt(8999) + 1000);
-			System.out.println("number:" + smsCode);
-			
+			String smsCode = String.valueOf(new Random().nextInt(8999) + 1000);			
 			Map<String, Object> responseData = new HashMap<>();
 			//发送验证码，返回发送结果
 			boolean result = SmsUtils.send(phone, smsCode);
@@ -214,6 +214,8 @@ public class IdentityServiceImpl implements IdentityService {
 				if (!StringUtils.isEmpty(phone)) {
 					User user = getUserByPhone(phone);
 					if (user != null) {
+						if(user.getDept() != null) user.getDept().getId();
+						if(user.getJob() != null) user.getJob().getCode();
 						//如果查找到用户且密码正确,将user放入session，登录状态为0
 						ActionContext.getContext().getSession().put(AdminConstant.SESSION_USER, user);
 						responseData.put("msg", "登录成功");
