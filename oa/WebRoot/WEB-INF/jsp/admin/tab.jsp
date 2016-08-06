@@ -46,11 +46,10 @@
 			//创建用户信息tab，该tab不可关闭
 			$("#tab").tabs("add", {
 				 title : "用户信息",  // 标题
-				 content : "用户信息",  // 内容
+				 content:"<iframe width='100%' height='100%' src='${path}/admin/identity/self' frameborder='0'></iframe>",  // 内容
 				 closable : false // 是否可以关闭
 			});
 			
-
 		});
 		
 		//创建新tab的方法

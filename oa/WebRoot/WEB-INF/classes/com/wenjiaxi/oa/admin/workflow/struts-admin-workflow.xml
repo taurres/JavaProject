@@ -37,6 +37,11 @@
 		<!-- 显示流程图 -->
 		<action name="processDiagram" class="com.wenjiaxi.oa.admin.workflow.action.ProcessDiagramAction" method="showProcessDiagram">
 		</action>
+		<!-- 查看历史任务 -->
+		<action name="selectHistoryTask" class="com.wenjiaxi.oa.admin.workflow.action.HistoryAction" method="selectHistoryTask">
+		<interceptor-ref name="loginStack"/>
+			<result>/WEB-INF/jsp/admin/workflow/historyTask.jsp</result>
+		</action>
     </package>
 </struts>
     

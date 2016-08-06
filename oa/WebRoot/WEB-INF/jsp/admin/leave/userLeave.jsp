@@ -131,10 +131,12 @@
 					<s:if test="status == 0">
 						<a href="javascript:void(0)" onclick="showProcessDiagram(${procInstanceId})">查看流程图</a>
 					</s:if>
+					<s:if test="status == 1">
+						<a href="${path}/admin/workflow/selectHistoryTask?processInstanceId=${procInstanceId}&pageModel.pageIndex=${pageModel.pageIndex}">查看历史任务</a> | 
+					</s:if>
 					<s:else>
-						<a href="javascript:void(0)">查看历史任务</a>
 					</s:else>
-					<a href="javascript:void(0)">| 审批意见</a>
+					<a href="${path}/admin/leave/selectAuditResult?leaveAudit.leaveItem.id=${id}&pageModel.pageIndex=${pageModel.pageIndex}">审批意见</a>
 				</td>
 			</tr>
 			</s:iterator>

@@ -13,8 +13,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -157,7 +155,7 @@ public class IdentityServiceImpl implements IdentityService {
 			User user = getUser(userId, false);
 			String msg = "找回密码失败";
 			//若问题回答正确，则随机生成新的密码并更改该user的密码，同时通过邮件将新密码发给用户
-			if (user.getQuestion() == question && user.getAnswer().equals(answer)) {
+			if (user != null && user.getQuestion() == question && user.getAnswer().equals(answer)) {
 				//截取随机生成的UUID作为密码
 				String newPwd = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 6);
 				//将新密码通过邮件发给用户
@@ -655,8 +653,6 @@ public class IdentityServiceImpl implements IdentityService {
 	public Module getModule(String code){
 		try {
 			Module module = moduleDao.get(Module.class, code);
-			//将module名字中的---去掉再显示给用户
-			module.setName(module.getName().replace("-", ""));
 			return module;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -671,10 +667,12 @@ public class IdentityServiceImpl implements IdentityService {
 	public void updateModule(Module module){
 		try {
 			Module m = getModule(module.getCode());
+			//将module名字中的---去掉再显示给用户
+			//module.setName(module.getName().replace("-", ""));
 			String code = module.getCode();
 			//给module名字添加跟父节点长度一致的"-"前缀
 			String prefix = code.substring(0, code.length() - AdminConstant.MODULE_CODE_LENGTH).replaceAll(".", "-");
-			m.setName(prefix + module.getName());
+			m.setName(prefix + module.getName().replace("-", ""));
 			m.setUrl(module.getUrl());
 			m.setRemark(module.getRemark());
 			m.setModifyDate(new Date());
@@ -895,7 +893,7 @@ public class IdentityServiceImpl implements IdentityService {
 					//父节点的id是moduleCode的前N位
 					String id = lastPid;
 					Module module = getModule(id);
-					String name = module.getName();
+					String name = module.getName().replace("-", "");
 					String url = module.getUrl();
 					map.put("id", id);
 					map.put("pid", "0");
@@ -907,7 +905,7 @@ public class IdentityServiceImpl implements IdentityService {
 				map = new HashMap<String, Object>();
 				String pid = moduleCode.substring(0, moduleCode.length() - AdminConstant.MODULE_CODE_LENGTH);
 				Module module = getModule(moduleCode);
-				String name = module.getName();
+				String name = module.getName().replace("-", "");
 				String url = module.getUrl();
 				map.put("id", moduleCode);
 				map.put("pid", pid);

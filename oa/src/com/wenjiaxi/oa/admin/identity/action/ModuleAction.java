@@ -65,6 +65,8 @@ public class ModuleAction extends IdentityAction {
 	public String showUpdateModule(){
 		try {
 			module = identityService.getModule(module.getCode());
+			//将module名字中的---去掉再显示给用户
+			module.setName(module.getName().replace("-", ""));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

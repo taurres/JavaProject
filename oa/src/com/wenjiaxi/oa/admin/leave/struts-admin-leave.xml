@@ -58,6 +58,10 @@
 			<result>/WEB-INF/jsp/admin/leave/audit.jsp</result>
 			<result name="invalid.token">/WEB-INF/jsp/admin/leave/audit.jsp</result>
 		</action>
+		<!-- 查看审批结果(意见) -->
+	    <action name="selectAuditResult" class="com.wenjiaxi.oa.admin.leave.action.LeaveAuditAction" method="selectAuditResult">
+	    	<result>/WEB-INF/jsp/admin/leave/auditResult.jsp</result>
+	    </action>
     </package>
 </struts>
     

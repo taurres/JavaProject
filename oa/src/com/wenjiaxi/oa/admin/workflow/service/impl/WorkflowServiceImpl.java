@@ -10,6 +10,7 @@ import org.activiti.engine.HistoryService;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.DeploymentQuery;
 import org.springframework.stereotype.Service;
@@ -51,7 +52,6 @@ public class WorkflowServiceImpl implements WorkflowService{
 							 .addInputStream(bpmnFileName, new FileInputStream(bpmn))
 							 .deploy();
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("部署流程时出现异常", e);
 		}
 	}
@@ -80,7 +80,6 @@ public class WorkflowServiceImpl implements WorkflowService{
 								  .asc()
 								  .listPage(pageModel.getStartRow(), pageModel.getPageSize());
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new OAException("查询流程部署时出现异常", e);
 		}
 	}
@@ -96,6 +95,22 @@ public class WorkflowServiceImpl implements WorkflowService{
 			}
 		}catch(Exception ex){
 			throw new OAException("批量删除流程部署时出现了异常！", ex);
+		}
+	}
+	
+	/**
+	 * 查询历史任务
+	 * @param processInstanceId
+	 * @return
+	 */
+	public List<HistoricTaskInstance> getHistoricTaskInstance(String processInstanceId){
+		try{
+			return historyService.createHistoricTaskInstanceQuery()
+								 .processInstanceId(processInstanceId)
+								 .finished()
+								 .list();
+		}catch(Exception ex){
+			throw new OAException("查询历史任务时出现了异常！", ex);
 		}
 	}
 }

@@ -19,6 +19,7 @@ public class LeaveAuditAction extends LeaveAction {
 	private LeaveItem leaveItem;
 	private String taskId;
 	private LeaveAudit leaveAudit;
+	private List<LeaveAudit> leaveAudits;
 	
 	/**
 	 * 查询需要审批的休假
@@ -63,6 +64,16 @@ public class LeaveAuditAction extends LeaveAction {
 		}
 		return SUCCESS;
 	}
+	
+	/** 查询审批结果 */
+	public String selectAuditResult(){
+		try{
+			leaveAudits = leaveService.getLeaveAuditByLeaveItemId(leaveAudit.getLeaveItem().getId());
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return SUCCESS;
+	}
 
 	//getter setter
 	public List<LeaveItem> getLeaveItems() {
@@ -89,6 +100,13 @@ public class LeaveAuditAction extends LeaveAction {
 	public void setLeaveAudit(LeaveAudit leaveAudit) {
 		this.leaveAudit = leaveAudit;
 	}
+	public List<LeaveAudit> getLeaveAudits() {
+		return leaveAudits;
+	}
+	public void setLeaveAudits(List<LeaveAudit> leaveAudits) {
+		this.leaveAudits = leaveAudits;
+	}
+
 
 	
 	

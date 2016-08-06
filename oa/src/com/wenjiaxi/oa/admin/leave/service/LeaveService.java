@@ -62,6 +62,13 @@ public interface LeaveService {
 	 */
 	void audit(LeaveAudit leaveAudit, String taskId);
 
+	/**
+	 * 查询休假审批结果
+	 * @param id
+	 * @return
+	 */
+	List<LeaveAudit> getLeaveAuditByLeaveItemId(Long id);
+
 
 
 }

@@ -254,4 +254,24 @@ public class LeaveServiceImpl implements LeaveService {
 			throw new OAException("假期审批时出现异常！", ex); 
 		}
 	}
+	
+	/**
+	 * 查询休假审批结果
+	 * @param id
+	 * @return
+	 */
+	public List<LeaveAudit> getLeaveAuditByLeaveItemId(Long id){
+		try{
+			List<LeaveAudit> leaveAudits = leaveAuditDao.getLeaveAuditByLeaveItemId(id);
+			for (LeaveAudit leaveAudit : leaveAudits){
+				if (leaveAudit.getChecker() != null) {
+					leaveAudit.getChecker().getName();
+					leaveAudit.getChecker().getJob().getName();
+				}
+			}
+			return leaveAudits;
+		}catch(Exception ex){
+			throw new OAException("查询审批结果时出现异常！", ex); 
+		}
+	}
 }

@@ -145,6 +145,7 @@
                 //提示验证码错误
                 $("#vcode").attr("value","验证码错误");
                 $("#vcode").css({"background-color":"#FFDEDE"});
+                $("#unclear").trigger("click");
                 //1.5秒后聚焦到验证码输入框
                 window.setTimeout(function() {
                   $("#vcode").focus();

@@ -3,6 +3,7 @@ package com.wenjiaxi.oa.admin.workflow.service;
 import java.io.File;
 import java.util.List;
 
+import org.activiti.engine.history.HistoricTaskInstance;
 import org.activiti.engine.repository.Deployment;
 
 import com.wenjiaxi.oa.core.common.web.PageModel;
@@ -36,4 +37,11 @@ public interface WorkflowService {
 	 * @param ids
 	 */
 	void deleteDeployment(String[] ids);
+
+	/**
+	 * 查询历史任务
+	 * @param processInstanceId
+	 * @return
+	 */
+	List<HistoricTaskInstance> getHistoricTaskInstance(String processInstanceId);
 }
