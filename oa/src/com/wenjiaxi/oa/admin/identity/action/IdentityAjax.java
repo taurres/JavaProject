@@ -1,10 +1,8 @@
 package com.wenjiaxi.oa.admin.identity.action;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.wenjiaxi.oa.admin.identity.entity.Module;
 import com.wenjiaxi.oa.admin.identity.entity.Role;
 
 
@@ -17,6 +15,7 @@ import com.wenjiaxi.oa.admin.identity.entity.Role;
 
 public class IdentityAjax extends IdentityAction {
 
+	private static final long serialVersionUID = 1418814661944581893L;
 	private List<Map<String, Object>> responseMap;
 	private Map<String, List<Map<String, Object>>> responseMaps;
 	private List<List<Object>> responseList;

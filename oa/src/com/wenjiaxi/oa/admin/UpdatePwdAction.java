@@ -14,6 +14,8 @@ import com.wenjiaxi.oa.admin.identity.service.IdentityService;
 
 public class UpdatePwdAction extends ActionSupport {
 
+	private static final long serialVersionUID = -5614123932158060792L;
+
 	@Resource
 	private IdentityService identityService;
 	

@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import com.wenjiaxi.oa.admin.identity.dao.DeptDao;
-import com.wenjiaxi.oa.admin.identity.entity.Dept;
 import com.wenjiaxi.oa.core.dao.impl.BaseDaoImpl;
 
 /**

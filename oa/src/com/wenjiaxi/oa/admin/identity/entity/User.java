@@ -7,7 +7,6 @@ import java.util.Set;
 
 import javax.persistence.*;
 
-import org.apache.commons.lang3.ObjectUtils.Null;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

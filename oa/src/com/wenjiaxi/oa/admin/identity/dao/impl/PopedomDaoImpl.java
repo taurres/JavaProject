@@ -5,15 +5,8 @@ package com.wenjiaxi.oa.admin.identity.dao.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-
-import com.sun.org.apache.bcel.internal.generic.Select;
 import com.wenjiaxi.oa.admin.identity.dao.PopedomDao;
-import com.wenjiaxi.oa.admin.identity.entity.Module;
-import com.wenjiaxi.oa.admin.identity.entity.Popedom;
 import com.wenjiaxi.oa.core.dao.impl.BaseDaoImpl;
 
 /**

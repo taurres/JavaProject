@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class LeaveAjax extends LeaveAction {
 
+	private static final long serialVersionUID = -5243837990499872641L;
 	private List<Map<String, Object>> responseMap;
 	private List<List<Map<String, Object>>> responseList;
 	/**

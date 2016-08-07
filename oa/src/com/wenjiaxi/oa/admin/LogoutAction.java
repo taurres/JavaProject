@@ -14,6 +14,7 @@ import com.wenjiaxi.oa.admin.identity.service.IdentityService;
 
 public class LogoutAction extends ActionSupport {
 
+	private static final long serialVersionUID = -4225525251144228898L;
 	@Resource
 	private IdentityService identityService;
 	

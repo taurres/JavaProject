@@ -7,6 +7,8 @@ import com.wenjiaxi.oa.admin.identity.service.IdentityService;
 
 public class FindPwdAction extends ActionSupport {
 
+	private static final long serialVersionUID = -8262835882168336424L;
+
 	@Resource
 	private IdentityService identityService;
 	

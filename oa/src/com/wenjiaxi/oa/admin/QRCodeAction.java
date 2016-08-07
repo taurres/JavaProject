@@ -3,7 +3,6 @@ package com.wenjiaxi.oa.admin;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.struts2.ServletActionContext;
@@ -25,6 +24,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class QRCodeAction extends ActionSupport {
 
+	private static final long serialVersionUID = -8748329598244571654L;
 	private String url;
 	private final static int WIDTH = 270;
 	private final static int HEIGHT = 270;

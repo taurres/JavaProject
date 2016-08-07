@@ -3,7 +3,6 @@ package com.wenjiaxi.oa.admin.identity.dao;
 import java.util.List;
 import java.util.Map;
 
-import com.wenjiaxi.oa.admin.identity.entity.Dept;
 import com.wenjiaxi.oa.core.dao.BaseDao;
 
 /**

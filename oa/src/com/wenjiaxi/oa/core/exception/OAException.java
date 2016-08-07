@@ -1,8 +1,5 @@
 package com.wenjiaxi.oa.core.exception;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-
 /**
  * 
  * @author WEN JIAXI
@@ -13,6 +10,8 @@ import java.io.PrintWriter;
 public class OAException extends RuntimeException {
 
 	
+	private static final long serialVersionUID = 758518504195870736L;
+
 	public OAException() {
 		super();
 	}

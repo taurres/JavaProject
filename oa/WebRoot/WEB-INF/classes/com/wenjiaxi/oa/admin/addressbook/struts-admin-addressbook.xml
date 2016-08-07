@@ -43,6 +43,7 @@
 		
 		<!-- 异步加载联系组dtree -->
 		<action name="loadContactTree" class="com.wenjiaxi.oa.admin.addressbook.action.AddressbookAjax" method="loadContactTree">
+			<interceptor-ref name="loginStack"></interceptor-ref>
 			<result type="json">
 				<param name="root">responseList</param>
 				<param name="enableGZIP">true</param>
@@ -51,10 +52,12 @@
 		<!--  ################### contact action #####################   -->	
 		<!-- 返回contact主页面(包含两个frame的页面) -->
 		<action name="contactMain">
+			<interceptor-ref name="loginStack"></interceptor-ref>
 			<result>/WEB-INF/jsp/admin/addressbook/contactMain.jsp</result>
 		</action>
 		<!-- 返回contact左页面 -->
 		<action name="contactLeft">
+			<interceptor-ref name="loginStack"></interceptor-ref>
 			<result>/WEB-INF/jsp/admin/addressbook/contactLeft.jsp</result>
 		</action>
 		<!-- 分页查询contact -->
@@ -63,6 +66,7 @@
 		</action>   
 		<!-- 返回添加contact页面addContact.jsp -->
 		<action name="showAddContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction">
+			<interceptor-ref name="loginStack"></interceptor-ref>
 			<result>/WEB-INF/jsp/admin/addressbook/addContact.jsp</result>
 		</action>
 		<!-- 添加contact-->
@@ -74,6 +78,7 @@
 		</action>
 		<!-- 返回更新contact页面 -->
 		<action name="showUpdateContact" class="com.wenjiaxi.oa.admin.addressbook.action.ContactAction" method="showUpdateContact">
+			<interceptor-ref name="loginStack"></interceptor-ref>
 			<result>/WEB-INF/jsp/admin/addressbook/updateContact.jsp</result>
 		</action>
 		<!-- 更新contact -->

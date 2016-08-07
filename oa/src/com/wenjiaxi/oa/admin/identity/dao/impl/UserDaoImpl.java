@@ -11,12 +11,9 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
-import com.sun.org.apache.bcel.internal.generic.Select;
 import com.wenjiaxi.oa.admin.AdminConstant;
 import com.wenjiaxi.oa.admin.identity.dao.UserDao;
 import com.wenjiaxi.oa.admin.identity.entity.User;
-import com.wenjiaxi.oa.core.common.security.MD5;
 import com.wenjiaxi.oa.core.common.web.PageModel;
 import com.wenjiaxi.oa.core.dao.impl.BaseDaoImpl;
 

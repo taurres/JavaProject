@@ -2,8 +2,6 @@ package com.wenjiaxi.oa.admin.addressbook.action;
 
 import java.util.List;
 
-import com.opensymphony.xwork2.ActionSupport;
-
 /**
  * 
  * @author WEN JIAXI

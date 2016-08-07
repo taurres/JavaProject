@@ -7,7 +7,6 @@ import org.springframework.util.StringUtils;
 import com.wenjiaxi.oa.admin.identity.entity.Module;
 import com.wenjiaxi.oa.admin.identity.entity.Role;
 import com.wenjiaxi.oa.admin.identity.entity.User;
-import com.wenjiaxi.oa.core.common.web.PageModel;
 
 /**
  * 用户绑定角色权限action
