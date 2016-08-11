@@ -4,7 +4,7 @@
 	<groupId>com.wenjiaxi</groupId>
 	<artifactId>struts2_spring_mybatis</artifactId>
 	<packaging>war</packaging>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<name>Framework Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
@@ -28,14 +28,12 @@
 			<groupId>javax.servlet.jsp</groupId>
 			<artifactId>jsp-api</artifactId>
 			<version>2.2</version>
-			<scope>provided</scope>
 		</dependency>
 		<!-- jstl -->
 		<dependency>
 		    <groupId>javax.servlet</groupId>
 		    <artifactId>jstl</artifactId>
 		    <version>1.2</version>
-		    <scope>provided</scope>
 		</dependency>
 		
 		<!-- dom4j -->
